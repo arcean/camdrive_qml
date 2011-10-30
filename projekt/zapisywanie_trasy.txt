@@ -1,0 +1,5 @@
+* wraz z nagrywanym wideo, co kilka sekund powinno byc zapisywane:
+- wspolrzedne geograficzne pojazdu
+- predkosc pojazdu
+- (opcjonalnie) stan akcelerometra
+* preferowana baza danych
