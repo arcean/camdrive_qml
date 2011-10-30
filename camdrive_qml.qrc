@@ -7,5 +7,6 @@
         <file>icons/stop_recording.png</file>
         <file>icons/recording_active.png</file>
         <file>icons/recording_inactive.png</file>
+        <file>icons/background.png</file>
     </qresource>
 </RCC>

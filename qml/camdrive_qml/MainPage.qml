@@ -10,10 +10,9 @@ Page {
     property int orientation: 0
     orientationLock: PageOrientation.LockLandscape
 
-    Rectangle {
-        width: 854
-        height: 480
-        color: "black"
+    Image {
+        anchors.fill: parent
+        source:"qrc:/icons/background.png"
 
         Rectangle {
             id: videoButton
