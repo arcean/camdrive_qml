@@ -1,0 +1,8 @@
+<aegis>
+ <request>
+   <credential name="GRP::video" />
+   <credential name="TrackerReadAccess"/>
+   <credential name="TrackerWriteAccess" />
+   <for path="/opt/mirror/bin/mirror" />
+ </request>
+</aegis>

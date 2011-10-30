@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>notflipped.png</file>
+        <file>flipped.png</file>
+        <file>qml/camdrive_qml/main.qml</file>
+        <file>qml/camdrive_qml/ViewfinderPage.qml</file>
+    </qresource>
+</RCC>
