@@ -8,7 +8,7 @@ QDeclarativeFrontCamera::QDeclarativeFrontCamera(QDeclarativeItem *parent) :
     viewfinder_(0)
 {
     viewfinder_ = new QGraphicsVideoItem(this);
-    viewfinder_->setAspectRatioMode(Qt::IgnoreAspectRatio);
+   // viewfinder_->setAspectRatioMode(Qt::IgnoreAspectRatio);
     camera_ = new QCamera("secondary");
     camera_->setViewfinder(viewfinder_);
     camera_->start();
@@ -91,4 +91,9 @@ void QDeclarativeFrontCamera::start()
 void QDeclarativeFrontCamera::stop()
 {
     camera_->stop();
+}
+
+void QDeclarativeFrontCamera::unload()
+{
+    camera_->unload();
 }

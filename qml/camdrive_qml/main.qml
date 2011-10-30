@@ -4,12 +4,14 @@ import com.meego 1.0
 
 PageStackWindow {
     id: appWindow
-    initialPage: viewfinderPage
+    initialPage: mainPage
     showToolBar: false
     ViewfinderPage{id: viewfinderPage}
+    MainPage{id: mainPage}
 
     Component.onCompleted: {
         theme.inverted = true
+        theme.color = 8
 
     }
     ToolBarLayout {

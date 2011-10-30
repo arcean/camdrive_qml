@@ -1,8 +1,11 @@
 <RCC>
     <qresource prefix="/">
-        <file>notflipped.png</file>
-        <file>flipped.png</file>
         <file>qml/camdrive_qml/main.qml</file>
         <file>qml/camdrive_qml/ViewfinderPage.qml</file>
+        <file>qml/camdrive_qml/MainPage.qml</file>
+        <file>icons/emergency_call.png</file>
+        <file>icons/stop_recording.png</file>
+        <file>icons/recording_active.png</file>
+        <file>icons/recording_inactive.png</file>
     </qresource>
 </RCC>

@@ -28,6 +28,7 @@ public slots:
 
     void start();
     void stop();
+    void unload();
 
 protected slots:
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
