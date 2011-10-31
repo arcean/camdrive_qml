@@ -1,0 +1,23 @@
+Supported resolutions ("video/mpeg4"):
+252 x 188 
+320 x 240 
+352 x 288 
+640 x 480 
+848 x 480 
+854 x 480 
+1280 x 720 
+
+Supported video codecs:
+"video/mpeg4"
+"video/h264"
+"video/h263"
+
+Supported audio codecs:
+"audio/AAC" 
+"audio/PCM" 
+"audio/AMR" 
+"audio/AMR-WB" 
+"audio/speex" 
+"audio/ADPCM" 
+"audio/iLBC" 
+"audio/FLAC" 

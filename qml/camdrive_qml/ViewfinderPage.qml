@@ -50,7 +50,10 @@ Page {
             speed = positionSource.position.speed;
             speed = speed * 3.6;
             //labelSpeed.text = speed + " km/h";
-            setSpeed(speed);
+            if(speed < 4)
+                setSpeed(0)
+            else
+                setSpeed(speed)
         }
     }
 
@@ -207,20 +210,28 @@ Page {
     // Record/stop button
     Item {
         id: toggleRecordingButton
-        x: 3
+        x: 36
         y: 3
         width: 96
         height: 96
 
         Image {
+            id: stopRecordingImage
             width:96
             height:96
             anchors.centerIn: parent
-            source:"qrc:/icons/stop_recording.png"
+            smooth: true
+            source: "qrc:/icons/stop_recording.png"
 
         }
         MouseArea {
             anchors.fill: parent
+            onPressed: {
+                stopRecordingImage.source = "qrc:/icons/stop_recording_highlighted.png"
+            }
+            onReleased: {
+                stopRecordingImage.source = "qrc:/icons/stop_recording.png"
+            }
             onClicked: {
                 console.log('toggled recording clicked')
                 myDialog.open()
@@ -231,7 +242,7 @@ Page {
     // Emergency button
     Item {
         id: emergencyButton
-        x: 754
+        x: 718
         y: 3
         width: 96
         height: 96
@@ -304,8 +315,20 @@ Page {
                  pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
              }
              anchors.horizontalCenter: parent.horizontalCenter
-             Button {id: b1; text: "Yes"; onClicked: myDialog.accept()}
-             Button {id: b2; text: "No"; onClicked: myDialog.reject()}
+             Button {id: b1; text: "Yes"; onClicked: {
+
+                     myDialog.accept()
+                     frontCam.unload()
+                     pageStack.pop()
+                 }
+             }
+             Button {id: b2; text: "No"; onClicked: {
+
+                     myDialog.reject()
+                     frontCam.unload()
+                     pageStack.pop()
+                 }
+             }
          }
     }
 

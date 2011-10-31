@@ -3,10 +3,17 @@
         <file>qml/camdrive_qml/main.qml</file>
         <file>qml/camdrive_qml/ViewfinderPage.qml</file>
         <file>qml/camdrive_qml/MainPage.qml</file>
+        <file>icons/background.png</file>
         <file>icons/emergency_call.png</file>
-        <file>icons/stop_recording.png</file>
+        <file>icons/files.png</file>
+        <file>icons/files_highlighted.png</file>
         <file>icons/recording_active.png</file>
         <file>icons/recording_inactive.png</file>
-        <file>icons/background.png</file>
+        <file>icons/settings.png</file>
+        <file>icons/settings_highlighted.png</file>
+        <file>icons/start_recording.png</file>
+        <file>icons/start_recording_highlighted.png</file>
+        <file>icons/stop_recording.png</file>
+        <file>icons/stop_recording_highlighted.png</file>
     </qresource>
 </RCC>

@@ -10,56 +10,52 @@ Page {
     property int orientation: 0
     orientationLock: PageOrientation.LockLandscape
 
+    // Mask invisible region
+    Rectangle {
+        x: 90
+        y: 170
+        width: 160
+        height: 110
+        color: "white"
+    }
+
     Image {
-        anchors.fill: parent
-        source:"qrc:/icons/background.png"
+        id: startRecordingImage
+        x: 51
+        y: 100
+        width: 240
+        height: 240
+        source:"qrc:/icons/start_recording.png"
 
-        Rectangle {
-            id: videoButton
-            x: 51
-            y:100
-            width: 240
-            height: videoButton.width
-            color: "blue"
-
-            Text {
-                text: "Video"
+        MouseArea {
+            anchors.fill: parent
+            onPressed: {
+                parent.source = "qrc:/icons/start_recording_highlighted.png"
             }
-
-            MouseArea {
-                anchors.fill: parent
-                onPressed: {
-                    parent.color = "white"
-                }
-                onReleased: {
-                    parent.color = "blue"
-                }
-
-                onClicked: {
-                    pageStack.push(viewfinderPage);
-                }
+            onReleased: {
+                parent.source = "qrc:/icons/start_recording.png"
+            }
+            onClicked: {
+                pageStack.push(viewfinderPage);
             }
         }
+    }
 
-        Rectangle {
-            id: settingsButton
-            x: (videoButton.x+videoButton.width+16)
+        Image {
+            id: settingsImage
+            x: (startRecordingImage.x+startRecordingImage.width+16)
             y:100
             width: 240
-            height: videoButton.width
-            color: "blue"
-
-            Text {
-                text: "Settings"
-            }
+            height: startRecordingImage.width
+            source: "qrc:/icons/settings.png"
 
             MouseArea {
                 anchors.fill: parent
                 onPressed: {
-                    parent.color = "white"
+                    parent.source = "qrc:/icons/settings_highlighted.png"
                 }
                 onReleased: {
-                    parent.color = "blue"
+                    parent.source = "qrc:/icons/settings.png"
                 }
                 onClicked: {
                     console.log('settingsButton clicked')
@@ -67,34 +63,25 @@ Page {
             }
         }
 
-        Rectangle {
-            id: filesButton
-            x: (settingsButton.x+settingsButton.width+16)
+        Image {
+            id: filesImage
+            x: (settingsImage.x+settingsImage.width+16)
             y:100
             width: 240
-            height: videoButton.width
-            color: "blue"
-
-            Text {
-                anchors.centerIn: parent.Center
-                text: "Files"
-            }
+            height: startRecordingImage.width
+            source:"qrc:/icons/files.png"
 
             MouseArea {
                 anchors.fill: parent
                 onPressed: {
-                    parent.color = "white"
+                    parent.source = "qrc:/icons/files_highlighted.png"
                 }
                 onReleased: {
-                    parent.color = "blue"
+                    parent.source = "qrc:/icons/files.png"
                 }
                 onClicked: {
                     console.log('filesButton clicked')
                 }
             }
         }
-
-    }
-
-
 }

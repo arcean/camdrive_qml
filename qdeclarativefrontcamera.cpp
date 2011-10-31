@@ -7,12 +7,8 @@ QDeclarativeFrontCamera::QDeclarativeFrontCamera(QDeclarativeItem *parent) :
     camera_(0),
     viewfinder_(0)
 {
-    viewfinder_ = new QGraphicsVideoItem(this);
-   // viewfinder_->setAspectRatioMode(Qt::IgnoreAspectRatio);
-    camera_ = new QCamera("secondary");
-    camera_->setViewfinder(viewfinder_);
-    camera_->start();
     firstCamera = true;
+    toggleCamera();
     connect(viewfinder_, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(viewfinderSizeChanged(QSizeF)));
 }
 
@@ -25,19 +21,24 @@ QDeclarativeFrontCamera::~QDeclarativeFrontCamera()
 
 void QDeclarativeFrontCamera::toggleCamera()
 {
-    camera_->unload();
-    delete camera_;
-    delete viewfinder_;
-
-    for(int i = 0; i < camera_->availableDevices().length(); i++)
-        qDebug() << camera_->availableDevices().at(i);
+    if(mediaRecorder_) {
+        mediaRecorder_->stop();
+        delete mediaRecorder_;
+    }
+    if(camera_) {
+        camera_->unload();
+        delete camera_;
+    }
+    if(viewfinder_)
+        delete viewfinder_;
 
     if(!firstCamera) {
         viewfinder_ = new QGraphicsVideoItem(this);
         //viewfinder_->setAspectRatioMode(Qt::IgnoreAspectRatio);
         camera_ = new QCamera("secondary");
         camera_->setViewfinder(viewfinder_);
-        camera_->start();
+        camera_->setCaptureMode(QCamera::CaptureVideo);
+        mediaRecorder_ = new QMediaRecorder(camera_);
         firstCamera = true;
     }
     else {
@@ -45,11 +46,22 @@ void QDeclarativeFrontCamera::toggleCamera()
        // viewfinder_->setAspectRatioMode(Qt::IgnoreAspectRatio);
         camera_ = new QCamera("primary");
         camera_->setViewfinder(viewfinder_);
-        camera_->start();
+        camera_->setCaptureMode(QCamera::CaptureVideo);
+        mediaRecorder_ = new QMediaRecorder(camera_);
         firstCamera = false;
     }
     connect(viewfinder_, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(viewfinderSizeChanged(QSizeF)));
     viewfinder_->setSize(geometry.size());
+
+    QAudioEncoderSettings audioSettings;
+    audioSettings.setCodec("audio/AAC");
+    QVideoEncoderSettings encoderSettings;
+    encoderSettings.setCodec("video/mpeg4");
+    encoderSettings.setQuality(QtMultimediaKit::HighQuality);
+    mediaRecorder_->setEncodingSettings(audioSettings, encoderSettings);
+    mediaRecorder_->setMuted(true);
+    camera_->start();
+
 }
 
 void QDeclarativeFrontCamera::viewfinderSizeChanged(const QSizeF& size)

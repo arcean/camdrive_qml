@@ -6,14 +6,21 @@ PageStackWindow {
     id: appWindow
     initialPage: mainPage
     showToolBar: false
+
+    platformStyle: PageStackWindowStyle {
+        background: "qrc:/icons/background.png"
+        backgroundFillMode: Image.Tile
+    }
+
     ViewfinderPage{id: viewfinderPage}
     MainPage{id: mainPage}
 
     Component.onCompleted: {
         theme.inverted = true
-        theme.color = 8
+       // theme.color = 8
 
     }
+
     ToolBarLayout {
         id: commonTools
 

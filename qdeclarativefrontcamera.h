@@ -5,6 +5,8 @@
 #include <QCamera>
 #include <QCameraViewfinder>
 #include <QCameraImageCapture>
+#include <QMediaRecorder>
+#include <QDir>
 
 class QGraphicsVideoItem;
 class QDeclarativeFrontCamera : public QDeclarativeItem
@@ -38,6 +40,7 @@ private:
     QCameraImageCapture* imageprocessing_;
     QGraphicsVideoItem* viewfinder_;
     Qt::AspectRatioMode aspectRatio_;
+    QMediaRecorder* mediaRecorder_;
     QRectF geometry;
     bool firstCamera;
 };
