@@ -28,21 +28,21 @@ Page {
     function setDirectionFromCompass(direction)
     {
         if(direction >= 23 && direction <= 68)
-            textCompass.text = "NW"
-        else if(direction >= 69 && direction <= 112)
-            textCompass.text = "W"
-        else if(direction >= 113 && direction <= 158)
             textCompass.text = "SW"
-        else if(direction >= 159 && direction <= 202)
+        else if(direction >= 69 && direction <= 112)
             textCompass.text = "S"
-        else if(direction >= 203 && direction <= 248)
+        else if(direction >= 113 && direction <= 158)
             textCompass.text = "SE"
-        else if(direction >= 249 && direction <= 292)
+        else if(direction >= 159 && direction <= 202)
             textCompass.text = "E"
-        else if(direction >= 293 && direction <= 339)
+        else if(direction >= 203 && direction <= 248)
             textCompass.text = "NE"
-        else
+        else if(direction >= 249 && direction <= 292)
             textCompass.text = "N"
+        else if(direction >= 293 && direction <= 339)
+            textCompass.text = "NW"
+        else
+            textCompass.text = "W"
     }
 
     PositionSource {
