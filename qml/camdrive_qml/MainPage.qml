@@ -37,6 +37,7 @@ Page {
             }
             onClicked: {
                 pageStack.push(viewfinderPage);
+                viewfinderPage.wakeCamera()
             }
         }
     }

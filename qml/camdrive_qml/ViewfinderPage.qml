@@ -11,6 +11,10 @@ Page {
     property int orientation: 0
     orientationLock: PageOrientation.LockLandscape
 
+    Component.onCompleted: {
+        camMirrorScale.xScale = -1 * camMirrorScale.xScale
+    }
+
     Compass {
         id: compass
         active: true
@@ -62,27 +66,9 @@ Page {
         textSpeedInfo.text = speed + " km/h"
     }
 
-    function updateScaleRotation()
+    function wakeCamera()
     {
-        if(camMirrorScale.xScale>0 &&
-                (videoPage.orientation == 1 ||
-                 videoPage.orientation== 2))
-        {
-            camMirrorRotate.angle = 180
-        }
-        else {
-            camMirrorRotate.angle = 0
-        }
-    }
-
-    OrientationSensor {
-        id:orientationSensor
-        dataRate: 200
-        active:platformWindow.visible
-        onReadingChanged: {
-            videoPage.orientation = reading.orientation
-            updateScaleRotation()
-        }
+        frontCam.start()
     }
 
     Scale {
@@ -104,12 +90,10 @@ Page {
 
         onActiveChanged: {
             if(platformWindow.active) {
-                orientationSensor.start()
                 frontCam.start()
             }
             else {
                 frontCam.stop()
-                orientationSensor.stop()
             }
         }
     }
