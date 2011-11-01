@@ -7,13 +7,15 @@ PageStackWindow {
     showToolBar: false
 
     platformStyle: PageStackWindowStyle {
-        background: "qrc:/icons/background.png"
-        backgroundFillMode: Image.Tile
-    }
+            background: "qrc:/icons/background.png"
+            backgroundFillMode: Image.Tile
+        }
 
-    ViewfinderPage {id: viewfinderPage}
-    MainPage {id: mainPage}
-    SettingsPage {id: settingsPage}
+
+    ViewfinderPage { id: viewfinderPage }
+    MainPage { id: mainPage }
+    SettingsPage { id: settingsPage }
+    AboutDialog { id: aboutDialog }
 
     Component.onCompleted: {
         theme.inverted = true
@@ -47,9 +49,6 @@ PageStackWindow {
         }
     }
 */
-    AboutDialog {
-        id: aboutDialog
-    }
 
     function showToolbar()
     {

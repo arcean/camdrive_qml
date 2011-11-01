@@ -218,7 +218,7 @@ Page {
             }
             onClicked: {
                 console.log('toggled recording clicked')
-                myDialog.open()
+                stopDialog.open()
             }
         }
     }
@@ -248,10 +248,10 @@ Page {
 
 
     Dialog {
-        id: myDialog
+        id: stopDialog
         title: Item {
             id: titleField
-            height: myDialog.platformStyle.titleBarHeight
+            height: stopDialog.platformStyle.titleBarHeight
             width: parent.width
             Image {
                 id: supplement
@@ -278,7 +278,7 @@ Page {
                  MouseArea {
                     id: closeButtonArea
                     anchors.fill: parent
-                    onClicked:  { myDialog.reject(); }
+                    onClicked:  { stopDialog.reject(); }
                  }
              }
          }
@@ -293,22 +293,16 @@ Page {
              }
          }
          buttons: ButtonRow {
-             platformStyle: ButtonStyle {
-                 checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
-                 checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
-                 pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
-             }
+             platformStyle: StyledButton {}
              anchors.horizontalCenter: parent.horizontalCenter
              Button {id: b1; text: "Yes"; onClicked: {
-
-                     myDialog.accept()
+                     stopDialog.accept()
                      frontCam.unload()
                      pageStack.pop()
                  }
              }
              Button {id: b2; text: "No"; onClicked: {
-
-                     myDialog.reject()
+                     stopDialog.reject()
                      frontCam.unload()
                      pageStack.pop()
                  }

@@ -45,9 +45,7 @@ Page {
             x: 758
             y: continousRecordingLabel.y
             checked: false
-            platformStyle: SwitchStyle {
-                switchOn: "image://theme/" + "color11-" + "meegotouch-switch-on"+__invertedString
-            }
+            platformStyle: StyledSwitch {}
             onCheckedChanged: {
                 storeLastButton.enabled = !checked
                 storeLastLabel.enabled = !checked
@@ -70,11 +68,7 @@ Page {
                 recordLastDialog.selectedIndex >= 0 ? recordLastDialog.model.get(recordLastDialog.selectedIndex).name : "5 minutes"
             }
 
-            platformStyle: ButtonStyle {
-                pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
-                checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
-                checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
-            }
+            platformStyle: StyledButton {}
             onClicked: {
                 recordLastDialog.open()
             }
@@ -111,29 +105,15 @@ Page {
             width: parent.width - 60
             y: videoResolutionLabel.y + 40
             checkedButton: videoDVD
+            platformStyle: StyledButton {}
             Button { text: "VGA"
                 id: videoVGA
-                platformStyle: ButtonStyle {
-                    pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
-                    checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
-                    checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
-                }
             }
             Button { text: "DVD"
                 id: videoDVD
-                platformStyle: ButtonStyle {
-                    pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
-                    checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
-                    checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
-                }
             }
             Button { text: "HD"
                 id: videoHD
-                platformStyle: ButtonStyle {
-                    pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
-                    checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
-                    checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
-                }
             }
         }
 
@@ -150,29 +130,15 @@ Page {
             width: parent.width - 60
             y: videoQualityLabel.y + 40
             checkedButton: videoNormal
+            platformStyle: StyledButton {}
             Button { text: "Low"
                 id: videoLow
-                platformStyle: ButtonStyle {
-                    pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
-                    checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
-                    checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
-                }
             }
             Button { text: "Normal"
                 id: videoNormal
-                platformStyle: ButtonStyle {
-                    pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
-                    checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
-                    checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
-                }
             }
             Button { text: "High"
                 id: videoHigh
-                platformStyle: ButtonStyle {
-                    pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
-                    checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
-                    checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
-                }
             }
         }
 
@@ -206,9 +172,7 @@ Page {
             x: 758
             y: audioSwitchLabel.y
             checked: true
-            platformStyle: SwitchStyle {
-                switchOn: "image://theme/" + "color11-" + "meegotouch-switch-on"+__invertedString
-            }
+            platformStyle: StyledSwitch {}
             onCheckedChanged: {
                 audioQualityButtonRow.enabled = checked
                 audioQualityLabel.enabled = checked
@@ -228,36 +192,22 @@ Page {
             width: parent.width - 60
             y: audioQualityLabel.y + 40
             checkedButton: audioNormal
+            platformStyle: StyledButton {}
             Button { text: "Low"
                 id: audioLow
-                platformStyle: ButtonStyle {
-                    pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
-                    checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
-                    checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
-                }
             }
             Button { text: "Normal"
                 id: audioNormal
-                platformStyle: ButtonStyle {
-                    pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
-                    checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
-                    checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
-                }
             }
             Button { text: "High"
                 id: audioHigh
-                platformStyle: ButtonStyle {
-                    pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
-                    checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
-                    checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
-                }
             }
         }
     }
 
     SelectionDialog {
         id: recordLastDialog
-        titleText: "Record last"
+        titleText: "Store last"
 
         model: ListModel {
             ListElement { name: "1 minute " }
