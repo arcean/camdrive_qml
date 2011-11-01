@@ -66,11 +66,17 @@ Page {
             x: 630
             y: storeLastLabel.y
             width: 194
-            text: "5 minutes"
+            text: {
+                recordLastDialog.selectedIndex >= 0 ? recordLastDialog.model.get(recordLastDialog.selectedIndex).name : "5 minutes"
+            }
+
             platformStyle: ButtonStyle {
                 pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
                 checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
                 checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
+            }
+            onClicked: {
+                recordLastDialog.open()
             }
         }
 
@@ -246,6 +252,20 @@ Page {
                     checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
                 }
             }
+        }
+    }
+
+    SelectionDialog {
+        id: recordLastDialog
+        titleText: "Record last"
+
+        model: ListModel {
+            ListElement { name: "1 minute " }
+            ListElement { name: "3 minutes " }
+            ListElement { name: "5 minutes " }
+            ListElement { name: "10 minutes " }
+            ListElement { name: "15 minutes " }
+            ListElement { name: "30 minutes " }
         }
     }
 
