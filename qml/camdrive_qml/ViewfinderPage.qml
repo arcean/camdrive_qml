@@ -1,6 +1,6 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
-import FrontCamera 1.0
+import Camera 1.0
 import QtMobility.sensors 1.2
 import QtMobility.location 1.2
 
@@ -99,7 +99,7 @@ Page {
     }
 
 
-    FrontCamera {
+    Camera {
         id:frontCam
         anchors.centerIn: parent
         width:videoPage.width

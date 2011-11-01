@@ -1,8 +1,8 @@
-#include "qdeclarativefrontcamera.h"
+#include "qdeclarativecamera.h"
 #include <QGraphicsVideoItem>
 
 
-QDeclarativeFrontCamera::QDeclarativeFrontCamera(QDeclarativeItem *parent) :
+QDeclarativeCamera::QDeclarativeCamera(QDeclarativeItem *parent) :
     QDeclarativeItem(parent),
     camera_(0),
     viewfinder_(0)
@@ -12,15 +12,14 @@ QDeclarativeFrontCamera::QDeclarativeFrontCamera(QDeclarativeItem *parent) :
     connect(viewfinder_, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(viewfinderSizeChanged(QSizeF)));
 }
 
-QDeclarativeFrontCamera::~QDeclarativeFrontCamera()
+QDeclarativeCamera::~QDeclarativeCamera()
 {
     camera_->unload();
     delete viewfinder_;
     delete camera_;
-    delete mediaRecorder_;
 }
 
-void QDeclarativeFrontCamera::initFile()
+void QDeclarativeCamera::initFile()
 {
     timer = new QTimer(this);
     //Default time interval - 10m = 10 * 60 * 1000,
@@ -33,16 +32,7 @@ void QDeclarativeFrontCamera::initFile()
     setOutputLocation();
 }
 
-/**
-  Set Output Location
-*/
-void QDeclarativeFrontCamera::setOutputLocation()
-{
-    qDebug() << "setOutputLocation: " << QDir::toNativeSeparators(file->getActiveFile());
-   qDebug() << "setOutputLocation succ: " << mediaRecorder_->setOutputLocation(QDir::toNativeSeparators(file->getActiveFile()));
-}
-
-void QDeclarativeFrontCamera::changeUsedFile()
+void QDeclarativeCamera::changeUsedFile()
 {
     qDebug() << "Changing used temp file for recording...";
     this->stopRecording();
@@ -53,9 +43,18 @@ void QDeclarativeFrontCamera::changeUsedFile()
 }
 
 /**
+  Set Output Location
+*/
+void QDeclarativeCamera::setOutputLocation()
+{
+    qDebug() << "setOutputLocation: " << QDir::toNativeSeparators(file->getActiveFile());
+   qDebug() << "setOutputLocation succ: " << mediaRecorder_->setOutputLocation(QDir::toNativeSeparators(file->getActiveFile()));
+}
+
+/**
   Start recording
 */
-void QDeclarativeFrontCamera::startRecording()
+void QDeclarativeCamera::startRecording()
 {
     qDebug() << "setOutputLocation refd: " << QDir::toNativeSeparators(file->getActiveFile());
     mediaRecorder_->record();
@@ -66,20 +65,20 @@ void QDeclarativeFrontCamera::startRecording()
 /**
   Pause recording process
 */
-void QDeclarativeFrontCamera::pauseRecording()
+void QDeclarativeCamera::pauseRecording()
 {
     timer->stop();
     mediaRecorder_->pause();
 }
 
-void QDeclarativeFrontCamera::stopRecording()
+void QDeclarativeCamera::stopRecording()
 {
     timer->stop();
     mediaRecorder_->stop();
     file->fileReady();
 }
 
-void QDeclarativeFrontCamera::toggleCamera()
+void QDeclarativeCamera::toggleCamera()
 {
     if(mediaRecorder_) {
         mediaRecorder_->stop();
@@ -124,20 +123,20 @@ void QDeclarativeFrontCamera::toggleCamera()
 
 }
 
-void QDeclarativeFrontCamera::viewfinderSizeChanged(const QSizeF& size)
+void QDeclarativeCamera::viewfinderSizeChanged(const QSizeF& size)
 {
     setImplicitWidth(size.width());
     setImplicitHeight(size.height());
 }
 
-void QDeclarativeFrontCamera::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
+void QDeclarativeCamera::geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
     geometry = newGeometry;
     viewfinder_->setSize(geometry.size());
     QDeclarativeItem::geometryChanged(newGeometry, oldGeometry);
 }
 
-void QDeclarativeFrontCamera::setAspectRatio(const Qt::AspectRatioMode &aspectRatio)
+void QDeclarativeCamera::setAspectRatio(const Qt::AspectRatioMode &aspectRatio)
 {
     if(aspectRatio == Qt::IgnoreAspectRatio)
         viewfinder_->setAspectRatioMode(aspectRatio);
@@ -150,22 +149,22 @@ void QDeclarativeFrontCamera::setAspectRatio(const Qt::AspectRatioMode &aspectRa
     }
 }
 
-Qt::AspectRatioMode QDeclarativeFrontCamera::aspectRatio() const
+Qt::AspectRatioMode QDeclarativeCamera::aspectRatio() const
 {
     return aspectRatio_;
 }
 
-void QDeclarativeFrontCamera::start()
+void QDeclarativeCamera::start()
 {
     camera_->start();
 }
 
-void QDeclarativeFrontCamera::stop()
+void QDeclarativeCamera::stop()
 {
     camera_->stop();
 }
 
-void QDeclarativeFrontCamera::unload()
+void QDeclarativeCamera::unload()
 {
     camera_->unload();
 }

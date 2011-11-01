@@ -3,7 +3,7 @@
 #include <QtDeclarative>
 #include <QGLWidget>
 
-#include "qdeclarativefrontcamera.h"
+#include "qdeclarativecamera.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 
     QmlApplicationViewer viewer;
     viewer.setViewport(new QGLWidget());
-    qmlRegisterType<QDeclarativeFrontCamera>("FrontCamera", 1, 0, "FrontCamera");
+    qmlRegisterType<QDeclarativeCamera>("Camera", 1, 0, "Camera");
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
     viewer.setMainQmlFile(QLatin1String("qml/camdrive_qml/main.qml"));
     viewer.showFullScreen();
