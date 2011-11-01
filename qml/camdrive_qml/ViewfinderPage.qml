@@ -255,7 +255,7 @@ Page {
             width: parent.width
             Image {
                 id: supplement
-                source: "qrc:/icons/emergency_call.png"
+                source: "qrc:/icons/dialogStop.png"
                 height: parent.height - 10
                 width: 75
                 fillMode: Image.PreserveAspectFit
