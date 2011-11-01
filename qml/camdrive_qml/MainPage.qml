@@ -1,7 +1,5 @@
 import QtQuick 1.1
-import com.meego 1.0
-import FrontCamera 1.0
-import QtMobility.sensors 1.2
+import com.nokia.meego 1.0
 
 Page {
     tools: commonTools
@@ -59,7 +57,8 @@ Page {
                     parent.source = "qrc:/icons/settings.png"
                 }
                 onClicked: {
-                    console.log('settingsButton clicked')
+                    pageStack.push(settingsPage);
+                    appWindow.showToolbar()
                 }
             }
         }

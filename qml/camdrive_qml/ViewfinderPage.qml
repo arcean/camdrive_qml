@@ -1,5 +1,5 @@
 import QtQuick 1.1
-import com.meego 1.0
+import com.nokia.meego 1.0
 import FrontCamera 1.0
 import QtMobility.sensors 1.2
 import QtMobility.location 1.2
@@ -255,7 +255,7 @@ Page {
             width: parent.width
             Image {
                 id: supplement
-                source: "image://theme/icon-l-contacts"
+                source: "qrc:/icons/emergency_call.png"
                 height: parent.height - 10
                 width: 75
                 fillMode: Image.PreserveAspectFit
