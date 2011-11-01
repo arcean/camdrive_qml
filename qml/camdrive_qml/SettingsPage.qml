@@ -16,9 +16,68 @@ Page {
         contentHeight: 600
 
         Separator {
-            id: videoSettingsSeparator
+            id: recordingOptionsSeparator
             x: 5
             y: 10
+            width: 640
+        }
+
+        Label {
+            id: recordingOptionsLabel
+            x: 660
+            y: recordingOptionsSeparator.y - 10
+            platformStyle: LabelStyle {
+                textColor: "gray"
+                fontPixelSize: 20
+            }
+            text: "Recording options"
+        }
+
+        Label {
+            id: continousRecordingLabel
+            x: 10
+            y: recordingOptionsSeparator.y + 20
+            text: "Enable continous recording"
+        }
+
+        Switch {
+            id: recordingOptionsSwitch
+            x: 758
+            y: continousRecordingLabel.y
+            checked: false
+            platformStyle: SwitchStyle {
+                switchOn: "image://theme/" + "color11-" + "meegotouch-switch-on"+__invertedString
+            }
+            onCheckedChanged: {
+                storeLastButton.enabled = !checked
+                storeLastLabel.enabled = !checked
+            }
+        }
+
+        Label {
+            id:storeLastLabel
+            x: 10
+            y: continousRecordingLabel.y + 60
+            text: "Store last"
+        }
+
+        Button {
+            id: storeLastButton
+            x: 630
+            y: storeLastLabel.y
+            width: 194
+            text: "5 minutes"
+            platformStyle: ButtonStyle {
+                pressedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-pressed" + (position ? "-" + position : "")
+                checkedBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-selected" + (position ? "-" + position : "")
+                checkedDisabledBackground: "image://theme/" + "color11-" + "meegotouch-button" + __invertedString + "-background-disabled-selected" + (position ? "-" + position : "")
+            }
+        }
+
+        Separator {
+            id: videoSettingsSeparator
+            x: 5
+            y: storeLastLabel.y + 70
             width: 680
         }
 
@@ -35,7 +94,7 @@ Page {
 
         Label {
             id: videoResolutionLabel
-            x: 5
+            x: 10
             y: videoSettingsSeparator.y + 20
             text: "Video resolution:"
         }
@@ -74,7 +133,7 @@ Page {
 
         Label {
             id: videoQualityLabel
-            x: 5
+            x: 10
             y: videoResolutionButtonRow.y + 70
             text: "Video quality:"
         }
@@ -114,7 +173,7 @@ Page {
         Separator {
             id: audioSettingsSeparator
             x: 5
-            y: 270
+            y: videoQualityButtonRow.y + 80
             width: 680
         }
 
@@ -131,14 +190,14 @@ Page {
 
         Label {
             id: audioSwitchLabel
-            x: 5
+            x: 10
             y: audioSettingsSeparator.y + 20
             text: "Record audio:"
         }
 
         Switch {
             id: audioSwitch
-            x: 780
+            x: 758
             y: audioSwitchLabel.y
             checked: true
             platformStyle: SwitchStyle {
@@ -146,12 +205,13 @@ Page {
             }
             onCheckedChanged: {
                 audioQualityButtonRow.enabled = checked
+                audioQualityLabel.enabled = checked
             }
         }
 
         Label {
             id: audioQualityLabel
-            x: 5
+            x: 10
             y: audioSwitchLabel.y + 40
             text: "Audio quality:"
         }
