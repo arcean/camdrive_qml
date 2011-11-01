@@ -31,6 +31,12 @@ PageStackWindow {
                 hideToolbar()
             }
         }
+        ToolIcon { platformIconId: "toolbar-tag";
+            anchors.right: parent.right
+            onClicked: {
+                aboutDialog.open()
+            }
+        }
     }
 /*
     Menu {
@@ -41,6 +47,10 @@ PageStackWindow {
         }
     }
 */
+    AboutDialog {
+        id: aboutDialog
+    }
+
     function showToolbar()
     {
         appWindow.showToolBar = true
@@ -53,5 +63,3 @@ PageStackWindow {
         commonTools.visible = false
     }
 }
-
-
