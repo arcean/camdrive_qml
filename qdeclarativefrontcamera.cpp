@@ -17,6 +17,7 @@ QDeclarativeFrontCamera::~QDeclarativeFrontCamera()
     camera_->unload();
     delete viewfinder_;
     delete camera_;
+    delete mediaRecorder_;
 }
 
 void QDeclarativeFrontCamera::toggleCamera()
