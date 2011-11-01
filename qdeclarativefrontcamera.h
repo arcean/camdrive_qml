@@ -7,6 +7,11 @@
 #include <QCameraImageCapture>
 #include <QMediaRecorder>
 #include <QDir>
+#include <QTimer>
+
+#include "file.h"
+
+#define CAM_DEFAULT_FILE_NAME "camdrive_file"
 
 class QGraphicsVideoItem;
 class QDeclarativeFrontCamera : public QDeclarativeItem
@@ -20,6 +25,8 @@ public:
 
     Qt::AspectRatioMode aspectRatio() const;
     void setAspectRatio(const Qt::AspectRatioMode& aspectRatio);
+    void initFile();
+    void setOutputLocation();
 
 signals:
 
@@ -27,7 +34,11 @@ signals:
 public slots:
     void viewfinderSizeChanged(const QSizeF& size);
     void toggleCamera();
+    void changeUsedFile();
 
+    void startRecording();
+    void stopRecording();
+    void pauseRecording();
     void start();
     void stop();
     void unload();
@@ -43,6 +54,8 @@ private:
     QMediaRecorder* mediaRecorder_;
     QRectF geometry;
     bool firstCamera;
+    File *file;
+    QTimer *timer;
 };
 
 #endif // QDECLARATIVEFRONTCAMERA_H

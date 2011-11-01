@@ -20,6 +20,65 @@ QDeclarativeFrontCamera::~QDeclarativeFrontCamera()
     delete mediaRecorder_;
 }
 
+void QDeclarativeFrontCamera::initFile()
+{
+    timer = new QTimer(this);
+    //Default time interval - 10m = 10 * 60 * 1000,
+    //It should be configurable, and loaded on app startup
+    timer->setInterval(10 * 60 * 1000);
+
+    file = new File(CAM_DEFAULT_FILE_NAME);
+
+    connect(timer, SIGNAL(timeout()), this, SLOT(changeUsedFile()));
+    setOutputLocation();
+}
+
+/**
+  Set Output Location
+*/
+void QDeclarativeFrontCamera::setOutputLocation()
+{
+    qDebug() << "setOutputLocation: " << QDir::toNativeSeparators(file->getActiveFile());
+   qDebug() << "setOutputLocation succ: " << mediaRecorder_->setOutputLocation(QDir::toNativeSeparators(file->getActiveFile()));
+}
+
+void QDeclarativeFrontCamera::changeUsedFile()
+{
+    qDebug() << "Changing used temp file for recording...";
+    this->stopRecording();
+    file->changeFile();
+    setOutputLocation();
+    this->startRecording();
+    qDebug() << "Changing temp file: DONE";
+}
+
+/**
+  Start recording
+*/
+void QDeclarativeFrontCamera::startRecording()
+{
+    qDebug() << "setOutputLocation refd: " << QDir::toNativeSeparators(file->getActiveFile());
+    mediaRecorder_->record();
+     qDebug() << "HMM error: " << mediaRecorder_->errorString();
+    timer->start();
+}
+
+/**
+  Pause recording process
+*/
+void QDeclarativeFrontCamera::pauseRecording()
+{
+    timer->stop();
+    mediaRecorder_->pause();
+}
+
+void QDeclarativeFrontCamera::stopRecording()
+{
+    timer->stop();
+    mediaRecorder_->stop();
+    file->fileReady();
+}
+
 void QDeclarativeFrontCamera::toggleCamera()
 {
     if(mediaRecorder_) {
