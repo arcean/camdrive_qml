@@ -1,5 +1,6 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import com.nokia.extras 1.1
 
 Page {
     tools: commonTools
@@ -59,16 +60,15 @@ Page {
             text: "Store last"
         }
 
-        Button {
+        TumblerButton {
             id: storeLastButton
-            x: 630
+            x: 580
             y: storeLastLabel.y
-            width: 194
+            width: 244
+            style: StyledTumblerButton {}
             text: {
                 recordLastDialog.selectedIndex >= 0 ? recordLastDialog.model.get(recordLastDialog.selectedIndex).name : "5 minutes"
             }
-
-            platformStyle: StyledButton {}
             onClicked: {
                 recordLastDialog.open()
             }

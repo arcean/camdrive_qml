@@ -26,7 +26,8 @@ MOBILITY += multimedia
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp \
     file.cpp \
-    qdeclarativecamera.cpp
+    qdeclarativecamera.cpp \
+    settings.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -55,10 +56,13 @@ OTHER_FILES += \
 
 HEADERS += \
     file.h \
-    qdeclarativecamera.h
+    qdeclarativecamera.h \
+    settings.h
 
 RESOURCES += \
     camdrive_qml.qrc
+
+
 
 
 
