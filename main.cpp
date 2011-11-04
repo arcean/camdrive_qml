@@ -8,7 +8,9 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-
+    app.setOrganizationName("arcean");
+    app.setOrganizationDomain("arcean.com");
+    app.setApplicationName("camdrive");
 
     QmlApplicationViewer viewer;
     viewer.setViewport(new QGLWidget());
