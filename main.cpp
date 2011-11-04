@@ -4,6 +4,7 @@
 #include <QGLWidget>
 
 #include "qdeclarativecamera.h"
+#include "settings.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,6 +16,7 @@ int main(int argc, char *argv[])
     QmlApplicationViewer viewer;
     viewer.setViewport(new QGLWidget());
     qmlRegisterType<QDeclarativeCamera>("Camera", 1, 0, "Camera");
+    qmlRegisterType<Settings>("Settings", 1, 0, "Settings");
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
     viewer.setMainQmlFile(QLatin1String("qml/camdrive_qml/main.qml"));
     viewer.showFullScreen();

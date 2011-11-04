@@ -1,15 +1,22 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import com.nokia.extras 1.1
+import Settings 1.0
 
 Page {
     tools: commonTools
     id: settingsPage
     orientationLock: PageOrientation.LockLandscape
 
+    Settings {
+        id: settingsObject
+    }
+
     Component.onCompleted: {
         theme.inverted = true
        // theme.color = 8
+        storeLastButton.text = settingsObject.getStoreLastToText()
+        recordingOptionsSwitch.checked = settingsObject.getEnableContinousRecording()
     }
 
     Flickable {
@@ -50,6 +57,7 @@ Page {
             onCheckedChanged: {
                 storeLastButton.enabled = !checked
                 storeLastLabel.enabled = !checked
+                settingsObject.setEnableContinousRecording(checked)
             }
         }
 
@@ -208,6 +216,8 @@ Page {
     SelectionDialog {
         id: recordLastDialog
         titleText: "Store last"
+        selectedIndex: settingsObject.getStoreLast()
+        platformStyle: StyledSelectionDialog {}
 
         model: ListModel {
             ListElement { name: "1 minute " }
@@ -217,6 +227,10 @@ Page {
             ListElement { name: "15 minutes " }
             ListElement { name: "30 minutes " }
         }
-    }
 
+        onAccepted: {
+            settingsObject.setStoreLast(recordLastDialog.selectedIndex)
+            storeLastButton.text = settingsObject.getStoreLastToText()
+        }
+    }
 }
