@@ -71,6 +71,11 @@ Page {
         frontCam.toggleCamera()
     }
 
+    function startRecording()
+    {
+        frontCam.startRecording()
+    }
+
     Scale {
         id:camMirrorScale
         origin.x:parent.width/2
@@ -242,6 +247,7 @@ Page {
             anchors.fill: parent
             onClicked: {
                 console.log("Emergency call clicked")
+                startRecording()
             }
         }
     }
@@ -297,12 +303,14 @@ Page {
              anchors.horizontalCenter: parent.horizontalCenter
              Button {id: b1; text: "Yes"; onClicked: {
                      stopDialog.accept()
+                     frontCam.stopRecording()
                      frontCam.unload()
                      pageStack.pop()
                  }
              }
              Button {id: b2; text: "No"; onClicked: {
                      stopDialog.reject()
+                     frontCam.stopRecording()
                      frontCam.unload()
                      pageStack.pop()
                  }

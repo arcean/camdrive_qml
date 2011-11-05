@@ -58,6 +58,7 @@ private:
     File *file;
     QTimer *timer;
     Settings *settingsObject;
+    bool isRecording;
 };
 
 #endif // QDeclarativeCamera_H

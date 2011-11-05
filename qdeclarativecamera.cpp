@@ -60,10 +60,13 @@ void QDeclarativeCamera::setOutputLocation()
 */
 void QDeclarativeCamera::startRecording()
 {
+    if(!isRecording)
+        return;
     qDebug() << "setOutputLocation refd: " << QDir::toNativeSeparators(file->getActiveFile());
     mediaRecorder_->record();
      qDebug() << "HMM error: " << mediaRecorder_->errorString();
-    timer->start();
+    if(!settingsObject->getEnableContinousRecording())
+        timer->start();
 }
 
 /**
@@ -143,8 +146,9 @@ void QDeclarativeCamera::toggleCamera()
 
     mediaRecorder_->setEncodingSettings(audioSettings, encoderSettings);
     mediaRecorder_->setMuted(settingsObject->getEnableAudio());
-    camera_->start();
 
+    initFile();
+    start();
 }
 
 void QDeclarativeCamera::viewfinderSizeChanged(const QSizeF& size)
@@ -181,14 +185,17 @@ Qt::AspectRatioMode QDeclarativeCamera::aspectRatio() const
 void QDeclarativeCamera::start()
 {
     camera_->start();
+    isRecording = true;
 }
 
 void QDeclarativeCamera::stop()
 {
+    isRecording = false;
     camera_->stop();
 }
 
 void QDeclarativeCamera::unload()
 {
+    isRecording = false;
     camera_->unload();
 }
