@@ -10,6 +10,7 @@
 #include <QTimer>
 
 #include "file.h"
+#include "settings.h"
 
 #define CAM_DEFAULT_FILE_NAME "camdrive_file"
 
@@ -56,6 +57,7 @@ private:
     bool firstCamera;
     File *file;
     QTimer *timer;
+    Settings *settingsObject;
 };
 
 #endif // QDeclarativeCamera_H

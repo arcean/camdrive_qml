@@ -7,6 +7,7 @@ QDeclarativeCamera::QDeclarativeCamera(QDeclarativeItem *parent) :
     camera_(0),
     viewfinder_(0)
 {
+    settingsObject = new Settings();
     firstCamera = true;
     toggleCamera();
     connect(viewfinder_, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(viewfinderSizeChanged(QSizeF)));
@@ -17,6 +18,7 @@ QDeclarativeCamera::~QDeclarativeCamera()
     camera_->unload();
     delete viewfinder_;
     delete camera_;
+    delete settingsObject;
 }
 
 void QDeclarativeCamera::initFile()
@@ -98,7 +100,7 @@ void QDeclarativeCamera::toggleCamera()
         camera_->setViewfinder(viewfinder_);
         camera_->setCaptureMode(QCamera::CaptureVideo);
         mediaRecorder_ = new QMediaRecorder(camera_);
-        firstCamera = true;
+        //firstCamera = true;
     }
     else {
         viewfinder_ = new QGraphicsVideoItem(this);
@@ -107,18 +109,38 @@ void QDeclarativeCamera::toggleCamera()
         camera_->setViewfinder(viewfinder_);
         camera_->setCaptureMode(QCamera::CaptureVideo);
         mediaRecorder_ = new QMediaRecorder(camera_);
-        firstCamera = false;
+        //firstCamera = false;
     }
     connect(viewfinder_, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(viewfinderSizeChanged(QSizeF)));
     viewfinder_->setSize(geometry.size());
 
     QAudioEncoderSettings audioSettings;
     audioSettings.setCodec("audio/AAC");
+    if(settingsObject->getAudioQuality() == 0)
+        audioSettings.setQuality(QtMultimediaKit::LowQuality);
+    else if(settingsObject->getAudioQuality() == 2)
+        audioSettings.setQuality(QtMultimediaKit::HighQuality);
+    else
+        audioSettings.setQuality(QtMultimediaKit::NormalQuality);
+
     QVideoEncoderSettings encoderSettings;
     encoderSettings.setCodec("video/mpeg4");
-    encoderSettings.setQuality(QtMultimediaKit::HighQuality);
+    if(settingsObject->getVideoQuality() == 0)
+        encoderSettings.setQuality(QtMultimediaKit::LowQuality);
+    else if(settingsObject->getVideoQuality() == 2)
+        encoderSettings.setQuality(QtMultimediaKit::HighQuality);
+    else
+        encoderSettings.setQuality(QtMultimediaKit::NormalQuality);
+
+    if(settingsObject->getVideoResolution() == 0)
+        encoderSettings.setResolution(640, 480);
+    else if(settingsObject->getVideoResolution() == 2)
+        encoderSettings.setResolution(1280, 720);
+    else
+        encoderSettings.setResolution(848, 480);
+
     mediaRecorder_->setEncodingSettings(audioSettings, encoderSettings);
-    mediaRecorder_->setMuted(true);
+    mediaRecorder_->setMuted(settingsObject->getEnableAudio());
     camera_->start();
 
 }

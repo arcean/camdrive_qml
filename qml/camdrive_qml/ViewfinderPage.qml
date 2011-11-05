@@ -68,7 +68,7 @@ Page {
 
     function wakeCamera()
     {
-        frontCam.start()
+        frontCam.toggleCamera()
     }
 
     Scale {
