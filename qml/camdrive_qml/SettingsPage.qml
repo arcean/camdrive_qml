@@ -12,11 +12,44 @@ Page {
         id: settingsObject
     }
 
+    function selectAudioQuality()
+    {
+        if(settingsObject.getAudioQuality() == 0)
+            audioQualityButtonRow.checkedButton = audioLow
+        else if(settingsObject.getAudioQuality() == 2)
+            audioQualityButtonRow.checkedButton = audioHigh
+        else
+            audioQualityButtonRow.checkedButton = audioNormal
+    }
+
+    function selectVideoQuality()
+    {
+        if(settingsObject.getVideoQuality() == 0)
+            videoQualityButtonRow.checkedButton = videoLow
+        else if(settingsObject.getVideoQuality() == 2)
+            videoQualityButtonRow.checkedButton = videoHigh
+        else
+            videoQualityButtonRow.checkedButton = videoNormal
+    }
+
+    function selectVideoResolution()
+    {
+        if(settingsObject.getVideoResolution() == 0)
+            videoResolutionButtonRow.checkedButton = videoVGA
+        else if(settingsObject.getVideoResolution() == 2)
+            videoResolutionButtonRow.checkedButton = videoHD
+        else
+            videoResolutionButtonRow.checkedButton = videoDVD
+    }
+
     Component.onCompleted: {
         theme.inverted = true
        // theme.color = 8
         storeLastButton.text = settingsObject.getStoreLastToText()
         recordingOptionsSwitch.checked = settingsObject.getEnableContinousRecording()
+        selectAudioQuality()
+        selectVideoQuality()
+        selectVideoResolution()
     }
 
     Flickable {
@@ -116,12 +149,15 @@ Page {
             platformStyle: StyledButton {}
             Button { text: "VGA"
                 id: videoVGA
+                onClicked: settingsObject.setVideoResolution(0)
             }
             Button { text: "DVD"
                 id: videoDVD
+                onClicked: settingsObject.setVideoResolution(1)
             }
             Button { text: "HD"
                 id: videoHD
+                onClicked: settingsObject.setVideoResolution(2)
             }
         }
 
@@ -141,12 +177,15 @@ Page {
             platformStyle: StyledButton {}
             Button { text: "Low"
                 id: videoLow
+                onClicked: settingsObject.setVideoQuality(0)
             }
             Button { text: "Normal"
                 id: videoNormal
+                onClicked: settingsObject.setVideoQuality(1)
             }
             Button { text: "High"
                 id: videoHigh
+                onClicked: settingsObject.setVideoQuality(2)
             }
         }
 
@@ -179,11 +218,12 @@ Page {
             id: audioSwitch
             x: 758
             y: audioSwitchLabel.y
-            checked: true
+            checked: settingsObject.getEnableAudio()
             platformStyle: StyledSwitch {}
             onCheckedChanged: {
                 audioQualityButtonRow.enabled = checked
                 audioQualityLabel.enabled = checked
+                settingsObject.setEnableAudio(checked)
             }
         }
 
@@ -199,16 +239,20 @@ Page {
             x: 30
             width: parent.width - 60
             y: audioQualityLabel.y + 40
-            checkedButton: audioNormal
+            enabled: audioSwitch.checked
+            //checkedButton:
             platformStyle: StyledButton {}
             Button { text: "Low"
                 id: audioLow
+                onClicked: settingsObject.setAudioQuality(0)
             }
             Button { text: "Normal"
                 id: audioNormal
+                onClicked: settingsObject.setAudioQuality(1)
             }
             Button { text: "High"
                 id: audioHigh
+                onClicked: settingsObject.setAudioQuality(2)
             }
         }
     }

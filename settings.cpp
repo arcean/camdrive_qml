@@ -1,4 +1,5 @@
 #include "settings.h"
+#include <QDebug>
 
 Settings::Settings()
 {
@@ -53,25 +54,25 @@ QString Settings::getStoreLastToText()
     switch (value)
     {
     case 0:
-        valueToText = 1;
+        valueToText = CD_STORE_LAST_0;
         break;
     case 1:
-        valueToText = 3;
+        valueToText = CD_STORE_LAST_1;
         break;
     case 2:
-        valueToText = 5;
+        valueToText = CD_STORE_LAST_2;
         break;
     case 3:
-        valueToText = 10;
+        valueToText = CD_STORE_LAST_3;
         break;
     case 4:
-        valueToText = 15;
+        valueToText = CD_STORE_LAST_4;
         break;
     case 5:
-        valueToText = 30;
+        valueToText = CD_STORE_LAST_5;
         break;
     default:
-        valueToText = 5;
+        valueToText = CD_STORE_LAST_2;
         break;
     }
 
@@ -81,4 +82,70 @@ QString Settings::getStoreLastToText()
         text = QString::number(valueToText) + " minutes";
 
     return text;
+}
+
+void Settings::setVideoResolution(int resolution)
+{
+    if(resolution > 2 || resolution < 0)
+        resolution = 1;
+
+    QSettings settings;
+    settings.setValue("video/resolution", resolution);
+}
+
+int Settings::getVideoResolution()
+{
+    QSettings settings;
+    int value =  settings.value("video/resolution", 1).toInt();
+
+    return value;
+}
+
+void Settings::setVideoQuality(int quality)
+{
+    if(quality > 2 || quality < 0)
+        quality = 1;
+
+    QSettings settings;
+    settings.setValue("video/quality", quality);
+}
+
+int Settings::getVideoQuality()
+{
+    QSettings settings;
+    int value =  settings.value("video/quality", 1).toInt();
+
+    return value;
+}
+
+void Settings::setEnableAudio(bool enable)
+{
+    QSettings settings;
+
+    settings.setValue("audio/enabled", enable);
+}
+
+bool Settings::getEnableAudio()
+{
+    QSettings settings;
+    bool value =  settings.value("audio/enabled", false).toBool();
+
+    return value;
+}
+
+void Settings::setAudioQuality(int quality)
+{
+    if(quality < 0 || quality > 2)
+        quality = 1;
+
+    QSettings settings;
+    settings.setValue("audio/quality", quality);
+}
+
+int Settings::getAudioQuality()
+{
+    QSettings settings;
+    int value =  settings.value("audio/quality", 1).toInt();
+
+    return value;
 }
