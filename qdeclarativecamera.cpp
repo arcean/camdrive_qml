@@ -26,7 +26,9 @@ void QDeclarativeCamera::initFile()
     timer = new QTimer(this);
     //Default time interval - 10m = 10 * 60 * 1000,
     //It should be configurable, and loaded on app startup
-    timer->setInterval(10 * 60 * 1000);
+    int time = settingsObject->getStoreLast();
+    time = time * 60 * 1000;
+    timer->setInterval(time);
 
     file = new File(CAM_DEFAULT_FILE_NAME);
 
