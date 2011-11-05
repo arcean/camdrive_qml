@@ -3,6 +3,7 @@ import com.nokia.meego 1.0
 import Camera 1.0
 import QtMobility.sensors 1.2
 import QtMobility.location 1.2
+import QtMobility.systeminfo 1.2
 
 Page {
     tools: commonTools
@@ -23,6 +24,11 @@ Page {
         onReadingChanged: {
             setDirectionFromCompass(compass.reading.azimuth)
         }
+    }
+
+    ScreenSaver {
+        id: screenSaver
+        screenSaverInhibited: false
     }
 
     function setDirectionFromCompass(direction)
@@ -248,6 +254,7 @@ Page {
             onClicked: {
                 console.log("Emergency call clicked")
                 startRecording()
+                screenSaver.screenSaverInhibited = true
             }
         }
     }
@@ -305,6 +312,7 @@ Page {
                      stopDialog.accept()
                      frontCam.stopRecording()
                      frontCam.unload()
+                     screenSaver.screenSaverInhibited = false
                      pageStack.pop()
                  }
              }
@@ -312,6 +320,7 @@ Page {
                      stopDialog.reject()
                      frontCam.stopRecording()
                      frontCam.unload()
+                     screenSaver.screenSaverInhibited = false
                      pageStack.pop()
                  }
              }
