@@ -30,7 +30,7 @@ public:
     void setOutputLocation();
 
 signals:
-
+    void durationChanged(qint64 duration);
 
 public slots:
     void viewfinderSizeChanged(const QSizeF& size);
@@ -46,6 +46,7 @@ public slots:
 
 protected slots:
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
+    void durationChangedFunc(qint64 duration);
 
 private:
     QCamera* camera_;

@@ -34,7 +34,8 @@ Page {
                 parent.source = "qrc:/icons/start_recording.png"
             }
             onClicked: {
-                pageStack.push(viewfinderPage);
+                viewfinderPage.clearRecordingStatus()
+                pageStack.push(viewfinderPage)
                 viewfinderPage.wakeCamera()
             }
         }

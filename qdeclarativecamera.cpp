@@ -21,6 +21,11 @@ QDeclarativeCamera::~QDeclarativeCamera()
     delete settingsObject;
 }
 
+void QDeclarativeCamera::durationChangedFunc(qint64 duration)
+{
+    emit durationChanged(duration);
+}
+
 void QDeclarativeCamera::initFile()
 {
     timer = new QTimer(this);
@@ -117,6 +122,7 @@ void QDeclarativeCamera::toggleCamera()
         //firstCamera = false;
     }
     connect(viewfinder_, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(viewfinderSizeChanged(QSizeF)));
+    connect(mediaRecorder_, SIGNAL(durationChanged(qint64)), this, SLOT(durationChangedFunc(qint64)));
     viewfinder_->setSize(geometry.size());
 
     QAudioEncoderSettings audioSettings;

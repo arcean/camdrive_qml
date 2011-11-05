@@ -4,6 +4,7 @@ import Camera 1.0
 import QtMobility.sensors 1.2
 import QtMobility.location 1.2
 import QtMobility.systeminfo 1.2
+import Settings 1.0
 
 Page {
     tools: commonTools
@@ -29,6 +30,53 @@ Page {
     ScreenSaver {
         id: screenSaver
         screenSaverInhibited: false
+    }
+
+    Settings {
+        id: settingsObject
+    }
+
+    Timer {
+        id: timerTouchToStartRecording
+        interval: 1200
+        repeat: true
+        running: true
+
+        onTriggered: {
+            if (textTouchToStartRecording.opacity == 1) {
+                textTouchToStartRecording.opacity = 0
+            }
+            else {
+                textTouchToStartRecording.opacity = 1
+            }
+
+        }
+    }
+
+    MouseArea {
+        id: clickMeMouseArea
+        anchors.fill: parent
+        onClicked: {
+            clickMeMouseArea.enabled = false
+            timerTouchToStartRecording.stop()
+            textTouchToStartRecording.visible = false
+            screenSaver.screenSaverInhibited = true
+            textStatusInfo.text = "Recording..."
+            statusIconTimer.start()
+            startRecording()
+        }
+    }
+
+    function clearRecordingStatus()
+    {
+        clickMeMouseArea.enabled = true
+        timerTouchToStartRecording.start()
+        textTouchToStartRecording.visible = true
+        statusIconTimer.stop()
+        textStatusInfo.text = "Waiting..."
+        statusIcon.opacity = 0
+        statusIconInactive.opacity = 1
+        textCounter.text = "0:00/" + settingsObject.getStoreLastInMinutes() + ":00"
     }
 
     function setDirectionFromCompass(direction)
@@ -65,6 +113,24 @@ Page {
             else
                 setSpeed(speed)
         }
+    }
+
+    function updateCounter(duration)
+    {
+        var value = duration / 1000
+        var seconds = value % 60
+        var minutes = value / 60
+        var spacer = "0"
+
+        seconds = Math.floor(seconds)
+        minutes = Math.floor(minutes)
+
+        if(seconds < 10)
+            spacer = "0"
+        else
+            spacer = ""
+
+        textCounter.text = minutes + ":" + spacer + seconds + "/" + settingsObject.getStoreLastInMinutes() + ":00"
     }
 
     function setSpeed(speed)
@@ -117,6 +183,19 @@ Page {
         height:videoPage.height
         transform: [camMirrorScale, camMirrorRotate]
         // aspectRatio:Qt.KeepAspectRatioByExpanding
+        onDurationChanged: {
+            updateCounter(duration)
+        }
+    }
+
+    Rectangle {
+        id: upperToolbar
+        x: 0
+        y: 0
+        width: parent.width
+        height: 50
+        color: "black"
+        opacity: 0.4
     }
 
     Rectangle {
@@ -133,7 +212,7 @@ Page {
         id: statusIconTimer
         interval: 1500
         repeat: true
-        running: true
+        running: false
 
         onTriggered: {
             if (statusIcon.opacity == 1) {
@@ -154,7 +233,7 @@ Page {
         y: 397
         width: 48
         height: 48
-        opacity: 1
+        opacity: 0
         source:"qrc:/icons/recording_active.png"
 
     }
@@ -164,7 +243,7 @@ Page {
         y: 397
         width: 48
         height: 48
-        opacity: 0
+        opacity: 1
         source:"qrc:/icons/recording_inactive.png"
     }
 
@@ -173,17 +252,21 @@ Page {
         y: 405
         x: statusIcon.x + statusIcon.width + 3
         horizontalAlignment: TextInput.AlignHCenter
-        text: "Recording..."
+        text: "Waiting..."
         color: "white"
         font.bold: true
         font.pointSize: 18
         opacity: 1
     }
 
+    // Speed o meter
     Text {
         id: textSpeedInfo
-        y: 405
-        x: textStatusInfo.x + textStatusInfo.width + 184
+        // For bottomToolbar
+        //y: 405
+        //x: textStatusInfo.x + textStatusInfo.width + 184
+        x: 16
+        y: 10
         horizontalAlignment: TextInput.AlignHCenter
         text: "114 km/h"
         color: "white"
@@ -191,12 +274,28 @@ Page {
         font.pointSize: 18
     }
 
+    // Compass
     Text {
         id: textCompass
-        y: 405
-        x: textSpeedInfo.x + textSpeedInfo.width + 280
+        // For bottomToolbar
+        //y: 405
+        // For upperToolbar
+        y: 10
+        x: 780
         horizontalAlignment: TextInput.AlignHCenter
         text: "NW"
+        color: "white"
+        font.bold: true
+        font.pointSize: 18
+    }
+
+    // Counter, elapsed time
+    Text {
+        id: textCounter
+        y: 405
+        x: 700
+        horizontalAlignment: TextInput.AlignHCenter
+        text: "0:00/" + settingsObject.getStoreLastInMinutes() + ":00"
         color: "white"
         font.bold: true
         font.pointSize: 18
@@ -206,7 +305,7 @@ Page {
     Item {
         id: toggleRecordingButton
         x: 36
-        y: 3
+        y: 58
         width: 96
         height: 96
 
@@ -238,7 +337,7 @@ Page {
     Item {
         id: emergencyButton
         x: 718
-        y: 3
+        y: 58
         width: 96
         height: 96
 
@@ -253,10 +352,19 @@ Page {
             anchors.fill: parent
             onClicked: {
                 console.log("Emergency call clicked")
-                startRecording()
-                screenSaver.screenSaverInhibited = true
             }
         }
+    }
+
+    Text {
+        id: textTouchToStartRecording
+        anchors.centerIn: parent
+        horizontalAlignment: TextInput.AlignHCenter
+        text: "Touch to start recording"
+        color: "red"
+        font.bold: true
+        font.pointSize: 18
+        opacity: 1
     }
 
 
@@ -295,7 +403,7 @@ Page {
                  }
              }
          }
-         content:Item {
+         content: Item {
              id: name
              height: childrenRect.height
              Text {

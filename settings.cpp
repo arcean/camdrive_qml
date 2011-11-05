@@ -84,6 +84,40 @@ QString Settings::getStoreLastToText()
     return text;
 }
 
+int Settings::getStoreLastInMinutes()
+{
+    QSettings settings;
+    int value = settings.value("recording/store_last", 2).toInt();
+    int valueToPass;
+
+    switch (value)
+    {
+    case 0:
+        valueToPass = CD_STORE_LAST_0;
+        break;
+    case 1:
+        valueToPass = CD_STORE_LAST_1;
+        break;
+    case 2:
+        valueToPass = CD_STORE_LAST_2;
+        break;
+    case 3:
+        valueToPass = CD_STORE_LAST_3;
+        break;
+    case 4:
+        valueToPass = CD_STORE_LAST_4;
+        break;
+    case 5:
+        valueToPass = CD_STORE_LAST_5;
+        break;
+    default:
+        valueToPass = CD_STORE_LAST_2;
+        break;
+    }
+
+    return valueToPass;
+}
+
 void Settings::setVideoResolution(int resolution)
 {
     if(resolution > 2 || resolution < 0)

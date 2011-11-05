@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Settings>("Settings", 1, 0, "Settings");
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
     viewer.setMainQmlFile(QLatin1String("qml/camdrive_qml/main.qml"));
+
     viewer.showFullScreen();
 
     return app.exec();

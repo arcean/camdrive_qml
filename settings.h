@@ -24,6 +24,7 @@ public slots:
     void setStoreLast(int selectedIndex);
     int getStoreLast();
     QString getStoreLastToText();
+    int getStoreLastInMinutes();
     void setVideoResolution(int resolution);
     int getVideoResolution();
     void setVideoQuality(int quality);
