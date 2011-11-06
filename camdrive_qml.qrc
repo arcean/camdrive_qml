@@ -18,5 +18,6 @@
         <file>qml/camdrive_qml/SettingsPage.qml</file>
         <file>qml/camdrive_qml/Separator.qml</file>
         <file>icons/dialogStop.png</file>
+        <file>icons/idea.png</file>
     </qresource>
 </RCC>

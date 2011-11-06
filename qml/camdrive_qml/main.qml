@@ -15,6 +15,7 @@ PageStackWindow {
     ViewfinderPage { id: viewfinderPage }
     MainPage { id: mainPage }
     SettingsPage { id: settingsPage }
+    VideoListPage { id: videoListPage }
     AboutDialog { id: aboutDialog }
 
     Component.onCompleted: {

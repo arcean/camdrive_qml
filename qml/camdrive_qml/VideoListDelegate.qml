@@ -1,6 +1,5 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
-import "scripts/dateandtime.js" as DT
 
 Item {
     id: delegate
@@ -9,6 +8,47 @@ Item {
 
     signal clicked
     signal pressAndHold
+
+    function getDate(milliseconds) {
+        /* Convert the date to a string */
+
+        var date = new Date();
+        date.setTime(milliseconds);
+        var dateString = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
+        return dateString;
+    }
+
+    function getDuration(secs) {
+        /* Converts seconds to HH:MM:SS format. */
+        var hours = Math.floor(secs / 3600);
+        var minutes = Math.floor(secs / 60) - (hours * 60);
+        var seconds = secs - (hours * 3600) - ( minutes * 60);
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+        var duration = minutes + ":" + seconds;
+        if (hours > 0) {
+            duration = hours + ":" + duration;
+        }
+        return duration;
+    }
+
+    function getTime(msecs) {
+        /* Convert milliseconds to HH:MM:SS format */
+
+        var secs = Math.floor(msecs / 1000);
+        var hours = Math.floor(secs / 3600);
+        var minutes = Math.floor(secs / 60) - (hours * 60);
+        var seconds = secs - (hours * 3600) - (minutes * 60);
+        if (seconds < 10) {
+            seconds = "0" + seconds;
+        }
+        var time = minutes + ":" + seconds;
+        if (hours > 0) {
+            time = hours + ":" + time;
+        }
+        return time;
+    }
 
     Image {
         id: thumb
@@ -31,19 +71,18 @@ Item {
                 id: durationText
 
                 anchors.centerIn: durationLabel
-                font.pixelSize: _SMALL_FONT_SIZE
+                font.pixelSize: 14
                 color: resumePosition === 0 ? "white" : Settings.activeColor
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 smooth: true
-                text: DT.getDuration(duration - resumePosition)
+                text: getDuration(duration - resumePosition)
             }
         }
     }
 
     Marquee {
         anchors { bottom: parent.bottom; left: parent.left; right: parent.right; margins: 10 }
-        textColor: (videoPlaybackPage.currentVideo.fileName) && (videoPlaybackPage.currentVideo.fileName == fileName) ? Settings.activeColor : _TEXT_COLOR
         text: fileName.slice(0, fileName.lastIndexOf("."))
         enableScrolling: useMarqueeText
     }

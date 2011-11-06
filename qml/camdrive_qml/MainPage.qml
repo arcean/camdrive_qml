@@ -81,7 +81,8 @@ Page {
                     parent.source = "qrc:/icons/files.png"
                 }
                 onClicked: {
-                    console.log('filesButton clicked')
+                    pageStack.push(videoListPage)
+                    appWindow.showToolbar()
                 }
             }
         }

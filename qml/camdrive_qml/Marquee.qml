@@ -20,7 +20,7 @@ Item {
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.NoWrap
         font.bold: true
-        color: _TEXT_COLOR
+        //color: _TEXT_COLOR
         x: textAnimation.running ? root.width : 0
     }
 
@@ -31,8 +31,8 @@ Item {
         properties: "x"
         from: root.width
         to: -marqueeText.width
-        duration: Settings.thumbnailSize == "large" ? marqueeText.text.length * 200 : marqueeText.text.length * 300
+        duration: marqueeText.text.length * 300
         loops: Animation.Infinite
-        running: (Settings.enableMarqueeText) && (enableScrolling) && (marqueeText.width > root.width) && (platformWindow.viewMode == WindowState.Fullsize) && (!appWindow.pageStack.busy)
+        running:  (marqueeText.width > root.width) && (platformWindow.viewMode == WindowState.Fullsize) && (!appWindow.pageStack.busy)
     }
 }
