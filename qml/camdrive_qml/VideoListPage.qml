@@ -118,7 +118,7 @@ Page {
                         value: ".partial"
                         negated: true
                     },
-/*
+
                     GalleryEqualsFilter {
                         property: "path"
                         value: "/home/user/MyDocs/"
@@ -130,7 +130,7 @@ Page {
                         value: "/home/user/MyDocs/camdrive"
                         negated: false
                     },
-*/
+
                     GalleryContainsFilter {
                         id: titleFilter
 
