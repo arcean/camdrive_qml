@@ -6,6 +6,12 @@ PageStackWindow {
     initialPage: mainPage
     showToolBar: false
 
+    property int _SMALL_FONT_SIZE: 18
+    property int _STANDARD_FONT_SIZE: 24
+    property int _LARGE_FONT_SIZE: 40
+    property string _TEXT_COLOR: theme.inverted ? "white" : "black"
+    property string _ICON_LOCATION: "/usr/share/themes/blanco/meegotouch/icons/"
+
     platformStyle: PageStackWindowStyle {
             background: "qrc:/icons/background.png"
             backgroundFillMode: Image.Tile
