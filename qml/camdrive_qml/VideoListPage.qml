@@ -1,6 +1,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
+import "scripts/utils.js" as Utils
 
 Page {
     id: videoPageList
@@ -12,7 +13,9 @@ Page {
     }
 
     function showVideoDetails(itemId) {
-
+        var detailsPage = Utils.createObject(Qt.resolvedUrl("VideoDetailsPage.qml"), appWindow.pageStack);
+        detailsPage.id = itemId;
+        appWindow.pageStack.push(detailsPage);
     }
 
     orientationLock: PageOrientation.LockLandscape
