@@ -104,7 +104,7 @@ Page {
         TumblerButton {
             id: storeLastButton
             x: 580
-            y: storeLastLabel.y
+            y: storeLastLabel.y - 8
             width: 244
             style: StyledTumblerButton {}
             text: {
