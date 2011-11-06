@@ -42,7 +42,26 @@ Page {
 
     Menu {
         id: menu
-
+        MenuLayout {
+            MenuSelectItem {
+                title: "Sort by"
+                model: ListModel {
+                    ListElement { name: "Date (asc)"; value: "+lastModified" }
+                    ListElement { name: "Date (desc)"; value: "-lastModified" }
+                    ListElement { name: "Title (asc)"; value: "+title" }
+                    ListElement { name: "Title (desc)"; value: "-title" }
+                }
+                initialValue: videoListModel.sortProperties[0]
+                onValueChosen: videoList.changeSortOrder(value)
+            }
+            MenuSelectItem {
+                title: "Thumbnail size"
+                model: ListModel {
+                    ListElement { name: "Large"; value: "large" }
+                    ListElement { name: "Small"; value: "small" }
+                }
+            }
+        }
     }
 
     ContextMenu {
