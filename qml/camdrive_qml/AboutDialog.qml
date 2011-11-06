@@ -1,31 +1,10 @@
-import QtQuick 1.1
+import QtQuick 1.0
 import com.nokia.meego 1.0
 
-Dialog {
-  id: myDialog
-  title: Rectangle {
-    id: titleField
-    height: 2
-    width: parent.width
-    color: "red"
-  }
+QueryDialog {
+    id: dialog
 
-  content:Item {
-    id: name
-    height: 50
-    width: parent.width
-    Text {
-      id: text
-      font.pixelSize: 22
-      anchors.centerIn: parent
-      color: "white"
-      text: " \n\nCamdrive-qml application.\nAlpha stage.\n\n "
-    }
-  }
-
-  buttons: ButtonRow {
-    style: ButtonStyle { }
-      anchors.horizontalCenter: parent.horizontalCenter
-      Button {text: "Close"; onClicked: myDialog.accept()}
-    }
-  }
+    titleText: qsTr("CamDrive 0.0.1")
+    icon: "qrc:/icons/idea.png"
+    message: "CamDrive description and icon needed. <br><br> &copy; Tomasz Pieniążek 2011 <br> &copy; ? 2011 <br><br>"
+}
