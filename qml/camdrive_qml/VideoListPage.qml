@@ -5,6 +5,8 @@ import QtMobility.gallery 1.1
 Page {
     id: videoPageList
 
+    property string thumbnailSize: "large"
+
     function showConfirmDeleteDialog(video) {
 
     }
@@ -60,6 +62,8 @@ Page {
                     ListElement { name: "Large"; value: "large" }
                     ListElement { name: "Small"; value: "small" }
                 }
+                initialValue: videoPageList.thumbnailSize
+                onValueChosen: videoPageList.thumbnailSize = value
             }
         }
     }
@@ -83,12 +87,17 @@ Page {
         id: videoList
 
         property int selectedIndex
-        property real cellWidthScale: 1.0
-        property real cellHeightScale: 1.0
+        property real cellWidthScale: videoPageList.thumbnailSize == "large" ? 1.0 : 0.5
+        property real cellHeightScale: videoPageList.thumbnailSize == "large" ? 1.0 : 0.55
 
         function showAllVideos() {
             videoList.focus = true;
             titleFilter.value = "";
+        }
+
+        function changeSortOrder(order) {
+            videoListModel.sortProperties = [order];
+            videoListModel.reload();
         }
 
         anchors { top: parent.top; topMargin: 10; left: parent.left; leftMargin: 10; right: parent.right; rightMargin: 10; bottom: parent.bottom }
@@ -109,7 +118,7 @@ Page {
                         value: ".partial"
                         negated: true
                     },
-
+/*
                     GalleryEqualsFilter {
                         property: "path"
                         value: "/home/user/MyDocs/"
@@ -121,7 +130,7 @@ Page {
                         value: "/home/user/MyDocs/camdrive"
                         negated: false
                     },
-
+*/
                     GalleryContainsFilter {
                         id: titleFilter
 
@@ -151,7 +160,7 @@ Page {
         id: noResultsText
 
         anchors.centerIn: videoList
-        font.pixelSize: 28
+        font.pixelSize: _LARGE_FONT_SIZE
         font.bold: true
         color: "#4d4d4d"
         horizontalAlignment: Text.AlignHCenter
