@@ -11,6 +11,7 @@ PageStackWindow {
     property int _LARGE_FONT_SIZE: 40
     property string _TEXT_COLOR: theme.inverted ? "white" : "black"
     property string _ICON_LOCATION: "/usr/share/themes/blanco/meegotouch/icons/"
+    property string _ACTIVE_COLOR: "color11"
 
     platformStyle: PageStackWindowStyle {
             background: "qrc:/icons/background.png"
@@ -23,6 +24,8 @@ PageStackWindow {
     SettingsPage { id: settingsPage }
     VideoListPage { id: videoListPage }
     AboutDialog { id: aboutDialog }
+    NowPlayingPage { id: nowPlayingPage }
+    VideoPlaybackPage { id: videoPlaybackPage }
 
     Component.onCompleted: {
         theme.inverted = true
@@ -36,6 +39,8 @@ PageStackWindow {
         ToolIcon { platformIconId: "toolbar-back";
             anchors.left: parent.left
             onClicked: {
+                if (pageStack.currentPage == viewfinderPage)
+                    viewfinderPage.unloadCamera()
                 pageStack.pop()
                 hideToolbar()
             }
@@ -67,5 +72,11 @@ PageStackWindow {
     {
         appWindow.showToolBar = false
         commonTools.visible = false
+    }
+
+    function playVideos(video) {
+        videoPlaybackPage.setPlaylist(video)
+        videoPlaybackPage.startPlayback()
+        pageStack.push(videoPlaybackPage)
     }
 }

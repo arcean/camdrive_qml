@@ -154,7 +154,7 @@ void QDeclarativeCamera::toggleCamera()
     mediaRecorder_->setMuted(settingsObject->getEnableAudio());
 
     initFile();
-    start();
+  //  start();
 }
 
 void QDeclarativeCamera::viewfinderSizeChanged(const QSizeF& size)

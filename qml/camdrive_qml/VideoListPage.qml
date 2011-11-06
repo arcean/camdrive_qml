@@ -149,7 +149,7 @@ Page {
             width: videoList.cellWidth
             height: videoList.cellHeight
             useMarqueeText: appWindow.pageStack.currentPage == videoListPage
-            //onClicked: playing videos
+            onClicked: playVideos([Utils.cloneVideoObject(videoListModel.get(index))])
             onPressAndHold: {
                 videoList.selectedIndex = index;
                 contextMenu.open();

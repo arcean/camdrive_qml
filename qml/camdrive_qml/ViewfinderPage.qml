@@ -141,6 +141,12 @@ Page {
     function wakeCamera()
     {
         frontCam.toggleCamera()
+        frontCam.start()
+    }
+
+    function unloadCamera()
+    {
+        frontCam.unload()
     }
 
     function startRecording()
