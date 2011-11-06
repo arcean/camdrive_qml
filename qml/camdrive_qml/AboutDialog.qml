@@ -5,6 +5,6 @@ QueryDialog {
     id: dialog
 
     titleText: qsTr("CamDrive 0.0.1")
-    icon: "qrc:/icons/idea.png"
+    icon: "/usr/share/themes/base/meegotouch/icons/camdrive.png"
     message: "CamDrive description and icon needed. <br><br> &copy; Tomasz Pieniążek 2011 <br> &copy; ? 2011 <br><br>"
 }
