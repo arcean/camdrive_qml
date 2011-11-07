@@ -2,10 +2,12 @@ import QtQuick 1.0
 import com.nokia.meego 1.0
 import QtMultimediaKit 1.1
 import QtMobility.gallery 1.1
+import QtMobility.location 1.2
 import "scripts/utils.js" as Utils
 
 Page {
     id: nowPlayingPage
+    state: "smallVideo"
 
     property variant currentVideo: []
     property int playlistPosition: 0
@@ -252,12 +254,33 @@ Page {
             }
 
             ToolIcon {
+                id: queue1Button
+
+                width: layout.itemWidth
+                anchors { bottom: parent.bottom; right: queueButton.left }
+                iconSource: _ICON_LOCATION + "icon-m-toolbar-list-white.png"
+                onClicked: {
+                    if(nowPlayingPage.state == "showSmall" || nowPlayingPage.state == "showMap") {
+                        nowPlayingPage.state = "showDetails"
+                    }
+                    else
+                        nowPlayingPage.state = "showMap"
+                }
+            }
+
+            ToolIcon {
                 id: queueButton
 
                 width: layout.itemWidth
                 anchors { bottom: parent.bottom; right: parent.right }
                 iconSource: _ICON_LOCATION + "icon-m-toolbar-list-white.png"
-                onClicked: queueDialog.open()
+                onClicked: {
+                    if(nowPlayingPage.state == "videoFullscreen") {
+                        nowPlayingPage.state = "videoSmall"
+                    }
+                    else
+                        nowPlayingPage.state = "videoFullscreen"
+                }
             }
         }
     }
@@ -281,6 +304,8 @@ Page {
 
     Video {
         id: videoPlayer
+        x: 10
+        y: 10
 
         property bool repeat: false // True if playback of the current video is to be repeated
         property bool setToPaused: false
@@ -290,10 +315,12 @@ Page {
             videoPlayer.play();
         }
 
-        width: !appWindow.inPortrait ? 854 : 480
-        height: !appWindow.inPortrait ? 480 : 360
+       // width: !appWindow.inPortrait ? 854 : 480
+        //height: !appWindow.inPortrait ? 480 : 360
+        width: 460
+        height: nowPlayingPage.height - 20
         fillMode: Video.PreserveAspectFit
-        anchors { centerIn: parent; verticalCenterOffset: appWindow.inPortrait ? -130 : 0 }
+        //anchors { centerIn: parent; verticalCenterOffset: appWindow.inPortrait ? -130 : 0 }
         paused: ((platformWindow.viewMode == WindowState.Thumbnail) && ((videoPlayer.playing)) || ((appWindow.pageStack.currentPage != videoPlaybackPage) && (videoPlayer.playing)) || (videoPlayer.setToPaused))
         onError: {
         }
@@ -345,7 +372,7 @@ Page {
         }
 
         Image {
-            anchors.centerIn: parent
+            anchors.centerIn: videoPlayer
             source: videoMouseArea.pressed ? "images/play-button-" + _ACTIVE_COLOR + ".png" : "images/play-button.png"
             visible: (videoPlayer.paused) && (!busyIndicator.visible)
         }
@@ -374,6 +401,122 @@ Page {
         }
     }
 
+    Map {
+        id: map
+        x: 480
+        y: 490
+        width: parent.width - 10
+        height: parent.height - 20
+        plugin : Plugin {name : "nokia"}
+        zoomLevel: 10
+    }
+
+    Rectangle {
+        id: details
+        x: 480
+        y: 10
+        width: parent.width - 10
+        height: parent.height - 20
+        color: "green"
+        opacity: 0.5
+    }
+
+    states: [
+        State {
+            name: "videoFullscreen"
+            PropertyChanges {
+                target: videoPlayer
+                x: 10
+                y: 10
+                width: nowPlayingPage.width - 10
+                height: nowPlayingPage.height - 20
+            }
+            PropertyChanges {
+                target: map
+                x: 860
+            }
+            PropertyChanges {
+                target: details
+                x: 860
+            }
+        },
+        State {
+            name: "videoSmall"
+            PropertyChanges {
+                target: videoPlayer
+                x: 10
+                y: 10
+                width: 460
+                height: nowPlayingPage.height - 20
+            }
+            PropertyChanges {
+                target: map
+                x: 480
+            }
+            PropertyChanges {
+                target: details
+                x: 480
+            }
+        },
+        State {
+            name: "showDetails"
+            PropertyChanges {
+                target: details
+                x: 480
+                y: 10
+                height: nowPlayingPage.height - 20
+            }
+            PropertyChanges {
+                target: map
+                x: 480
+                y: 490
+                height: nowPlayingPage.height - 20
+            }
+        },
+        State {
+            name: "showMap"
+            PropertyChanges {
+                target: map
+                x: 480
+                y: 10
+                height: nowPlayingPage.height - 20
+            }
+            PropertyChanges {
+                target: details
+                x: 480
+                y: 490
+                height: nowPlayingPage.height - 20
+            }
+        }
+    ]
+
+    transitions: [
+        Transition {
+            to: "videoFullscreen";
+            ParallelAnimation {
+                NumberAnimation { properties: "x,y,width,height"; duration: 500; easing.type: Easing.InOutQuad }
+            }
+        },
+        Transition {
+            from: "videoFullscreen"; to: "videoSmall";
+            ParallelAnimation {
+                NumberAnimation { properties: "x,y,width,height"; duration: 500; easing.type: Easing.InOutQuad }
+            }
+        },
+        Transition {
+            to: "showMap";
+            ParallelAnimation {
+                NumberAnimation { properties: "x,y,width,height"; duration: 500; easing.type: Easing.InOutQuad }
+            }
+        },
+        Transition {
+            to: "showDetails";
+            ParallelAnimation {
+                NumberAnimation { properties: "x,y,width,height"; duration: 500; easing.type: Easing.InOutQuad }
+            }
+        }
+    ]
+
     DocumentGalleryItem {
         id: video
 
@@ -401,84 +544,5 @@ Page {
         onStatusChanged: if ((videoModel.status == DocumentGalleryModel.Finished) && (videoModel.count > 0)) video.item = videoModel.get(0).itemId;
     }
 
-    Flickable {
-        id: scrollArea
 
-        anchors { left: parent.left; leftMargin: 10; right: parent.right; rightMargin: 10; top: videoPlayer.bottom; topMargin: 80; bottom: parent.bottom }
-        clip: true
-        contentWidth: width
-        flickableDirection: Flickable.VerticalFlick
-        boundsBehavior: Flickable.DragOverBounds
-        visible: appWindow.inPortrait
-        contentHeight: column.height + 20
-
-        Column {
-            id: column
-
-            anchors { top: parent.top; left: parent.left; right: parent.right }
-            spacing: 10
-
-            Image {
-                id: thumb
-
-                width: 160
-                height: 90
-                source: video.available ? "file:///home/user/.thumbnails/video-grid/" + Qt.md5(video.metaData.url) + ".jpeg" : ""
-                smooth: true
-                onStatusChanged: if (thumb.status == Image.Error) thumb.source = "image://theme/meegotouch-video-placeholder";
-            }
-
-            Label {
-                id: titleText
-
-                width: parent.width
-                font.pixelSize: 32
-                color: _TEXT_COLOR
-                wrapMode: Text.WordWrap
-                text: video.available ? video.metaData.fileName.slice(0, video.metaData.fileName.lastIndexOf(".")) : ""
-            }
-
-            Column {
-                width: parent.width
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? qsTr("Length") + ": " + Utils.getDuration(video.metaData.duration) : ""
-                }
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? qsTr("Format") + ": " + video.metaData.fileExtension.toUpperCase() : ""
-                }
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? qsTr("Size") + ": " + video.getFileSize() : ""
-                }
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? qsTr("Added") + ": " + Qt.formatDateTime(video.metaData.lastModified) : ""
-                }
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? qsTr("Times played") + ": " + video.metaData.playCount : ""
-                }
-            }
-        }
-    }
-
-    ScrollDecorator {
-        flickableItem: scrollArea
-        visible: scrollArea.visible
-    }
-
-    states: State {
-        name: "portrait"
-        when: appWindow.inPortrait
-        ParentChange { target: progressBar; parent: page }
-        AnchorChanges { target: progressBar; anchors.top: videoPlayer.bottom  }
-        PropertyChanges { target: progressBar; width: parent.width - 60; anchors.topMargin: 20 }
-    }
 }
