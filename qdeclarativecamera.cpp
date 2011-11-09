@@ -10,7 +10,6 @@ QDeclarativeCamera::QDeclarativeCamera(QDeclarativeItem *parent) :
     settingsObject = new Settings();
     firstCamera = true;
     toggleCamera();
-    connect(viewfinder_, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(viewfinderSizeChanged(QSizeF)));
 }
 
 QDeclarativeCamera::~QDeclarativeCamera()

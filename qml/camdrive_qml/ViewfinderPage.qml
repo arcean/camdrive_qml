@@ -11,6 +11,7 @@ Page {
 
     id:videoPage
     property int orientation: 0
+    property bool isCameraActive: false
     orientationLock: PageOrientation.LockLandscape
 
     Component.onCompleted: {
@@ -142,10 +143,12 @@ Page {
     {
         frontCam.toggleCamera()
         frontCam.start()
+        viewfinderPage.isCameraActive = true
     }
 
     function unloadCamera()
     {
+        viewfinderPage.isCameraActive = false
         frontCam.unload()
     }
 
@@ -173,7 +176,8 @@ Page {
 
         onActiveChanged: {
             if(platformWindow.active) {
-                frontCam.start()
+                if(viewfinderPage.isCameraActive)
+                    frontCam.start()
             }
             else {
                 frontCam.stop()
@@ -425,7 +429,7 @@ Page {
              Button {id: b1; text: "Yes"; onClicked: {
                      stopDialog.accept()
                      frontCam.stopRecording()
-                     frontCam.unload()
+                     unloadCamera()
                      screenSaver.screenSaverInhibited = false
                      pageStack.pop()
                  }
@@ -433,7 +437,7 @@ Page {
              Button {id: b2; text: "No"; onClicked: {
                      stopDialog.reject()
                      frontCam.stopRecording()
-                     frontCam.unload()
+                     unloadCamera()
                      screenSaver.screenSaverInhibited = false
                      pageStack.pop()
                  }
