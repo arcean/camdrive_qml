@@ -14,7 +14,6 @@ MenuItem {
 
     Item {
         id: selector
-
         anchors.fill: parent
 
         Component.onCompleted: {
@@ -30,12 +29,9 @@ MenuItem {
         }
 
         Column {
-
             anchors { left: parent.left; leftMargin: 25; verticalCenter: parent.verticalCenter }
-
             Label {
                 id: title
-
                 font.bold: true
                 color: _TEXT_COLOR
                 verticalAlignment: Text.AlignVCenter
@@ -43,7 +39,6 @@ MenuItem {
 
             Label {
                 id: subTitle
-
                 color: "#4d4d4d"
                 verticalAlignment: Text.AlignVCenter
                 text: model.get(selectionDialog.selectedIndex).name
@@ -59,7 +54,6 @@ MenuItem {
 
         SelectionDialog {
             id: selectionDialog
-
             titleText: title.text
             onAccepted: valueChosen(model.get(selectedIndex).value)
         }

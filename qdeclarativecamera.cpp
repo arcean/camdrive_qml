@@ -202,5 +202,7 @@ void QDeclarativeCamera::stop()
 void QDeclarativeCamera::unload()
 {
     isRecording = false;
+
+    toggleCamera();
     camera_->unload();
 }

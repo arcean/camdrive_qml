@@ -8,14 +8,22 @@ Page {
 
     property string thumbnailSize: "large"
 
-    function showConfirmDeleteDialog(video) {
+    function showConfirmDeleteDialog(video)
+    {
 
     }
 
-    function showVideoDetails(itemId) {
+    function showVideoDetails(itemId)
+    {
         var detailsPage = Utils.createObject(Qt.resolvedUrl("VideoDetailsPage.qml"), appWindow.pageStack);
         detailsPage.id = itemId;
         appWindow.pageStack.push(detailsPage);
+    }
+
+    function reloadVideoList()
+    {
+        videoListModel.clear()
+        videoListModel.reload()
     }
 
     orientationLock: PageOrientation.LockLandscape
@@ -110,7 +118,6 @@ Page {
         flickableDirection: Flickable.VerticalFlick
         model: DocumentGalleryModel {
             id: videoListModel
-
             rootType: DocumentGallery.Video
             properties: ["filePath", "url", "fileName", "title", "duration", "resumePosition"]
             sortProperties: ["+title"]

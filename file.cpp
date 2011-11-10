@@ -1,12 +1,46 @@
 #include "file.h"
 #include <QDebug>
+
 File::File(QString fileName)
 {
-    this->fileName = fileName + ".mp4";
-    this->tempFileName1 = fileName + "1.mp4";
-    this->tempFileName2 = fileName + "2.mp4";
-
     init();
+
+    QString generatedFileName = generateNewFileName(fileName);
+
+    this->fileName = generatedFileName + ".mp4";
+    this->tempFileName1 = generatedFileName + "1.mp4";
+    this->tempFileName2 = generatedFileName + "2.mp4";
+}
+
+QString File::generateNewFileName(QString baseName)
+{
+    bool ready = false;
+    int counter = 0;
+    QFile file;
+    QString data;
+
+    while (!ready) {
+        if(counter > 0)
+            file.setFileName(APP_DIR APP_NAME "/" + baseName + "(" + QString::number(counter) +").mp4");
+        else
+            file.setFileName(APP_DIR APP_NAME "/" + baseName + ".mp4");
+
+        if(counter == 0)
+            data = baseName;
+        else
+            data = baseName + "(" + QString::number(counter) +")";
+
+        if(!file.exists()) {
+            return data;
+        }
+
+        counter++;
+
+        if(counter > 50000)
+            ready = true;
+    }
+
+    return APP_NAME;
 }
 
 /*

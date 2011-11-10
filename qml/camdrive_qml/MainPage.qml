@@ -35,8 +35,8 @@ Page {
             }
             onClicked: {
                 viewfinderPage.clearRecordingStatus()
-                pageStack.push(viewfinderPage)
                 viewfinderPage.wakeCamera()
+                pageStack.push(viewfinderPage)
             }
         }
     }
@@ -83,6 +83,7 @@ Page {
                 onClicked: {
                     pageStack.push(videoListPage)
                     appWindow.showToolbar()
+                    videoListPage.reloadVideoList()
                 }
             }
         }

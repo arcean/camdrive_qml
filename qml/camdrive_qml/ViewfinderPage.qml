@@ -141,7 +141,7 @@ Page {
 
     function wakeCamera()
     {
-        frontCam.toggleCamera()
+        //frontCam.toggleCamera()
         frontCam.start()
         viewfinderPage.isCameraActive = true
     }

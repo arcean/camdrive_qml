@@ -5,7 +5,6 @@ Item {
     id: delegate
 
     property bool useMarqueeText
-
     signal clicked
     signal pressAndHold
 
@@ -52,7 +51,6 @@ Item {
 
     Image {
         id: thumb
-
         height: Math.floor((width / 16) * 9)
         anchors { left: parent.left; right: parent.right; margins: (!delegate.parent.movingVertically) && (mouseArea.pressed) ? 20 : 10 }
         source: "file:///home/user/.thumbnails/video-grid/" + Qt.md5(url) + ".jpeg"
@@ -61,7 +59,6 @@ Item {
 
         Image {
             id: durationLabel
-
             width: durationText.width + 20
             anchors { top: thumb.top; right: thumb.right; margins: 10 }
             source: "image://theme/meegotouch-video-duration-background"
@@ -69,7 +66,6 @@ Item {
 
             Label {
                 id: durationText
-
                 anchors.centerIn: durationLabel
                 font.pixelSize: 14
                 color: resumePosition === 0 ? "white" : Settings.activeColor
@@ -89,7 +85,6 @@ Item {
 
     MouseArea {
         id: mouseArea
-
         anchors.fill: parent
         onClicked: parent.clicked()
         onPressAndHold: parent.pressAndHold()

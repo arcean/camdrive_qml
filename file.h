@@ -22,6 +22,7 @@ private:
     void createAppCatalog();
     bool checkIfNotExists();
     void removeTempFiles();
+    QString generateNewFileName(QString baseName);
 
     QString fileName;
     QString tempFileName1;
