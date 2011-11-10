@@ -12,6 +12,7 @@ Page {
     id:videoPage
     property int orientation: 0
     property bool isCameraActive: false
+    property bool isCameraRecording: false
     orientationLock: PageOrientation.LockLandscape
 
     Component.onCompleted: {
@@ -30,7 +31,7 @@ Page {
 
     ScreenSaver {
         id: screenSaver
-        screenSaverInhibited: false
+        screenSaverInhibited: videoPage.isCameraRecording
     }
 
     Settings {
@@ -61,7 +62,6 @@ Page {
             clickMeMouseArea.enabled = false
             timerTouchToStartRecording.stop()
             textTouchToStartRecording.visible = false
-            screenSaver.screenSaverInhibited = true
             textStatusInfo.text = "Recording..."
             statusIconTimer.start()
             startRecording()
@@ -149,12 +149,20 @@ Page {
     function unloadCamera()
     {
         viewfinderPage.isCameraActive = false
+        videoPage.isCameraRecording = false
         frontCam.unload()
     }
 
     function startRecording()
     {
+        videoPage.isCameraRecording = true
         frontCam.startRecording()
+    }
+
+    function stopRecording()
+    {
+        videoPage.isCameraRecording = false
+        frontCam.stopRecording()
     }
 
     Scale {
@@ -180,6 +188,10 @@ Page {
                     frontCam.start()
             }
             else {
+                if(videoPage.isCameraRecording) {
+                    stopRecording()
+                    clearRecordingStatus()
+                }
                 frontCam.stop()
             }
         }

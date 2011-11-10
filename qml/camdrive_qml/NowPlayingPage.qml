@@ -104,7 +104,7 @@ Page {
             NewProgressBar {
                 id: progressBar
 
-                width: 580
+                width: 590
                 anchors { left: playButton.right; topMargin: 20; leftMargin: 40 }
                 indeterminate: (videoPlayer.status == Video.Buffering) || (videoPlayer.status == Video.Loading)
                 minimumValue: 0
