@@ -63,7 +63,7 @@ RESOURCES += \
     camdrive_qml.qrc
 
 contains(MEEGO_EDITION,harmattan) {
-    icon.path = /usr/share/themes/base/meegotouch/icons/
+    icon.path = /usr/share/icons/hicolor/80x80/apps/
     icon.files = data/camdrive.png
 
     desktop.path = /usr/share/applications
