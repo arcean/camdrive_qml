@@ -42,34 +42,6 @@ Page {
         archivePlaybackTimer.restart();
     }
 
-    function previous() {
-        /* Play the previous item in the playlist */
-
-        if (playlistPosition > 0) {
-            playlistPosition--;
-            getNextVideo();
-        }
-    }
-
-    function next() {
-        /* Play the next item in the playlist */
-
-        if (playlistPosition < (playbackQueue.count - 1)) {
-            playlistPosition++;
-            getNextVideo();
-        }
-        else if (appWindow.videoPlaying) {
-            appWindow.pageStack.pop();
-        }
-    }
-
-    function getNextVideo() {
-        if (playlistPosition < playbackQueue.count) {
-            currentVideo = playbackQueue.get(playlistPosition);
-            startPlayback();
-        }
-    }
-
     function exitNowPlaying() {
         appWindow.pageStack.pop();
         video.metaData.resumePosition = Math.floor(videoPlayer.position / 1000);
@@ -83,35 +55,12 @@ Page {
         appWindow.pageStack.pop();
     }
 
-    function showCurrentVideoDetails() {
-        var detailsPage = Utils.createObject(Qt.resolvedUrl("VideoDetailsPage.qml"), appWindow.pageStack);
-        detailsPage.id = video.item;
-        detailsPage.allowToPlay = false;
-        appWindow.pageStack.push(detailsPage);
-    }
-
-    function getSubtitles() {
-        subsGetter.sendMessage(currentVideo.url);
-    }
-
-    function setSubtitles(subtitles) {
-        if (subtitles.length > 0) {
-            var cv = currentVideo;
-            cv["subtitles"] = subtitles;
-            currentVideo = cv;
-        }
-    }
-
-    function checkSubtitles() {
-        subsChecker.sendMessage({"position": videoPlayer.position, "subtitles": currentVideo.subtitles})
-    }
-
     orientationLock: PageOrientation.LockLandscape
 
     ToolBar {
         id: toolBar
 
-        property bool show: false
+        property bool show: true
 
         z: 10
         anchors { left: parent.left; right: parent.right; top: parent.bottom }
@@ -206,81 +155,12 @@ Page {
             }
 
             ToolIcon {
-                id: previousButton
-
-                width: layout.itemWidth
-                anchors { bottom: parent.bottom; left: stopButton.right }
-                iconSource: _ICON_LOCATION + "icon-m-toolbar-mediacontrol-previous-white.png"
-                enabled: playlistPosition > 0
-                onClicked: previous()
-            }
-
-            ToolIcon {
-                id: backwardsButton
-
-                width: layout.itemWidth
-                anchors { bottom: parent.bottom; left: previousButton.right }
-                iconSource: _ICON_LOCATION + "icon-m-toolbar-mediacontrol-backwards-white.png"
-                onClicked: videoPlayer.position -= 10
-                enabled: videoPlayer.position > 10
-            }
-
-            ToolIcon {
                 id: playButton
 
                 width: layout.itemWidth
-                anchors { bottom: parent.bottom; left: backwardsButton.right }
+                anchors { bottom: parent.bottom; left: stopButton.right }
                 iconSource: videoPlayer.paused ? _ICON_LOCATION + "icon-m-toolbar-mediacontrol-play-white.png" : _ICON_LOCATION + "icon-m-toolbar-mediacontrol-pause-white.png"
                 onClicked: videoPlayer.setToPaused = !videoPlayer.setToPaused
-            }
-
-            ToolIcon {
-                id: forwardButton
-
-                width: layout.itemWidth
-                anchors { bottom: parent.bottom; left: playButton.right }
-                iconSource: _ICON_LOCATION + "icon-m-toolbar-mediacontrol-forward-white.png"
-                onClicked: videoPlayer.position += 10
-                enabled: videoPlayer.position < (videoPlayer.duration - 10)
-            }
-
-            ToolIcon {
-                id: nextButton
-
-                width: layout.itemWidth
-                anchors { bottom: parent.bottom; left: forwardButton.right }
-                iconSource: _ICON_LOCATION + "icon-m-toolbar-mediacontrol-next-white.png"
-                onClicked: next()
-            }
-
-            ToolIcon {
-                id: queue1Button
-
-                width: layout.itemWidth
-                anchors { bottom: parent.bottom; right: queueButton.left }
-                iconSource: _ICON_LOCATION + "icon-m-toolbar-list-white.png"
-                onClicked: {
-                    if(nowPlayingPage.state == "showSmall" || nowPlayingPage.state == "showMap") {
-                        nowPlayingPage.state = "showDetails"
-                    }
-                    else
-                        nowPlayingPage.state = "showMap"
-                }
-            }
-
-            ToolIcon {
-                id: queueButton
-
-                width: layout.itemWidth
-                anchors { bottom: parent.bottom; right: parent.right }
-                iconSource: _ICON_LOCATION + "icon-m-toolbar-list-white.png"
-                onClicked: {
-                    if(nowPlayingPage.state == "videoFullscreen") {
-                        nowPlayingPage.state = "videoSmall"
-                    }
-                    else
-                        nowPlayingPage.state = "videoFullscreen"
-                }
             }
         }
     }
@@ -290,7 +170,7 @@ Page {
 
         running: (toolBar.show) && (!seekMouseArea.pressed)
         interval: 3000
-        onTriggered: toolBar.show = false
+      //  onTriggered: toolBar.show = false
     }
 
     Timer {
@@ -318,7 +198,7 @@ Page {
        // width: !appWindow.inPortrait ? 854 : 480
         //height: !appWindow.inPortrait ? 480 : 360
         width: 460
-        height: nowPlayingPage.height - 20
+        height: parent.height - 20 - toolBar.height
         fillMode: Video.PreserveAspectFit
         //anchors { centerIn: parent; verticalCenterOffset: appWindow.inPortrait ? -130 : 0 }
         paused: ((platformWindow.viewMode == WindowState.Thumbnail) && ((videoPlayer.playing)) || ((appWindow.pageStack.currentPage != videoPlaybackPage) && (videoPlayer.playing)) || (videoPlayer.setToPaused))
@@ -328,33 +208,9 @@ Page {
             if (videoPlayer.status == Video.EndOfMedia) {
                 video.metaData.playCount++;
                 video.metaData.resumePosition = 0;
-                if (videoPlayer.repeat) {
-                    videoPlayer.position = 0;
-                    videoPlayer.play();
-                }
-                else {
-                    next();
-                }
-            }
-        }
+                videoPlayer.position = 0;
+                videoPlayer.play();
 
-        Image {
-            z: 100
-            anchors { top: parent.top; right: parent.right; margins: 10 }
-            source: _ICON_LOCATION + "icon-s-music-video-description.png"
-            opacity: !toolBar.show ? 0 : infoMouseArea.pressed ? 0.5 : 1
-            visible: !appWindow.inPortrait
-
-            Behavior on opacity { PropertyAnimation { properties: "opacity"; duration: 300 } }
-
-            MouseArea {
-                id: infoMouseArea
-
-                width: 60
-                height: 60
-                anchors.centerIn: parent
-                enabled: toolBar.show
-                onClicked: showCurrentVideoDetails()
             }
         }
 
@@ -406,7 +262,7 @@ Page {
         x: 480
         y: 490
         width: parent.width - 10
-        height: parent.height - 20
+        height: parent.height - 20 - toolBar.height
         plugin : Plugin {name : "nokia"}
         zoomLevel: 10
     }
@@ -416,9 +272,9 @@ Page {
         x: 480
         y: 10
         width: parent.width - 10
-        height: parent.height - 20
+        height: parent.height - 20 - toolBar.height
         color: "green"
-        opacity: 0.5
+        opacity: 0
     }
 
     states: [
@@ -542,6 +398,64 @@ Page {
             value: ""
         }
         onStatusChanged: if ((videoModel.status == DocumentGalleryModel.Finished) && (videoModel.count > 0)) video.item = videoModel.get(0).itemId;
+    }
+
+    Flickable {
+        id: flicker
+
+        anchors.fill: details
+        contentWidth: width
+        contentHeight: column.height + 20
+
+        Column {
+            id: column
+
+            anchors { top: parent.top; left: parent.left; right: parent.right; margins: 20 }
+            spacing: 10
+
+            Label {
+                id: titleText
+
+                width: parent.width
+                font.pixelSize: 32
+                color: _TEXT_COLOR
+                wrapMode: Text.WordWrap
+                text: video.available ? video.metaData.fileName.slice(0, video.metaData.fileName.lastIndexOf(".")) : ""
+            }
+
+            Column {
+                width: parent.width
+
+                Label {
+                    color: _TEXT_COLOR
+                    text: video.available ? "Length" + ": " + Utils.getDuration(video.metaData.duration) : ""
+                }
+
+                Label {
+                    color: _TEXT_COLOR
+                    text: video.available ? "Format" + ": " + video.metaData.fileExtension.toUpperCase() : ""
+                }
+
+                Label {
+                    color: _TEXT_COLOR
+                    text: video.available ? "Size" + ": " + video.getFileSize() : ""
+                }
+
+                Label {
+                    color: _TEXT_COLOR
+                    text: video.available ? "Added" + ": " + Qt.formatDateTime(video.metaData.lastModified) : ""
+                }
+
+                Label {
+                    color: _TEXT_COLOR
+                    text: video.available ? "Times played" + ": " + video.metaData.playCount : ""
+                }
+            }
+        }
+    }
+
+    ScrollDecorator {
+        flickableItem: flicker
     }
 
 

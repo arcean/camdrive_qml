@@ -48,20 +48,6 @@ Page {
         }
     }
 
-    tools: ToolBarLayout {
-
-        ToolIcon {
-            platformIconId: "toolbar-back"
-            onClicked: nowPlayingPage.exitNowPlaying()
-        }
-
-        ToolIcon {
-            platformIconId: "toolbar-view-menu"
-            onClicked: queuePage.openOrCloseMenu()
-            opacity: enabled ? 1 : 0.3
-        }
-    }
-
     Menu {
         id: queueMenu1
 
