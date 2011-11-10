@@ -5,6 +5,7 @@
 
 #include "qdeclarativecamera.h"
 #include "settings.h"
+#include "utils.h"
 
 int main(int argc, char *argv[])
 {
@@ -14,9 +15,15 @@ int main(int argc, char *argv[])
     app.setApplicationName("camdrive");
 
     QmlApplicationViewer viewer;
+    Utils utils;
+
     viewer.setViewport(new QGLWidget());
     qmlRegisterType<QDeclarativeCamera>("Camera", 1, 0, "Camera");
     qmlRegisterType<Settings>("Settings", 1, 0, "Settings");
+
+    QDeclarativeContext *context = viewer.rootContext();
+    context->setContextProperty("Utils", &utils);
+
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
     viewer.setMainQmlFile(QLatin1String("qml/camdrive_qml/main.qml"));
 

@@ -52,15 +52,16 @@ PageStackWindow {
             }
         }
     }
-/*
-    Menu {
-        id: myMenu
-        visualParent: pageStack
-        MenuLayout {
-            MenuItem { text: "Sample menu item" }
-        }
+
+    MessageHandler {
+        id: messageHandler
     }
-*/
+
+    Connections {
+        target: Utils
+        onInformation: messageHandler.showMessage(message)
+        onVideoDeleted: videoListPage.reloadVideoList()
+    }
 
     function showToolbar()
     {

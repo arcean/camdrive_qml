@@ -8,9 +8,11 @@ Page {
 
     property string thumbnailSize: "large"
 
-    function showConfirmDeleteDialog(video)
+    function showDeleteDialog(video)
     {
-
+        var deleteDialog = Utils.createObject(Qt.resolvedUrl("DeleteDialog.qml"), appWindow.pageStack);
+        deleteDialog.video = video;
+        deleteDialog.open();
     }
 
     function showVideoDetails(itemId)
@@ -22,8 +24,7 @@ Page {
 
     function reloadVideoList()
     {
-        videoListModel.clear()
-        videoListModel.reload()
+        reloadTimer.restart()
     }
 
     orientationLock: PageOrientation.LockLandscape
@@ -89,7 +90,7 @@ Page {
             }
             MenuItem {
                 text: qsTr("Delete")
-                onClicked: showConfirmDeleteDialog(videoListModel.get(videoList.selectedIndex))
+                onClicked: showDeleteDialog(videoListModel.get(videoList.selectedIndex))
             }
         }
     }
