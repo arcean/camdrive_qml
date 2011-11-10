@@ -64,10 +64,10 @@ Page {
 
         z: 10
         anchors { left: parent.left; right: parent.right; top: parent.bottom }
-        visible: !appWindow.inPortrait
+        //visible: !appWindow.inPortrait
         platformStyle: ToolBarStyle {
             inverted: true
-            background: Qt.resolvedUrl("images/toolbar-background-double.png")
+           // background: Qt.resolvedUrl("images/toolbar-background-double.png")
         }
 
         states: State {
@@ -85,12 +85,25 @@ Page {
 
             property int itemWidth: Math.floor(width / 7)
 
+            ToolIcon {
+                id: stopButton
+                anchors { left: parent.left }
+                platformIconId: "toolbar-back";
+                onClicked: exitNowPlaying()
+            }
+
+            ToolIcon {
+                id: playButton
+                anchors { left: stopButton.right }
+                platformIconId: videoPlayer.paused ? "toolbar-mediacontrol-play" : "toolbar-mediacontrol-pause"
+                onClicked: videoPlayer.setToPaused = !videoPlayer.setToPaused
+            }
+
             NewProgressBar {
                 id: progressBar
 
-                width: 620
-                anchors { horizontalCenter: parent.horizontalCenter; top: parent.top; topMargin: 20 }
-                inverted: (!appWindow.inPortrait) || (theme.inverted)
+                width: 520
+                anchors { left: playButton.right; topMargin: 20; leftMargin: 40 }
                 indeterminate: (videoPlayer.status == Video.Buffering) || (videoPlayer.status == Video.Loading)
                 minimumValue: 0
                 maximumValue: 100
@@ -143,24 +156,6 @@ Page {
                         }
                     }
                 }
-            }
-
-            ToolIcon {
-                id: stopButton
-
-                width: layout.itemWidth
-                anchors { bottom: parent.bottom; left: parent.left }
-                iconSource: _ICON_LOCATION + "icon-m-toolbar-back-white.png"
-                onClicked: exitNowPlaying()
-            }
-
-            ToolIcon {
-                id: playButton
-
-                width: layout.itemWidth
-                anchors { bottom: parent.bottom; left: stopButton.right }
-                iconSource: videoPlayer.paused ? _ICON_LOCATION + "icon-m-toolbar-mediacontrol-play-white.png" : _ICON_LOCATION + "icon-m-toolbar-mediacontrol-pause-white.png"
-                onClicked: videoPlayer.setToPaused = !videoPlayer.setToPaused
             }
         }
     }
@@ -235,24 +230,10 @@ Page {
 
         MouseArea {
             id: videoMouseArea
-
-            property int xPos
-
             anchors.fill: videoPlayer
-            onPressed: xPos = mouseX
+
             onReleased: {
-                if (((xPos - mouseX) > 100) && (playlistPosition < playbackQueue.count - 1)) {
-                    next();
-                }
-                else if ((mouseX - xPos) > 100) {
-                    previous();
-                }
-                else if (!((appWindow.inPortrait) || (videoPlayer.setToPaused))) {
-                    toolBar.show = !toolBar.show;
-                }
-                else {
-                    videoPlayer.setToPaused = !videoPlayer.setToPaused;
-                }
+                videoPlayer.setToPaused = !videoPlayer.setToPaused;
             }
         }
     }
@@ -263,7 +244,7 @@ Page {
         y: 490
         width: parent.width - 10
         height: parent.height - 20 - toolBar.height
-        plugin : Plugin {name : "nokia"}
+        plugin : Plugin { name: "nokia" }
         zoomLevel: 10
     }
 
