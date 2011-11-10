@@ -8,6 +8,7 @@ import "scripts/utils.js" as Utils
 Page {
     id: nowPlayingPage
     state: "smallVideo"
+    property bool videoPlaying: false
 
     property variant currentVideo: []
     property int playlistPosition: 0
@@ -50,6 +51,7 @@ Page {
     function stopPlayback() {
         video.metaData.resumePosition = Math.floor(videoPlayer.position / 1000);
         videoPlayer.stop();
+        videoPlaying = false;
         videoPlayer.source = "";
         currentVideo = [];
         appWindow.pageStack.pop();
@@ -102,25 +104,25 @@ Page {
             NewProgressBar {
                 id: progressBar
 
-                width: 520
+                width: 580
                 anchors { left: playButton.right; topMargin: 20; leftMargin: 40 }
                 indeterminate: (videoPlayer.status == Video.Buffering) || (videoPlayer.status == Video.Loading)
                 minimumValue: 0
                 maximumValue: 100
-                value: (appWindow.videoPlaying) && ((appWindow.inPortrait) || (toolBar.show)) ? Math.floor((videoPlayer.position / videoPlayer.duration) * 100) : 0
+                value: (nowPlayingPage.videoPlaying) ? Math.floor((videoPlayer.position / videoPlayer.duration) * 100) : 0
 
                 Label {
                     anchors { top: parent.bottom; horizontalCenter: parent.left }
                     font.pixelSize: _SMALL_FONT_SIZE
-                    color: !appWindow.inPortrait ? "white" : _TEXT_COLOR
-                    text: (!appWindow.videoPlaying) || !((appWindow.inPortrait) || (toolBar.show)) || (videoPlayer.status == Video.Loading) || (videoPlayer.status == Video.Buffering) ? "0:00" : Utils.getTime(videoPlayer.position)
+                    color: _TEXT_COLOR
+                    text: (!nowPlayingPage.videoPlaying) || (videoPlayer.status == Video.Loading) || (videoPlayer.status == Video.Buffering) ? "0:00" : Utils.getTime(videoPlayer.position)
                 }
 
                 Label {
                     anchors { top: parent.bottom; horizontalCenter: parent.right }
                     font.pixelSize: _SMALL_FONT_SIZE
-                    color: !appWindow.inPortrait ? "white" : _TEXT_COLOR
-                    text: (appWindow.videoPlaying) && ((appWindow.inPortrait) || (toolBar.show)) ? Utils.getTime(videoPlayer.duration) : "0:00"
+                    color: _TEXT_COLOR
+                    text: (nowPlayingPage.videoPlaying) ? Utils.getTime(videoPlayer.duration) : "0:00"
                 }
 
                 SeekBubble {
@@ -187,6 +189,7 @@ Page {
 
         function setVideo(videoUrl) {
             videoPlayer.source = decodeURIComponent(videoUrl);
+            videoPlaying = true;
             videoPlayer.play();
         }
 
