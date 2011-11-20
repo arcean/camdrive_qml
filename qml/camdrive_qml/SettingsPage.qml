@@ -6,7 +6,7 @@ import Settings 1.0
 Page {
     tools: commonTools
     id: settingsPage
-    orientationLock: PageOrientation.LockLandscape
+    //orientationLock: PageOrientation.LockLandscape
 
     Settings {
         id: settingsObject
@@ -54,37 +54,39 @@ Page {
 
     Flickable {
         anchors.fill: parent
-        contentHeight: 600
-
-        Separator {
-            id: recordingOptionsSeparator
-            x: 5
-            y: 10
-            width: 640
-        }
+        contentHeight: (parent.height > audioQualityButtonRow.y + audioQualityButtonRow.height) ? (parent.height + 1) : (audioQualityButtonRow.y + audioQualityButtonRow.height)
 
         Label {
             id: recordingOptionsLabel
-            x: 660
-            y: recordingOptionsSeparator.y - 10
+            x: 10
+            y: 10
             platformStyle: LabelStyle {
                 textColor: "gray"
                 fontPixelSize: 20
             }
-            text: "Recording options"
+            text: "Recording options   "
+        }
+
+        Separator {
+            id: recordingOptionsSeparator
+            anchors.left: recordingOptionsLabel.right
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            y: recordingOptionsLabel.y + 10
         }
 
         Label {
             id: continousRecordingLabel
             x: 10
-            y: recordingOptionsSeparator.y + 20
+            y: recordingOptionsLabel.y + recordingOptionsLabel.height + 20
             text: "Enable continous recording"
         }
 
         Switch {
             id: recordingOptionsSwitch
-            x: 758
-            y: continousRecordingLabel.y
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            y: continousRecordingLabel.y - 8
             checked: false
             platformStyle: StyledSwitch {}
             onCheckedChanged: {
@@ -97,15 +99,16 @@ Page {
         Label {
             id:storeLastLabel
             x: 10
-            y: continousRecordingLabel.y + 60
-            text: "Store last"
+            y: continousRecordingLabel.y + continousRecordingLabel.y + 20
+            text: "Store last   "
         }
 
         TumblerButton {
             id: storeLastButton
-            x: 580
-            y: storeLastLabel.y - 8
-            width: 244
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            anchors.left: storeLastLabel.right
+            y: storeLastLabel.y - 12
             style: StyledTumblerButton {}
             text: {
                 recordLastDialog.selectedIndex >= 0 ? recordLastDialog.model.get(recordLastDialog.selectedIndex).name : "5 minutes"
@@ -115,17 +118,10 @@ Page {
             }
         }
 
-        Separator {
-            id: videoSettingsSeparator
-            x: 5
-            y: storeLastLabel.y + 70
-            width: 680
-        }
-
         Label {
             id: videoSettingsLabel
-            x: 700
-            y: videoSettingsSeparator.y - 10
+            x: 10
+            y: storeLastLabel.y + storeLastLabel.height + 20
             platformStyle: LabelStyle {
                 textColor: "gray"
                 fontPixelSize: 20
@@ -133,10 +129,18 @@ Page {
             text: "Video settings"
         }
 
+        Separator {
+            id: videoSettingsSeparator
+            anchors.left: videoSettingsLabel.right
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            y: videoSettingsLabel.y + 10
+        }
+
         Label {
             id: videoResolutionLabel
             x: 10
-            y: videoSettingsSeparator.y + 20
+            y: videoSettingsLabel.y + videoSettingsLabel.height + 20
             text: "Video resolution:"
         }
 
@@ -164,7 +168,7 @@ Page {
         Label {
             id: videoQualityLabel
             x: 10
-            y: videoResolutionButtonRow.y + 70
+            y: videoResolutionButtonRow.y + videoResolutionButtonRow.height + 20
             text: "Video quality:"
         }
 
@@ -191,33 +195,36 @@ Page {
 
         Separator {
             id: audioSettingsSeparator
-            x: 5
-            y: videoQualityButtonRow.y + 80
+            anchors.left: audioSettingsLabel.right
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            y: audioSettingsLabel.y + 10
             width: 680
         }
 
         Label {
-            x: 700
-            y: audioSettingsSeparator.y - 10
+            id: audioSettingsLabel
+            x: 10
+            y: videoQualityButtonRow.y + videoQualityButtonRow.height + 20
             platformStyle: LabelStyle {
                 textColor: "gray"
                 fontPixelSize: 20
             }
-
             text: "Audio settings"
         }
 
         Label {
             id: audioSwitchLabel
             x: 10
-            y: audioSettingsSeparator.y + 20
+            y: audioSettingsLabel.y + audioSettingsLabel.height + 20
             text: "Record audio:"
         }
 
         Switch {
             id: audioSwitch
-            x: 758
-            y: audioSwitchLabel.y
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            y: audioSwitchLabel.y - 8
             checked: settingsObject.getEnableAudio()
             platformStyle: StyledSwitch {}
             onCheckedChanged: {
@@ -230,7 +237,7 @@ Page {
         Label {
             id: audioQualityLabel
             x: 10
-            y: audioSwitchLabel.y + 40
+            y: audioSwitchLabel.y + audioSwitchLabel.height + 20
             text: "Audio quality:"
         }
 
@@ -238,7 +245,7 @@ Page {
             id: audioQualityButtonRow
             x: 30
             width: parent.width - 60
-            y: audioQualityLabel.y + 40
+            y: audioQualityLabel.y + audioQualityLabel.height + 20
             enabled: audioSwitch.checked
             //checkedButton:
             platformStyle: StyledButton {}

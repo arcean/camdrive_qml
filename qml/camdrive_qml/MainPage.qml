@@ -5,86 +5,175 @@ Page {
     tools: commonTools
 
     id: mainPage
-    property int orientation: 0
-    orientationLock: PageOrientation.LockLandscape
+   // property int orientation: 0
+   // orientationLock: PageOrientation.LockPortrait
 
     // Mask invisible region
     Rectangle {
-        x: 90
-        y: 170
+        x: appWindow.inPortrait ? 160 : 90
+        y: appWindow.inPortrait ? 90 : 170
         width: 160
         height: 110
         color: "white"
     }
 
-    Image {
-        id: startRecordingImage
-        x: 51
-        y: 100
-        width: 240
-        height: 240
-        source:"qrc:/icons/start_recording.png"
+    Row {
+        anchors.fill: parent
+        anchors.topMargin: 100
+        anchors.leftMargin: 51
+        spacing: 16
+        enabled: !appWindow.inPortrait
+        visible: !appWindow.inPortrait
 
-        MouseArea {
-            anchors.fill: parent
-            onPressed: {
-                parent.source = "qrc:/icons/start_recording_highlighted.png"
-            }
-            onReleased: {
-                parent.source = "qrc:/icons/start_recording.png"
-            }
-            onClicked: {
-                viewfinderPage.clearRecordingStatus()
-                viewfinderPage.wakeCamera()
-                pageStack.push(viewfinderPage)
+        Image {
+            id: startRecordingImage
+            //x: 51
+            //y: 100
+            width: 240
+            height: 240
+            source: "qrc:/icons/start_recording.png"
+
+            MouseArea {
+                anchors.fill: parent
+                onPressed: {
+                    parent.source = "qrc:/icons/start_recording_highlighted.png"
+                }
+                onReleased: {
+                    parent.source = "qrc:/icons/start_recording.png"
+                }
+                onClicked: {
+                    viewfinderPage.clearRecordingStatus()
+                    viewfinderPage.wakeCamera()
+                    pageStack.push(viewfinderPage)
+                }
             }
         }
+
+            Image {
+                id: settingsImage
+                //x: (startRecordingImage.x+startRecordingImage.width+16)
+                //y:100
+                width: 240
+                height: startRecordingImage.width
+                source: "qrc:/icons/settings.png"
+
+                MouseArea {
+                    anchors.fill: parent
+                    onPressed: {
+                        parent.source = "qrc:/icons/settings_highlighted.png"
+                    }
+                    onReleased: {
+                        parent.source = "qrc:/icons/settings.png"
+                    }
+                    onClicked: {
+                        pageStack.push(settingsPage)
+                        appWindow.showToolbar()
+                    }
+                }
+            }
+
+            Image {
+                id: filesImage
+                //x: (settingsImage.x+settingsImage.width+16)
+                //y:100
+                width: 240
+                height: startRecordingImage.width
+                source:"qrc:/icons/files.png"
+
+                MouseArea {
+                    anchors.fill: parent
+                    onPressed: {
+                        parent.source = "qrc:/icons/files_highlighted.png"
+                    }
+                    onReleased: {
+                        parent.source = "qrc:/icons/files.png"
+                    }
+                    onClicked: {
+                        pageStack.push(videoListPage)
+                        appWindow.showToolbar()
+                        videoListPage.reloadVideoList()
+                    }
+                }
+            }
     }
 
+    Column {
+        anchors.fill: parent
+        anchors.topMargin:  32
+        anchors.leftMargin: 120
+        spacing: 16
+        enabled: appWindow.inPortrait
+        visible: appWindow.inPortrait
+
         Image {
-            id: settingsImage
-            x: (startRecordingImage.x+startRecordingImage.width+16)
-            y:100
+            id: startRecordingImageP
+            //x: 51
+            //y: 100
             width: 240
-            height: startRecordingImage.width
-            source: "qrc:/icons/settings.png"
+            height: 240
+            source: "qrc:/icons/start_recording.png"
 
             MouseArea {
                 anchors.fill: parent
                 onPressed: {
-                    parent.source = "qrc:/icons/settings_highlighted.png"
+                    parent.source = "qrc:/icons/start_recording_highlighted.png"
                 }
                 onReleased: {
-                    parent.source = "qrc:/icons/settings.png"
+                    parent.source = "qrc:/icons/start_recording.png"
                 }
                 onClicked: {
-                    pageStack.push(settingsPage);
-                    appWindow.showToolbar()
+                    viewfinderPage.clearRecordingStatus()
+                    viewfinderPage.wakeCamera()
+                    pageStack.push(viewfinderPage)
                 }
             }
         }
 
-        Image {
-            id: filesImage
-            x: (settingsImage.x+settingsImage.width+16)
-            y:100
-            width: 240
-            height: startRecordingImage.width
-            source:"qrc:/icons/files.png"
+            Image {
+                id: settingsImageP
+                //x: (startRecordingImage.x+startRecordingImage.width+16)
+                //y:100
+                width: 240
+                height: startRecordingImageP.width
+                source: "qrc:/icons/settings.png"
 
-            MouseArea {
-                anchors.fill: parent
-                onPressed: {
-                    parent.source = "qrc:/icons/files_highlighted.png"
-                }
-                onReleased: {
-                    parent.source = "qrc:/icons/files.png"
-                }
-                onClicked: {
-                    pageStack.push(videoListPage)
-                    appWindow.showToolbar()
-                    videoListPage.reloadVideoList()
+                MouseArea {
+                    anchors.fill: parent
+                    onPressed: {
+                        parent.source = "qrc:/icons/settings_highlighted.png"
+                    }
+                    onReleased: {
+                        parent.source = "qrc:/icons/settings.png"
+                    }
+                    onClicked: {
+                        pageStack.push(settingsPage)
+                        appWindow.showToolbar()
+                    }
                 }
             }
-        }
+
+            Image {
+                id: filesImageP
+                //x: (settingsImage.x+settingsImage.width+16)
+                //y:100
+                width: 240
+                height: startRecordingImageP.width
+                source:"qrc:/icons/files.png"
+
+                MouseArea {
+                    anchors.fill: parent
+                    onPressed: {
+                        parent.source = "qrc:/icons/files_highlighted.png"
+                    }
+                    onReleased: {
+                        parent.source = "qrc:/icons/files.png"
+                    }
+                    onClicked: {
+                        pageStack.push(videoListPage)
+                        appWindow.showToolbar()
+                        videoListPage.reloadVideoList()
+                    }
+                }
+            }
+    }
 }

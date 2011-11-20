@@ -14,7 +14,7 @@ PageStackWindow {
     property string _ACTIVE_COLOR: "color11"
 
     platformStyle: PageStackWindowStyle {
-            background: "qrc:/icons/background.png"
+            background: appWindow.inPortrait ? "qrc:/icons/background-portrait.png" : "qrc:/icons/background.png"
             backgroundFillMode: Image.Tile
         }
 

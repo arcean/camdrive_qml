@@ -27,7 +27,7 @@ Page {
         reloadTimer.restart()
     }
 
-    orientationLock: PageOrientation.LockLandscape
+    //orientationLock: PageOrientation.LockLandscape
 
     tools: ToolBarLayout {
         id: toolBar

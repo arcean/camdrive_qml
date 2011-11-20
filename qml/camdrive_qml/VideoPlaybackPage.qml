@@ -31,7 +31,7 @@ Page {
         tabGroup.currentTab = queuePage;
     }
 
-    orientationLock: PageOrientation.LockLandscape
+    //orientationLock: PageOrientation.LockLandscape
 
     ButtonRow {
         id: tabBar

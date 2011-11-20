@@ -19,5 +19,6 @@
         <file>qml/camdrive_qml/Separator.qml</file>
         <file>icons/dialogStop.png</file>
         <file>icons/idea.png</file>
+        <file>icons/background-portrait.png</file>
     </qresource>
 </RCC>

@@ -57,7 +57,7 @@ Page {
         appWindow.pageStack.pop();
     }
 
-    orientationLock: PageOrientation.LockLandscape
+    //orientationLock: PageOrientation.LockLandscape
 
     ToolBar {
         id: toolBar
