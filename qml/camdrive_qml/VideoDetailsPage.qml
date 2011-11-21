@@ -10,8 +10,6 @@ Page {
     property alias filePath: videoFilter.value
     property bool allowToPlay: true
 
-    orientationLock: PageOrientation.LockLandscape
-
     tools: ToolBarLayout {
         id: toolBar
 

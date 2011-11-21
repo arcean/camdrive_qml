@@ -10,6 +10,7 @@ Page {
     property bool videoStopped: nowPlayingPage.videoStopped
     property alias currentVideo: nowPlayingPage.currentVideo
     property int playlistPosition: nowPlayingPage.playlistPosition
+    orientationLock: PageOrientation.LockLandscape
 
     function setPlaylist(videoList) {
         nowPlayingPage.setPlaylist(videoList);
@@ -31,28 +32,10 @@ Page {
         tabGroup.currentTab = queuePage;
     }
 
-    //orientationLock: PageOrientation.LockLandscape
-
-    ButtonRow {
-        id: tabBar
-
-        anchors { top: parent.top; left: parent.left; right: parent.right }
-        visible: (appWindow.inPortrait) || (tabGroup.currentTab != nowPlayingPage)
-        style: TabButtonStyle {}
-
-        TabButton {
-            id: infoButton
-
-            text: qsTr("Now Playing")
-            tab: nowPlayingPage
-        }
-    }
-
     Menu {
         id: queueMenu1
 
         MenuLayout {
-
             MenuItem {
                 text: qsTr("Select all")
                 onClicked: queuePage.selectAll()
@@ -64,12 +47,10 @@ Page {
         id: queueMenu2
 
         MenuLayout {
-
             MenuItem {
                 text: qsTr("Select none")
                 onClicked: queuePage.selectNone()
             }
-
             MenuItem {
                 text: qsTr("Remove")
                 onClicked: queuePage.remove()
@@ -79,7 +60,6 @@ Page {
 
     TabGroup {
         id: tabGroup
-
         currentTab: nowPlayingPage
 
         NowPlayingPage {
