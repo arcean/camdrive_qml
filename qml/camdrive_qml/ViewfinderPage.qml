@@ -212,9 +212,9 @@ Page {
 
     Rectangle {
         id: upperToolbar
-        x: 0
-        y: 0
-        width: parent.width
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
         height: 50
         color: "black"
         opacity: 0.4
@@ -222,10 +222,10 @@ Page {
 
     Rectangle {
         id: bottomToolbar
-        x: 0
-        y:394
-        width: parent.width
-        height: 54
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        height: 50
         color: "black"
         opacity: 0.4
     }
@@ -251,18 +251,22 @@ Page {
 
     Image {
         id: statusIcon
-        x: 3
-        y: 397
+        anchors.left: bottomToolbar.left
+        anchors.leftMargin: 5
+        anchors.top: bottomToolbar.top
+        anchors.verticalCenter: bottomToolbar.verticalCenter
         width: 48
         height: 48
         opacity: 0
         source:"qrc:/icons/recording_active.png"
-
     }
+
     Image {
         id: statusIconInactive
-        x: 3
-        y: 397
+        anchors.left: bottomToolbar.left
+        anchors.leftMargin: 5
+        anchors.top: bottomToolbar.top
+        anchors.verticalCenter: bottomToolbar.verticalCenter
         width: 48
         height: 48
         opacity: 1
@@ -271,9 +275,10 @@ Page {
 
     Text {
         id: textStatusInfo
-        y: 405
-        x: statusIcon.x + statusIcon.width + 3
-        horizontalAlignment: TextInput.AlignHCenter
+        anchors.left: statusIcon.right
+        anchors.leftMargin: 5
+        anchors.top: bottomToolbar.top
+        anchors.topMargin: 8
         text: "Waiting..."
         color: "white"
         font.bold: true
@@ -284,12 +289,10 @@ Page {
     // Speed o meter
     Text {
         id: textSpeedInfo
-        // For bottomToolbar
-        //y: 405
-        //x: textStatusInfo.x + textStatusInfo.width + 184
-        x: 16
-        y: 10
-        horizontalAlignment: TextInput.AlignHCenter
+        anchors.left: upperToolbar.left
+        anchors.leftMargin: 10
+        anchors.top: upperToolbar.top
+        anchors.topMargin: 8
         text: "114 km/h"
         color: "white"
         font.bold: true
@@ -299,12 +302,10 @@ Page {
     // Compass
     Text {
         id: textCompass
-        // For bottomToolbar
-        //y: 405
-        // For upperToolbar
-        y: 10
-        x: 780
-        horizontalAlignment: TextInput.AlignHCenter
+        anchors.right: upperToolbar.right
+        anchors.rightMargin: 10
+        anchors.top: upperToolbar.top
+        anchors.topMargin: 8
         text: "NW"
         color: "white"
         font.bold: true
@@ -314,9 +315,10 @@ Page {
     // Counter, elapsed time
     Text {
         id: textCounter
-        y: 405
-        x: 700
-        horizontalAlignment: TextInput.AlignHCenter
+        anchors.right: bottomToolbar.right
+        anchors.rightMargin: 10
+        anchors.top: bottomToolbar.top
+        anchors.topMargin: 8
         text: "0:00/" + settingsObject.getStoreLastInMinutes() + ":00"
         color: "white"
         font.bold: true
@@ -326,8 +328,10 @@ Page {
     // Record/stop button
     Item {
         id: toggleRecordingButton
-        x: 36
-        y: 58
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        anchors.top: upperToolbar.bottom
+        anchors.topMargin: 20
         width: 96
         height: 96
 
@@ -358,8 +362,10 @@ Page {
     // Emergency button
     Item {
         id: emergencyButton
-        x: 718
-        y: 58
+        anchors.right: parent.right
+        anchors.rightMargin: 20
+        anchors.top: upperToolbar.bottom
+        anchors.topMargin: 20
         width: 96
         height: 96
 
