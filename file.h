@@ -25,9 +25,8 @@ private:
     QString generateNewFileName(QString baseName);
 
     QString fileName;
-    QString tempFileName1;
-    QString tempFileName2;
-    int activeFile;
+    QString generatedFileName;
+    int activeFileNumber;
 };
 
 #endif // FILE_H

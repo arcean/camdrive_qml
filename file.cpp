@@ -5,11 +5,9 @@ File::File(QString fileName)
 {
     init();
 
-    QString generatedFileName = generateNewFileName(fileName);
+    generatedFileName = generateNewFileName(fileName);
 
-    this->fileName = generatedFileName + ".mp4";
-    this->tempFileName1 = generatedFileName + "1.mp4";
-    this->tempFileName2 = generatedFileName + "2.mp4";
+    this->fileName = generatedFileName + "_" + activeFileNumber + ".mp4";
 }
 
 QString File::generateNewFileName(QString baseName)
@@ -62,20 +60,16 @@ bool File::init()
 
     createAppCatalog();
 
-    //activeFile = tempFileName1
-    activeFile = 0;
+    activeFileNumber = 1;
 
     return true;
 }
 
 bool File::checkIfNotExists()
 {
-    //createAppCatalog();
+    QFile file(APP_DIR APP_NAME "/" + fileName);
 
-    QFile file1(APP_DIR APP_NAME "/" + tempFileName1);
-    QFile file2(APP_DIR APP_NAME "/" + tempFileName2);
-
-    if(file1.exists() || file2.exists())
+    if(file.exists())
         return false;
 
     return true;
@@ -86,18 +80,8 @@ bool File::checkIfNotExists()
   */
 void File::changeFile()
 {
-    if(activeFile) {
-        QFile file(APP_DIR APP_NAME "/" + tempFileName1);
-
-        activeFile = 0;
-        file.remove();
-
-    } else {
-        QFile file(APP_DIR APP_NAME "/" + tempFileName2);
-
-        activeFile = 1;
-        file.remove();
-    }
+    activeFileNumber++;
+    fileName = generatedFileName + "_" + activeFileNumber + ".mp4";
 }
 
 /*
@@ -105,33 +89,7 @@ void File::changeFile()
   */
 bool File::fileReady()
 {
-    bool succeed = false;
-
-    if(activeFile) {
-        QFile file(APP_DIR APP_NAME "/" + tempFileName2);
-
-        succeed = file.rename(APP_DIR APP_NAME "/" + fileName);
-    } else {
-        QFile file(APP_DIR APP_NAME "/" + tempFileName1);
-
-        succeed = file.rename(APP_DIR APP_NAME "/" + fileName);
-    }
-
-    removeTempFiles();
-
-    return succeed;
-}
-
-/*
-  Removes temporary files
-  */
-void File::removeTempFiles()
-{
-    QFile file1(APP_DIR APP_NAME "/" + tempFileName1);
-    QFile file2(APP_DIR APP_NAME "/" + tempFileName2);
-
-    file1.remove();
-    file2.remove();
+    return true;
 }
 
 /*
@@ -139,7 +97,7 @@ void File::removeTempFiles()
   */
 int File::getActiveFileNumber()
 {
-    return activeFile;
+    return activeFileNumber;
 }
 
 /*
@@ -147,9 +105,5 @@ int File::getActiveFileNumber()
   */
 QString File::getActiveFile()
 {
-    qDebug() << "Active file: " << activeFile;
-    if(activeFile)
-        return QString(APP_DIR APP_NAME "/" + tempFileName2);
-    else
-        return QString(APP_DIR APP_NAME "/" + tempFileName1);
+    return fileName;
 }
