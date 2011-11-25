@@ -42,6 +42,23 @@ Page {
             videoResolutionButtonRow.checkedButton = videoDVD
     }
 
+    function enableContinousRecording(checked)
+    {
+        storeLastButton.enabled = !checked
+        storeLastLabel.enabled = !checked
+        settingsObject.setEnableContinousRecording(checked)
+    }
+
+    function setTextStoreLastInfoLabel()
+    {
+        var temp = settingsObject.getStoreLastInMinutes()
+
+        if (temp == 1)
+            storeLastInfoLabel.text = "Recorder video will be stored in one part."
+        else
+            storeLastInfoLabel.text = "Recorder video will be dividied into " + temp + " parts."
+    }
+
     Component.onCompleted: {
         theme.inverted = true
        // theme.color = 8
@@ -58,13 +75,13 @@ Page {
 
         Label {
             id: recordingOptionsLabel
-            x: 10
+            anchors.left: parent.left
             y: 10
             platformStyle: LabelStyle {
                 textColor: "gray"
                 fontPixelSize: 20
             }
-            text: "Recording options   "
+            text: "Recording options  "
         }
 
         Separator {
@@ -77,7 +94,8 @@ Page {
 
         Label {
             id: continousRecordingLabel
-            x: 10
+            anchors.leftMargin: 10
+            anchors.left: parent.left
             y: recordingOptionsLabel.y + recordingOptionsLabel.height + 20
             text: "Enable continous recording"
         }
@@ -90,25 +108,26 @@ Page {
             checked: false
             platformStyle: StyledSwitch {}
             onCheckedChanged: {
-                storeLastButton.enabled = !checked
-                storeLastLabel.enabled = !checked
-                settingsObject.setEnableContinousRecording(checked)
+                enableContinousRecording(checked)
             }
         }
 
         Label {
             id:storeLastLabel
-            x: 10
-            y: continousRecordingLabel.y + continousRecordingLabel.y + 20
-            text: "Store last   "
+            anchors.leftMargin: 10
+            anchors.left: parent.left
+            y: continousRecordingLabel.y + continousRecordingLabel.height + 20
+            color: recordingOptionsSwitch.checked ? "gray" : "white"
+            text: "Store last:"
         }
 
         TumblerButton {
             id: storeLastButton
             anchors.right: parent.right
             anchors.rightMargin: 10
-            anchors.left: storeLastLabel.right
-            y: storeLastLabel.y - 12
+            anchors.leftMargin: 10
+            anchors.left: parent.left
+            y: storeLastLabel.y + storeLastLabel.height + 20
             style: StyledTumblerButton {}
             text: {
                 recordLastDialog.selectedIndex >= 0 ? recordLastDialog.model.get(recordLastDialog.selectedIndex).name : "5 minutes"
@@ -119,9 +138,18 @@ Page {
         }
 
         Label {
+            id:storeLastInfoLabel
+            anchors.leftMargin: 10
+            anchors.left: parent.left
+            y: storeLastButton.y + storeLastButton.height + 20
+            color: recordingOptionsSwitch.checked ? "gray" : "white"
+            font.pixelSize: appWindow._SMALL_FONT_SIZE
+        }
+
+        Label {
             id: videoSettingsLabel
-            x: 10
-            y: storeLastLabel.y + storeLastLabel.height + 20
+            anchors.left: parent.left
+            y: storeLastInfoLabel.y + storeLastInfoLabel.height + 20
             platformStyle: LabelStyle {
                 textColor: "gray"
                 fontPixelSize: 20
@@ -282,6 +310,7 @@ Page {
         onAccepted: {
             settingsObject.setStoreLast(recordLastDialog.selectedIndex)
             storeLastButton.text = settingsObject.getStoreLastToText()
+            setTextStoreLastInfoLabel()
         }
     }
 }
