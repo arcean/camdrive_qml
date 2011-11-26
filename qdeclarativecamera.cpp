@@ -32,7 +32,7 @@ void QDeclarativeCamera::initFile()
     //It should be configurable, and loaded on app startup
     //int time = settingsObject->getStoreLast();
     //time = time * 60 * 1000;
-    int time = 1 * 60 * 1000;
+    int time = 1 * 8 * 1000;
     timer->setInterval(time);
 
     file = new File(CAM_DEFAULT_FILE_NAME);
@@ -45,11 +45,12 @@ void QDeclarativeCamera::initFile()
 void QDeclarativeCamera::changeUsedFile()
 {
     videoPartNumber++;
-    if(videoPartNumber >= settingsObject->getStoreLast())
-        this->stopRecording();
+    if(videoPartNumber >= settingsObject->getStoreLast()) {
+        videoPartNumber = 0;
+    }
     qDebug() << "Changing used temp file for recording...";
     this->stopRecording();
-    file->changeFile();
+    file->changeFile(videoPartNumber);
     setOutputLocation();
     this->startRecording();
     qDebug() << "Changing temp file: DONE";
@@ -194,6 +195,7 @@ Qt::AspectRatioMode QDeclarativeCamera::aspectRatio() const
 
 void QDeclarativeCamera::start()
 {
+    toggleCamera();
     camera_->start();
     isRecording = true;
 }
@@ -208,6 +210,5 @@ void QDeclarativeCamera::unload()
 {
     isRecording = false;
 
-    toggleCamera();
     camera_->unload();
 }

@@ -14,7 +14,7 @@ public:
     File(QString fileName);
     bool init();
     bool fileReady();
-    void changeFile();
+    void changeFile(int partNumber);
     int getActiveFileNumber();
     QString getActiveFile();
 

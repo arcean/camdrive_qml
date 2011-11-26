@@ -7,7 +7,7 @@ File::File(QString fileName)
 
     generatedFileName = generateNewFileName(fileName);
 
-    this->fileName = generatedFileName + "_" + activeFileNumber + ".mp4";
+    this->fileName = generatedFileName + "_part_" + QString::number(activeFileNumber) + ".mp4";
 }
 
 QString File::generateNewFileName(QString baseName)
@@ -19,9 +19,9 @@ QString File::generateNewFileName(QString baseName)
 
     while (!ready) {
         if(counter > 0)
-            file.setFileName(APP_DIR APP_NAME "/" + baseName + "(" + QString::number(counter) +").mp4");
+            file.setFileName(APP_DIR APP_NAME "/" + baseName + "(" + QString::number(counter) +")_part_1.mp4");
         else
-            file.setFileName(APP_DIR APP_NAME "/" + baseName + ".mp4");
+            file.setFileName(APP_DIR APP_NAME "/" + baseName + "_part_1.mp4");
 
         if(counter == 0)
             data = baseName;
@@ -55,12 +55,12 @@ void File::createAppCatalog()
 
 bool File::init()
 {
+    activeFileNumber = 1;
+
     if(!checkIfNotExists())
         return false;
 
     createAppCatalog();
-
-    activeFileNumber = 1;
 
     return true;
 }
@@ -78,10 +78,10 @@ bool File::checkIfNotExists()
 /*
   Changes currenlty use temporary file
   */
-void File::changeFile()
+void File::changeFile(int partNumber)
 {
-    activeFileNumber++;
-    fileName = generatedFileName + "_" + activeFileNumber + ".mp4";
+    activeFileNumber = partNumber + 1;
+    fileName = generatedFileName + "_part_" + QString::number(activeFileNumber) + ".mp4";
 }
 
 /*
@@ -105,5 +105,7 @@ int File::getActiveFileNumber()
   */
 QString File::getActiveFile()
 {
-    return fileName;
+    QFile file(APP_DIR APP_NAME "/" + fileName);
+
+    return file.fileName();
 }
