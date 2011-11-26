@@ -18,6 +18,11 @@ public:
     Settings();
     ~Settings();
 
+    void setEnableStoringPositionInfo(bool enable);
+    bool getEnableStoringPositionInfo();
+    void setEnableStoringSpeedInfo(bool enable);
+    bool getEnableStoringSpeedInfo();
+
 public slots:
     void setEnableContinousRecording(bool enable);
     bool getEnableContinousRecording();
@@ -32,7 +37,9 @@ public slots:
     void setEnableAudio(bool enable);
     bool getEnableAudio();
     void setAudioQuality(int quality);
-    int getAudioQuality();
+    int getAudioQuality();    
+    void setStoreDataEachXSeconds(int seconds);
+    int getStoreDataEachXSeconds();
 
 };
 

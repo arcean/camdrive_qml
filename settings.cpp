@@ -183,3 +183,48 @@ int Settings::getAudioQuality()
 
     return value;
 }
+
+void Settings::setEnableStoringPositionInfo(bool enable)
+{
+    QSettings settings;
+
+    settings.setValue("store/position", enable);
+}
+
+bool Settings::getEnableStoringPositionInfo()
+{
+    QSettings settings;
+    bool value =  settings.value("store/position", true).toBool();
+
+    return value;
+}
+
+void Settings::setEnableStoringSpeedInfo(bool enable)
+{
+    QSettings settings;
+
+    settings.setValue("store/position", enable);
+}
+
+bool Settings::getEnableStoringSpeedInfo()
+{
+    QSettings settings;
+    bool value =  settings.value("store/speed", true).toBool();
+
+    return value;
+}
+
+void Settings::setStoreDataEachXSeconds(int seconds)
+{
+    QSettings settings;
+
+    settings.setValue("store/eachXSeconds", seconds);
+}
+
+int Settings::getStoreDataEachXSeconds()
+{
+    QSettings settings;
+    int value =  settings.value("store/eachXSeconds", 5).toInt();
+
+    return value;
+}
