@@ -30,11 +30,13 @@ void QDeclarativeCamera::initFile()
     timer = new QTimer(this);
     //Default time interval - 10m = 10 * 60 * 1000,
     //It should be configurable, and loaded on app startup
-    int time = settingsObject->getStoreLast();
-    time = time * 60 * 1000;
+    //int time = settingsObject->getStoreLast();
+    //time = time * 60 * 1000;
+    int time = 1 * 60 * 1000;
     timer->setInterval(time);
 
     file = new File(CAM_DEFAULT_FILE_NAME);
+    videoPartNumber = 0;
 
     connect(timer, SIGNAL(timeout()), this, SLOT(changeUsedFile()));
     setOutputLocation();
@@ -42,6 +44,9 @@ void QDeclarativeCamera::initFile()
 
 void QDeclarativeCamera::changeUsedFile()
 {
+    videoPartNumber++;
+    if(videoPartNumber >= settingsObject->getStoreLast())
+        this->stopRecording();
     qDebug() << "Changing used temp file for recording...";
     this->stopRecording();
     file->changeFile();

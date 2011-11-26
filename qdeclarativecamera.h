@@ -60,6 +60,7 @@ private:
     QTimer *timer;
     Settings *settingsObject;
     bool isRecording;
+    int videoPartNumber;
 };
 
 #endif // QDeclarativeCamera_H
