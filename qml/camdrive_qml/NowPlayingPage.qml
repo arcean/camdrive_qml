@@ -100,11 +100,35 @@ Page {
                 platformIconId: videoPlayer.paused ? "toolbar-mediacontrol-play" : "toolbar-mediacontrol-pause"
                 onClicked: videoPlayer.setToPaused = !videoPlayer.setToPaused
             }
+            ToolIcon {
+                id: animStart2
+                anchors.right: animStart.left
+                platformIconId: "toolbar-view-menu"
+                onClicked: {
+                    if(nowPlayingPage.state == "showSmall" || nowPlayingPage.state == "showMap") {
+                        nowPlayingPage.state = "showDetails"
+                    }
+                    else
+                        nowPlayingPage.state = "showMap"
+                }
+            }
+            ToolIcon {
+                id: animStart
+                anchors.right: parent.right
+                platformIconId: "toolbar-view-menu"
+                onClicked: {
+                    if(nowPlayingPage.state == "videoFullscreen") {
+                        nowPlayingPage.state = "videoSmall"
+                    }
+                    else
+                        nowPlayingPage.state = "videoFullscreen"
+                }
+            }
 
             NewProgressBar {
                 id: progressBar
 
-                anchors { left: playButton.right; topMargin: 20; leftMargin: 40; right: parent.right; rightMargin: 40 }
+                anchors { left: playButton.right; topMargin: 20; leftMargin: 40; right: animStart2.left; rightMargin: 40 }
                 indeterminate: (videoPlayer.status == Video.Buffering) || (videoPlayer.status == Video.Loading)
                 minimumValue: 0
                 maximumValue: 100
@@ -182,22 +206,13 @@ Page {
         id: videoPlayer
         x: 10
         y: 10
+        width: 460
+        height: nowPlayingPage.height - 20 - toolBar.height
+        fillMode: Video.PreserveAspectFit
 
         property bool repeat: false // True if playback of the current video is to be repeated
-        property bool setToPaused: false
+        property bool setToPaused: false        
 
-        function setVideo(videoUrl) {
-            videoPlayer.source = decodeURIComponent(videoUrl);
-            videoPlaying = true;
-            videoPlayer.play();
-        }
-
-       // width: !appWindow.inPortrait ? 854 : 480
-        //height: !appWindow.inPortrait ? 480 : 360
-        width: 460
-        height: parent.height - 20 - toolBar.height
-        fillMode: Video.PreserveAspectFit
-        //anchors { centerIn: parent; verticalCenterOffset: appWindow.inPortrait ? -130 : 0 }
         paused: ((platformWindow.viewMode == WindowState.Thumbnail) && ((videoPlayer.playing)) || ((appWindow.pageStack.currentPage != videoPlaybackPage) && (videoPlayer.playing)) || (videoPlayer.setToPaused))
         onError: {
         }
@@ -209,6 +224,12 @@ Page {
                 videoPlayer.play();
 
             }
+        }
+
+        function setVideo(videoUrl) {
+            videoPlayer.source = decodeURIComponent(videoUrl);
+            videoPlaying = true;
+            videoPlayer.play();
         }
 
         BusyIndicator {
@@ -242,20 +263,20 @@ Page {
 
     Map {
         id: map
-        x: 480
-        y: 490
-        width: parent.width - 10
-        height: parent.height - 20 - toolBar.height
+        x: videoPlayer.x + videoPlayer.width + 10
+        y: -10 + map.height * -1
+        width: nowPlayingPage.width - map.x - 20
+        height: nowPlayingPage.height - 20 - toolBar.height
         plugin : Plugin { name: "nokia" }
         zoomLevel: 10
     }
 
     Rectangle {
         id: details
-        x: 480
-        y: 10
-        width: parent.width - 10
-        height: parent.height - 20 - toolBar.height
+        x: videoPlayer.x + videoPlayer.width + 10
+        y: nowPlayingPage.height + 10
+        width: nowPlayingPage.width - map.x - 20
+        height: nowPlayingPage.height - 20 - toolBar.height
         color: "green"
         opacity: 0
     }
@@ -265,66 +286,53 @@ Page {
             name: "videoFullscreen"
             PropertyChanges {
                 target: videoPlayer
-                x: 10
-                y: 10
-                width: nowPlayingPage.width - 10
-                height: nowPlayingPage.height - 20
+                width: nowPlayingPage.width - 20
             }
             PropertyChanges {
                 target: map
-                x: 860
+                y: -10 + map.height * -1
             }
             PropertyChanges {
                 target: details
-                x: 860
+                y: nowPlayingPage.height + 10
             }
         },
         State {
             name: "videoSmall"
             PropertyChanges {
                 target: videoPlayer
-                x: 10
-                y: 10
                 width: 460
-                height: nowPlayingPage.height - 20
+                height: nowPlayingPage.height - 20 - toolBar.height
             }
             PropertyChanges {
                 target: map
-                x: 480
+                y: -10 + map.height * -1
             }
             PropertyChanges {
                 target: details
-                x: 480
+                y: 10
             }
         },
         State {
             name: "showDetails"
             PropertyChanges {
                 target: details
-                x: 480
                 y: 10
-                height: nowPlayingPage.height - 20
             }
             PropertyChanges {
                 target: map
-                x: 480
-                y: 490
-                height: nowPlayingPage.height - 20
+                y: -10 + map.height * -1
             }
         },
         State {
             name: "showMap"
             PropertyChanges {
                 target: map
-                x: 480
                 y: 10
-                height: nowPlayingPage.height - 20
             }
             PropertyChanges {
                 target: details
-                x: 480
-                y: 490
-                height: nowPlayingPage.height - 20
+                y: nowPlayingPage.height + 10
             }
         }
     ]
