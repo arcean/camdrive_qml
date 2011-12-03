@@ -36,14 +36,14 @@ void Database::createMainTable()
 {
     QSqlQuery query;
     query.exec("CREATE TABLE IF NOT EXISTS main (id INTEGER PRIMARY KEY, "
-                    "videoName VARCHAR(80), videoStoredEach INT");
+                    "videoName VARCHAR(80), videoStoredEach INT)");
 }
 
 void Database::createVideoDetailsTable(QString videoName)
 {
     QSqlQuery query;
     query.exec(QString("CREATE TABLE IF NOT EXISTS '%1' (videoId INTEGER PRIMARY KEY, "
-                    "latitude FLOAT, longitude FLOAT, speed INT")
+                    "latitude FLOAT, longitude FLOAT, speed INT)")
                     .arg(videoName));
 }
 
