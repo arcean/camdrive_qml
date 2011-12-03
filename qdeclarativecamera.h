@@ -51,9 +51,10 @@ protected slots:
     void durationChangedFunc(qint64 duration);
 
 private:
-    void addNewVideo(const QString& videoName);
-    void addNewVideoPart(const QString& videoName, float latitude, float longitude, int speed);
+    void addNewVideo(const QString& videoName, int videoParts);
+    void addNewVideoInfo(const QString& videoName, float latitude, float longitude, int speed);
     void removeVideo(const QString& videoName);
+    void addNewVideoPart(const QString& videoName);
 
     QCamera* camera_;
     QCameraImageCapture* imageprocessing_;

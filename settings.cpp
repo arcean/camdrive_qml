@@ -224,7 +224,7 @@ void Settings::setStoreDataEachXSeconds(int seconds)
 int Settings::getStoreDataEachXSeconds()
 {
     QSettings settings;
-    int value =  settings.value("store/eachXSeconds", 5).toInt();
+    int value =  settings.value("store/eachXSeconds", 3).toInt();
 
     return value;
 }

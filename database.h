@@ -18,17 +18,19 @@ public:
     void setSettings(Settings *settings);
     void createTables();
     int countsIds();
-    void addNewVideo(QString videoName);
-    void addNewVideoInfo(QString videoName, float latitude, float longitude, int speed);
+    void addNewVideo(const QString &videoName, int numberOfVideoParts);
+    void addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed);
+    void createVideoDetailsTable(const QString &videoName);
 
 signals:
 
 public slots:
-    bool removeVideo(QString videoName);
+    bool removeVideo(const QString &videoName);
 
 private:
+    void createAppCatalog();
     void createMainTable();
-    void createVideoDetailsTable(QString videoName);
+    int getNumberOfVideoParts(const QString &videoName);
 
     QSqlDatabase *db;
     Settings *settings;

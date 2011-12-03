@@ -10,8 +10,20 @@ void Database::setSettings(Settings *settings)
     this->settings = settings;
 }
 
+void Database::createAppCatalog()
+{
+    QString path(QDir::home().path());
+    path.append(QDir::separator()).append(".camdrive");
+    QDir dir(path);
+
+    if(!dir.exists()) {
+        dir.mkdir(path);
+    }
+}
+
 void Database::openDatabase()
 {
+    createAppCatalog();
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     QString path(QDir::home().path());
     path.append(QDir::separator()).append(".camdrive");
@@ -36,10 +48,10 @@ void Database::createMainTable()
 {
     QSqlQuery query;
     query.exec("CREATE TABLE IF NOT EXISTS main (id INTEGER PRIMARY KEY, "
-                    "videoName VARCHAR(80), videoStoredEach INT)");
+                    "videoName VARCHAR(80), videoStoredEach INT, numberOfVideoParts)");
 }
 
-void Database::createVideoDetailsTable(QString videoName)
+void Database::createVideoDetailsTable(const QString &videoName)
 {
     QSqlQuery query;
     query.exec(QString("CREATE TABLE IF NOT EXISTS '%1' (videoId INTEGER PRIMARY KEY, "
@@ -58,7 +70,18 @@ int Database::countsIds()
     return result;
 }
 
-void Database::addNewVideo(QString videoName)
+int Database::getNumberOfVideoParts(const QString &videoName)
+{
+    QSqlQuery query;
+
+    query.exec(QString("SELECT numberOfVideoParts FROM main WHERE videoName='%1").arg(videoName));
+    query.next();
+    int result = query.value(0).toInt();
+
+    return result;
+}
+
+void Database::addNewVideo(const QString &videoName, int numberOfVideoParts)
 {
     QSqlQuery query;
 
@@ -66,11 +89,11 @@ void Database::addNewVideo(QString videoName)
         createVideoDetailsTable(videoName);
     }
 
-    query.exec(QString("INSERT INTO main VALUES(NULL,'%1','%2')")
-                .arg(videoName).arg(settings->getStoreDataEachXSeconds()));
+    query.exec(QString("INSERT INTO main VALUES(NULL,'%1','%2', '%3')")
+                .arg(videoName).arg(settings->getStoreDataEachXSeconds()).arg(numberOfVideoParts));
 }
 
-void Database::addNewVideoInfo(QString videoName, float latitude, float longitude, int speed)
+void Database::addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed)
 {
     QSqlQuery query;
 
@@ -83,13 +106,13 @@ void Database::addNewVideoInfo(QString videoName, float latitude, float longitud
     /* Else -> do nothing */
 }
 
-bool Database::removeVideo(QString videoName)
+bool Database::removeVideo(const QString &videoName)
 {
     QSqlQuery query;
     bool result;
 
     result = query.exec(QString("DROP TABLE IF EXISTS '%1'")
-                         .arg(videoName));
+                        .arg(videoName + "_part_" + QString::number( getNumberOfVideoParts(videoName) )));
 
     if(result)
         query.exec(QString("DELETE FROM main WHERE videoName = '%1'")

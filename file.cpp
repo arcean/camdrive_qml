@@ -1,7 +1,7 @@
 #include "file.h"
 #include <QDebug>
 
-File::File(QString fileName)
+File::File(const QString &fileName)
 {
     init();
 
@@ -10,7 +10,7 @@ File::File(QString fileName)
     this->fileName = generatedFileName + "_part_" + QString::number(activeFileNumber) + ".mp4";
 }
 
-QString File::generateNewFileName(QString baseName)
+QString File::generateNewFileName(const QString &baseName)
 {
     bool ready = false;
     int counter = 0;
@@ -108,4 +108,9 @@ QString File::getActiveFile()
     QFile file(APP_DIR APP_NAME "/" + fileName);
 
     return file.fileName();
+}
+
+QString File::getGeneratedFileName()
+{
+    return generatedFileName;
 }

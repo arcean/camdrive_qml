@@ -11,18 +11,19 @@
 class File
 {
 public:
-    File(QString fileName);
+    File(const QString &fileName);
     bool init();
     bool fileReady();
     void changeFile(int partNumber);
     int getActiveFileNumber();
     QString getActiveFile();
+    QString getGeneratedFileName();
 
 private:
     void createAppCatalog();
     bool checkIfNotExists();
     void removeTempFiles();
-    QString generateNewFileName(QString baseName);
+    QString generateNewFileName(const QString &baseName);
 
     QString fileName;
     QString generatedFileName;
