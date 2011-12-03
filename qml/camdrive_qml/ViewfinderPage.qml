@@ -438,7 +438,7 @@ Page {
                   id: text
                   font.pixelSize: 22
                   color: "white"
-                  text: "Do you want to save video?\n"
+                  text: "Do you want to stop recording and exit?\n"
              }
          }
          buttons: ButtonRow {
