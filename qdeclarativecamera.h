@@ -11,6 +11,7 @@
 
 #include "file.h"
 #include "settings.h"
+#include "database.h"
 
 #define CAM_DEFAULT_FILE_NAME "camdrive_file"
 
@@ -50,6 +51,10 @@ protected slots:
     void durationChangedFunc(qint64 duration);
 
 private:
+    void addNewVideo(const QString& videoName);
+    void addNewVideoPart(const QString& videoName, float latitude, float longitude, int speed);
+    void removeVideo(const QString& videoName);
+
     QCamera* camera_;
     QCameraImageCapture* imageprocessing_;
     QGraphicsVideoItem* viewfinder_;
@@ -62,6 +67,8 @@ private:
     Settings *settingsObject;
     bool isRecording;
     int videoPartNumber;
+
+    Database *Db;
 };
 
 #endif // QDeclarativeCamera_H

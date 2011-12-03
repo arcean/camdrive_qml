@@ -8,6 +8,12 @@ QDeclarativeCamera::QDeclarativeCamera(QDeclarativeItem *parent) :
     viewfinder_(0)
 {
     settingsObject = new Settings();
+    Db = new Database();
+
+    /* Initialize database */
+    Db->openDatabase();
+    Db->createTables();
+
     firstCamera = true;
     toggleCamera();
 }
@@ -212,4 +218,19 @@ void QDeclarativeCamera::unload()
     isRecording = false;
 
     camera_->unload();
+}
+
+void QDeclarativeCamera::addNewVideo(const QString& videoName)
+{
+    Db->addNewVideo(videoName);
+}
+
+void QDeclarativeCamera::addNewVideoPart(const QString& videoName, float latitude, float longitude, int speed)
+{
+    Db->addNewVideoInfo(videoName, latitude, longitude, speed);
+}
+
+void QDeclarativeCamera::removeVideo(const QString& videoName)
+{
+    Db->removeVideo(videoName);
 }
