@@ -31,6 +31,7 @@ public:
 
 signals:
     void durationChanged(qint64 duration);
+    void videoPartNumberChanged(int videoPartNumber);
 
 public slots:
     void viewfinderSizeChanged(const QSizeF& size);

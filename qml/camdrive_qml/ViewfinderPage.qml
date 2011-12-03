@@ -11,6 +11,7 @@ Page {
 
     id:videoPage
     property int orientation: 0
+    property int videoPartCounter: 0
     property bool isCameraActive: false
     property bool isCameraRecording: false
     orientationLock: PageOrientation.LockLandscape
@@ -126,12 +127,14 @@ Page {
         seconds = Math.floor(seconds)
         minutes = Math.floor(minutes)
 
+        minutes += viewfinderPage.videoPartCounter
+
         if(seconds < 10)
             spacer = "0"
         else
             spacer = ""
 
-        textCounter.text = minutes + ":" + spacer + seconds + "/" + settingsObject.getStoreLastInMinutes() + ":00"
+        textCounter.text = minutes + ":" + spacer + seconds;// + "/" + settingsObject.getStoreLastInMinutes() + ":00"
     }
 
     function setSpeed(speed)
@@ -161,8 +164,9 @@ Page {
 
     function stopRecording()
     {
-        videoPage.isCameraRecording = false
-        frontCam.stopRecording()
+        videoPage.isCameraRecording = false;
+        frontCam.stopRecording();
+        viewfinderPage.videoPartCounter = 0;
     }
 
     Scale {
@@ -207,6 +211,9 @@ Page {
         // aspectRatio:Qt.KeepAspectRatioByExpanding
         onDurationChanged: {
             updateCounter(duration)
+        }
+        onVideoPartNumberChanged: {
+            viewfinderPage.videoPartCounter++;
         }
     }
 

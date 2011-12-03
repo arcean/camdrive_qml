@@ -45,9 +45,10 @@ void QDeclarativeCamera::initFile()
 void QDeclarativeCamera::changeUsedFile()
 {
     videoPartNumber++;
-    if(videoPartNumber >= settingsObject->getStoreLast()) {
+    if(videoPartNumber >= settingsObject->getStoreLastInMinutes()) {
         videoPartNumber = 0;
     }
+    emit videoPartNumberChanged(videoPartNumber);
     qDebug() << "Changing used temp file for recording...";
     this->stopRecording();
     file->changeFile(videoPartNumber);
