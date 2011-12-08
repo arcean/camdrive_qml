@@ -103,6 +103,9 @@ void Database::addNewVideoInfo(const QString &videoName, float latitude, float l
     else if (!settings->getEnableStoringPositionInfo() && settings->getEnableStoringSpeedInfo())
         query.exec(QString("INSERT INTO '%1' VALUES(NULL,NULL,NULL,'%2')")
                     .arg(videoName).arg(speed));
+    else if (settings->getEnableStoringPositionInfo() && !settings->getEnableStoringSpeedInfo())
+        query.exec(QString("INSERT INTO '%1' VALUES(NULL,'%1','%2',NULL)")
+                    .arg(videoName).arg(latitude).arg(longitude));
     /* Else -> do nothing */
 }
 

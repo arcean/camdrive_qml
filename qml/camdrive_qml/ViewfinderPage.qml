@@ -14,6 +14,7 @@ Page {
     property int videoPartCounter: 0
     property bool isCameraActive: false
     property bool isCameraRecording: false
+    property int speed: 0
     orientationLock: PageOrientation.LockLandscape
 
     Component.onCompleted: {
@@ -40,19 +41,27 @@ Page {
     }
 
     Timer {
+        id: storeDataTimer
+        interval: settingsObject.getStoreDataEachXSeconds() * 1000
+        repeat: true
+        running: false
+
+        onTriggered: {
+            frontCam.addNewVideoInfoQML(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude, speed);
+        }
+    }
+
+    Timer {
         id: timerTouchToStartRecording
         interval: 1200
         repeat: true
         running: true
 
         onTriggered: {
-            if (textTouchToStartRecording.opacity == 1) {
+            if (textTouchToStartRecording.opacity == 1)
                 textTouchToStartRecording.opacity = 0
-            }
-            else {
+            else
                 textTouchToStartRecording.opacity = 1
-            }
-
         }
     }
 
@@ -105,7 +114,6 @@ Page {
         id: positionSource
         updateInterval: 1000
         active: true
-        property int speed: 0
         onPositionChanged: {
             speed = positionSource.position.speed;
             speed = speed * 3.6;
@@ -158,8 +166,9 @@ Page {
 
     function startRecording()
     {
-        videoPage.isCameraRecording = true
-        frontCam.startRecording()
+        videoPage.isCameraRecording = true;
+        frontCam.startRecording();
+        storeDataTimer.running = true;
     }
 
     function stopRecording()
@@ -167,6 +176,7 @@ Page {
         videoPage.isCameraRecording = false;
         frontCam.stopRecording();
         viewfinderPage.videoPartCounter = 0;
+        storeDataTimer.running = false;
     }
 
     Scale {

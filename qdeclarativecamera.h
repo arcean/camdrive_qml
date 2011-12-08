@@ -39,6 +39,8 @@ public slots:
     void toggleCamera();
     void changeUsedFile();
 
+    void addNewVideoInfoQML(float latitude, float longitude, int speed);
+
     void startRecording();
     void stopRecording();
     void pauseRecording();
@@ -55,6 +57,7 @@ private:
     void addNewVideoInfo(const QString& videoName, float latitude, float longitude, int speed);
     void removeVideo(const QString& videoName);
     void addNewVideoPart(const QString& videoName);
+    void getCurrentVideoName(QString& videoName);
 
     QCamera* camera_;
     QCameraImageCapture* imageprocessing_;

@@ -19,14 +19,14 @@ QString File::generateNewFileName(const QString &baseName)
 
     while (!ready) {
         if(counter > 0)
-            file.setFileName(APP_DIR APP_NAME "/" + baseName + "(" + QString::number(counter) +")_part_1.mp4");
+            file.setFileName(APP_DIR APP_NAME "/" + baseName + "_" + QString::number(counter) +"__part_1.mp4");
         else
             file.setFileName(APP_DIR APP_NAME "/" + baseName + "_part_1.mp4");
 
         if(counter == 0)
             data = baseName;
         else
-            data = baseName + "(" + QString::number(counter) +")";
+            data = baseName + "_" + QString::number(counter) +"_";
 
         if(!file.exists()) {
             return data;

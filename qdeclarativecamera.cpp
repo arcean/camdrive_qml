@@ -253,3 +253,19 @@ void QDeclarativeCamera::addNewVideoPart(const QString& videoName)
 {
     Db->createVideoDetailsTable(videoName);
 }
+
+void QDeclarativeCamera::getCurrentVideoName(QString& videoName)
+{
+    videoName = file->getGeneratedFileName() + "_part_" + QString::number(videoPartNumber + 1);
+}
+
+void QDeclarativeCamera::addNewVideoInfoQML(float latitude, float longitude, int speed)
+{
+    QString videoName = "";
+    getCurrentVideoName(videoName);
+
+    qDebug() << "VIDEO NAME: " << videoName;
+    qDebug() << "lati:" << latitude << " speed: " << speed;
+
+    addNewVideoInfo(videoName, latitude, longitude, speed);
+}
