@@ -51,8 +51,6 @@ public slots:
     void stop();
     void unload();
 
-    Database* getDatabase();
-
 protected slots:
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
     void durationChangedFunc(qint64 duration);

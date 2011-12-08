@@ -239,9 +239,6 @@ Page {
         }
 
         function setVideo(videoUrl) {
-            console.log("DATA: ")
-            console.log(videoUrl)
-            console.log(decodeURIComponent(videoUrl))
             videoPlayer.source = decodeURIComponent(videoUrl);
             videoPlaying = true;
             videoPlayer.play();
