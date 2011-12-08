@@ -123,3 +123,36 @@ bool Database::removeVideo(const QString &videoName)
 
     return result;
 }
+
+float Database::getVideoInfoLatitude(const QString &videoName, int videoId)
+{
+    QSqlQuery query;
+
+    query.exec(QString("SELECT latitude FROM '%1' WHERE videoName=%2").arg(videoName).arg(videoId));
+    query.next();
+    float result = query.value(0).toFloat();
+
+    return result;
+}
+
+float Database::getVideoInfoLongitude(const QString &videoName, int videoId)
+{
+    QSqlQuery query;
+
+    query.exec(QString("SELECT longitude FROM '%1' WHERE videoName=%2").arg(videoName).arg(videoId));
+    query.next();
+    float result = query.value(0).toFloat();
+
+    return result;
+}
+
+int Database::getVideoInfoSpeed(const QString &videoName, int videoId)
+{
+    QSqlQuery query;
+
+    query.exec(QString("SELECT speed FROM '%1' WHERE videoName=%2").arg(videoName).arg(videoId));
+    query.next();
+    int result = query.value(0).toInt();
+
+    return result;
+}

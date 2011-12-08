@@ -40,6 +40,9 @@ public slots:
     void changeUsedFile();
 
     void addNewVideoInfoQML(float latitude, float longitude, int speed);
+    float getVideoInfoLatitude(const QString &videoName, int videoId);
+    float getVideoInfoLongitude(const QString &videoName, int videoId);
+    int getVideoInfoSpeed(const QString &videoName, int videoId);
 
     void startRecording();
     void stopRecording();

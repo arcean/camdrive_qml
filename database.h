@@ -21,6 +21,9 @@ public:
     void addNewVideo(const QString &videoName, int numberOfVideoParts);
     void addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed);
     void createVideoDetailsTable(const QString &videoName);
+    float getVideoInfoLatitude(const QString &videoName, int videoId);
+    float getVideoInfoLongitude(const QString &videoName, int videoId);
+    int getVideoInfoSpeed(const QString &videoName, int videoId);
 
 signals:
 

@@ -269,3 +269,18 @@ void QDeclarativeCamera::addNewVideoInfoQML(float latitude, float longitude, int
 
     addNewVideoInfo(videoName, latitude, longitude, speed);
 }
+
+float QDeclarativeCamera::getVideoInfoLatitude(const QString &videoName, int videoId)
+{
+    return Db->getVideoInfoLatitude(videoName, videoId);
+}
+
+float QDeclarativeCamera::getVideoInfoLongitude(const QString &videoName, int videoId)
+{
+    return Db->getVideoInfoLongitude(videoName, videoId);
+}
+
+int QDeclarativeCamera::getVideoInfoSpeed(const QString &videoName, int videoId)
+{
+    return Db->getVideoInfoSpeed(videoName, videoId);
+}
