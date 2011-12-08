@@ -115,11 +115,10 @@ Page {
         updateInterval: 1000
         active: true
         onPositionChanged: {
-            speed = positionSource.position.speed;
-            speed = speed * 3.6;
+            speed = positionSource.position.speed * 3.6;
 
             if (speed < 4)
-                speed = 4;
+                speed = 0;
 
             setSpeed(speed);
         }
