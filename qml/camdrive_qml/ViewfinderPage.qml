@@ -117,11 +117,11 @@ Page {
         onPositionChanged: {
             speed = positionSource.position.speed;
             speed = speed * 3.6;
-            //labelSpeed.text = speed + " km/h";
-            if(speed < 4)
-                setSpeed(0)
-            else
-                setSpeed(speed)
+
+            if (speed < 4)
+                speed = 4;
+
+            setSpeed(speed);
         }
     }
 
