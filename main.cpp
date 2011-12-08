@@ -6,6 +6,7 @@
 #include "qdeclarativecamera.h"
 #include "settings.h"
 #include "utils.h"
+#include "databasehelper.h"
 
 int main(int argc, char *argv[])
 {
@@ -16,6 +17,7 @@ int main(int argc, char *argv[])
 
     QmlApplicationViewer viewer;
     Utils utils;
+    DatabaseHelper databaseHelper;
 
     viewer.setViewport(new QGLWidget());
     qmlRegisterType<QDeclarativeCamera>("Camera", 1, 0, "Camera");
@@ -23,6 +25,7 @@ int main(int argc, char *argv[])
 
     QDeclarativeContext *context = viewer.rootContext();
     context->setContextProperty("Utils", &utils);
+    context->setContextProperty("DatabaseHelper", &databaseHelper);
 
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
     viewer.setMainQmlFile(QLatin1String("qml/camdrive_qml/main.qml"));

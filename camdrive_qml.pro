@@ -29,7 +29,8 @@ SOURCES += main.cpp \
     qdeclarativecamera.cpp \
     settings.cpp \
     utils.cpp \
-    database.cpp
+    database.cpp \
+    databasehelper.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -55,7 +56,8 @@ HEADERS += \
     qdeclarativecamera.h \
     settings.h \
     utils.h \
-    database.h
+    database.h \
+    databasehelper.h
 
 RESOURCES += \
     camdrive_qml.qrc
@@ -69,6 +71,8 @@ contains(MEEGO_EDITION,harmattan) {
 
     INSTALLS += icon desktop
 }
+
+
 
 
 

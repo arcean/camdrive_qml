@@ -3,6 +3,7 @@
 Database::Database(QObject *parent) :
     QObject(parent)
 {
+
 }
 
 void Database::setSettings(Settings *settings)
@@ -151,6 +152,17 @@ int Database::getVideoInfoSpeed(const QString &videoName, int videoId)
     QSqlQuery query;
 
     query.exec(QString("SELECT speed FROM '%1' WHERE videoName=%2").arg(videoName).arg(videoId));
+    query.next();
+    int result = query.value(0).toInt();
+
+    return result;
+}
+
+int Database::getVideoStoredEach(const QString &videoName)
+{
+    QSqlQuery query;
+
+    query.exec(QString("SELECT videoStoredEach FROM main WHERE videoName='%1'").arg(videoName));
     query.next();
     int result = query.value(0).toInt();
 

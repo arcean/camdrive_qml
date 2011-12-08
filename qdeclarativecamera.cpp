@@ -284,3 +284,8 @@ int QDeclarativeCamera::getVideoInfoSpeed(const QString &videoName, int videoId)
 {
     return Db->getVideoInfoSpeed(videoName, videoId);
 }
+
+Database* QDeclarativeCamera::getDatabase()
+{
+    return Db;
+}

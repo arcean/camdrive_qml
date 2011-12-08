@@ -14,6 +14,7 @@ Page {
     property int playlistPosition: 0
     property bool videoPaused: videoPlayer.paused
     property bool videoStopped: !videoPlayer.playing
+    property int videoInfoIterator: 1
 
     function setPlaylist(videoList) {
         playlistPosition = 0;
@@ -202,6 +203,17 @@ Page {
         onTriggered: videoPlayer.setVideo(currentVideo.url)
     }
 
+    Timer {
+        id: videoInfoTimer
+        interval: DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000
+        repeat: true
+        running: false
+
+        onTriggered: {
+            videoInfoIterator++;
+        }
+    }
+
     Video {
         id: videoPlayer
         x: 10
@@ -227,6 +239,9 @@ Page {
         }
 
         function setVideo(videoUrl) {
+            console.log("DATA: ")
+            console.log(videoUrl)
+            console.log(decodeURIComponent(videoUrl))
             videoPlayer.source = decodeURIComponent(videoUrl);
             videoPlaying = true;
             videoPlayer.play();

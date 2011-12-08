@@ -24,6 +24,7 @@ public:
     float getVideoInfoLatitude(const QString &videoName, int videoId);
     float getVideoInfoLongitude(const QString &videoName, int videoId);
     int getVideoInfoSpeed(const QString &videoName, int videoId);
+    int getVideoStoredEach(const QString &videoName);
 
 signals:
 
@@ -37,7 +38,6 @@ private:
 
     QSqlDatabase *db;
     Settings *settings;
-
 };
 
 #endif // DATABASE_H
