@@ -18,7 +18,7 @@ public:
     void setSettings(Settings *settings);
     void createTables();
     int countsIds();
-    void addNewVideo(const QString &videoName, int numberOfVideoParts);
+    void addNewVideo(const QString &videoName, int numberOfVideoParts, const QString &dateTime);
     void addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed);
     void createVideoDetailsTable(const QString &videoName);
     float getVideoInfoLatitude(const QString &videoName, int videoId);

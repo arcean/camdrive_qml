@@ -61,6 +61,7 @@ private:
     void removeVideo(const QString& videoName);
     void addNewVideoPart(const QString& videoName);
     void getCurrentVideoName(QString& videoName);
+    void getDateTime(QString &dateTime);
 
     QCamera* camera_;
     QCameraImageCapture* imageprocessing_;

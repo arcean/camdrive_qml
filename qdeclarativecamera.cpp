@@ -1,6 +1,7 @@
-#include "qdeclarativecamera.h"
 #include <QGraphicsVideoItem>
+#include <QDateTime>
 
+#include "qdeclarativecamera.h"
 
 QDeclarativeCamera::QDeclarativeCamera(QDeclarativeItem *parent) :
     QDeclarativeItem(parent),
@@ -234,9 +235,21 @@ void QDeclarativeCamera::unload()
     camera_->unload();
 }
 
+void QDeclarativeCamera::getDateTime(QString &dateTime)
+{
+    QDateTime dt = QDateTime::currentDateTime();
+    dateTime = dt.toString("dd.MM.yyyy");
+    dateTime += " ";
+    dateTime += dt.toString("hh:mm:ss");
+}
+
 void QDeclarativeCamera::addNewVideo(const QString& videoName, int videoParts)
 {
-    Db->addNewVideo(videoName, videoParts);
+    QString dt;
+
+    getDateTime(dt);
+    qDebug() << "HRML: " << dt;
+    Db->addNewVideo(videoName, videoParts, dt);
 }
 
 void QDeclarativeCamera::addNewVideoInfo(const QString& videoName, float latitude, float longitude, int speed)

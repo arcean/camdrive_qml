@@ -49,7 +49,7 @@ void Database::createMainTable()
 {
     QSqlQuery query;
     query.exec("CREATE TABLE IF NOT EXISTS main (id INTEGER PRIMARY KEY, "
-                    "videoName VARCHAR(80), videoStoredEach INT, numberOfVideoParts)");
+               "videoName VARCHAR(80), videoStoredEach INT, numberOfVideoParts INT, dateTime VARCHAR(80))");
 }
 
 void Database::createVideoDetailsTable(const QString &videoName)
@@ -82,7 +82,7 @@ int Database::getNumberOfVideoParts(const QString &videoName)
     return result;
 }
 
-void Database::addNewVideo(const QString &videoName, int numberOfVideoParts)
+void Database::addNewVideo(const QString &videoName, int numberOfVideoParts, const QString &dateTime)
 {
     QSqlQuery query;
 
@@ -90,8 +90,8 @@ void Database::addNewVideo(const QString &videoName, int numberOfVideoParts)
         createVideoDetailsTable(videoName);
     }
 
-    query.exec(QString("INSERT INTO main VALUES(NULL,'%1','%2', '%3')")
-                .arg(videoName).arg(settings->getStoreDataEachXSeconds()).arg(numberOfVideoParts));
+    query.exec(QString("INSERT INTO main VALUES(NULL,'%1','%2', '%3', '%4')")
+                .arg(videoName).arg(settings->getStoreDataEachXSeconds()).arg(numberOfVideoParts).arg(dateTime));
 }
 
 void Database::addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed)
