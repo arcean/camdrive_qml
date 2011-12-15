@@ -17,6 +17,17 @@ int DatabaseHelper::getVideoStoredEachQML(const QString &videoName)
     return Db->getVideoStoredEach(data);
 }
 
+int DatabaseHelper::getVideoInfoSpeed(const QString &videoName, int videoId)
+{
+    QSqlQuery query;
+
+    query.exec(QString("SELECT speed FROM '%1' WHERE videoName=%2").arg(videoName).arg(videoId));
+    query.next();
+    int result = query.value(0).toInt();
+
+    return result;
+}
+
 QString DatabaseHelper::removePostfix(const QString &videoName)
 {
     QString data = videoName;

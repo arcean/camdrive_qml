@@ -29,7 +29,6 @@ PageStackWindow {
 
     Component.onCompleted: {
         theme.inverted = true
-       // theme.color = 8
     }
 
     ToolBarLayout {

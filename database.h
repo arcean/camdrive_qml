@@ -13,6 +13,11 @@ class Database : public QObject
     Q_OBJECT
 public:
     explicit Database(QObject *parent = 0);
+
+signals:
+
+public slots:
+    bool removeVideo(const QString &videoName);
     void openDatabase();
     void closeDatabase();
     void setSettings(Settings *settings);
@@ -25,11 +30,6 @@ public:
     float getVideoInfoLongitude(const QString &videoName, int videoId);
     int getVideoInfoSpeed(const QString &videoName, int videoId);
     int getVideoStoredEach(const QString &videoName);
-
-signals:
-
-public slots:
-    bool removeVideo(const QString &videoName);
 
 private:
     void createAppCatalog();

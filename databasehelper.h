@@ -10,16 +10,16 @@ class DatabaseHelper : public QObject {
 
 public:
     explicit DatabaseHelper(QObject *parent = 0);
-    void setDatabase(Database *db);
 
 public slots:
+    void setDatabase(Database *db);
     int getVideoStoredEachQML(const QString &videoName);
+    int getVideoInfoSpeed(const QString &videoName, int videoId);
 
 private:
     QString removePrefix(const QString &url);
     QString removePostfix(const QString &videoName);
     QString removePostfixAndMore(const QString &videoName);
-
 
     Database *Db;
 };

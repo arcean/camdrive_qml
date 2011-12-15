@@ -33,6 +33,9 @@ public:
 signals:
     void durationChanged(qint64 duration);
     void videoPartNumberChanged(int videoPartNumber);
+    void createVideoDetailsTable(const QString &name);
+    void addNewVideoSignal(const QString &videoName, int numberOfVideoParts, const QString &dateTime);
+    void addNewVideoInfoSignal(const QString& videoName, float latitude, float longitude, int speed);
 
 public slots:
     void viewfinderSizeChanged(const QSizeF& size);
@@ -74,6 +77,7 @@ private:
     QTimer *timer;
     Settings *settingsObject;
     bool isRecording;
+    bool isRecordingInParts;
     int videoPartNumber;
 
     Database *Db;

@@ -19,6 +19,8 @@ Page {
 
     Component.onCompleted: {
         camMirrorScale.xScale = -1 * camMirrorScale.xScale
+        Database.openDatabase();
+        Database.createTables();
     }
 
     Compass {
@@ -223,6 +225,15 @@ Page {
         }
         onVideoPartNumberChanged: {
             viewfinderPage.videoPartCounter++;
+        }
+        onCreateVideoDetailsTable: {
+            Database.createVideoDetailsTable(name);
+        }
+        onAddNewVideoSignal: {
+            Database.addNewVideo(videoName, numberOfVideoParts, dateTime);
+        }
+        onAddNewVideoInfoSignal: {
+            Database.addNewVideoInfo(videoName, latitude, longitude, speed);
         }
     }
 
