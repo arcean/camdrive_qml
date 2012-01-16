@@ -86,9 +86,9 @@ void Database::addNewVideo(const QString &videoName, int numberOfVideoParts, con
 {
     QSqlQuery query;
 
-    if(settings->getEnableStoringPositionInfo() || settings->getEnableStoringSpeedInfo()) {
-        createVideoDetailsTable(videoName);
-    }
+   // if(settings->getEnableStoringPositionInfo() || settings->getEnableStoringSpeedInfo()) {
+   //     createVideoDetailsTable(videoName);
+   // }
 
     query.exec(QString("INSERT INTO main VALUES(NULL,'%1','%2', '%3', '%4')")
                 .arg(videoName).arg(settings->getStoreDataEachXSeconds()).arg(numberOfVideoParts).arg(dateTime));

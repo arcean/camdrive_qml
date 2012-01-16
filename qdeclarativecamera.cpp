@@ -65,7 +65,7 @@ void QDeclarativeCamera::changeUsedFile()
     /* Create a table for the new video part. */
     QString baseName = file->getGeneratedFileName();
     QString name = baseName + "_part_" + QString::number(videoPartNumber+1);
-    this->addNewVideoPart(name);
+    Db->createVideoDetailsTable(name);
 
     this->startRecording();
     qDebug() << "Changing temp file: DONE";
@@ -95,7 +95,7 @@ void QDeclarativeCamera::startRecording()
         /* And now we want entries for the first part of the video. */
         QString baseName = file->getGeneratedFileName();
         QString name = baseName + "_part_" + QString::number(videoPartNumber+1);
-        this->addNewVideoPart(name);
+        Db->createVideoDetailsTable(name);
 
         isRecordingInParts = true;
     }
@@ -103,7 +103,6 @@ void QDeclarativeCamera::startRecording()
 
     qDebug() << "setOutputLocation refd: " << QDir::toNativeSeparators(file->getActiveFile());
     mediaRecorder_->record();
-     qDebug() << "HMM error: " << mediaRecorder_->errorString();
     if(!settingsObject->getEnableContinousRecording())
         timer->start();
 }
@@ -250,14 +249,11 @@ void QDeclarativeCamera::addNewVideo(const QString& videoName, int videoParts)
     QString dt;
 
     getDateTime(dt);
-    qDebug() << "HRML: " << dt;
-    //Db->addNewVideo(videoName, videoParts, dt);
     emit this->addNewVideoSignal(videoName, videoParts, dt);
 }
 
 void QDeclarativeCamera::addNewVideoInfo(const QString& videoName, float latitude, float longitude, int speed)
 {
-   // Db->addNewVideoInfo(videoName, latitude, longitude, speed);
     emit this->addNewVideoInfoSignal(videoName, latitude, longitude, speed);
 }
 
@@ -269,7 +265,6 @@ void QDeclarativeCamera::removeVideo(const QString& videoName)
 void QDeclarativeCamera::addNewVideoPart(const QString& videoName)
 {
     emit this->createVideoDetailsTable(videoName);
-    //Db->createVideoDetailsTable(videoName);
 }
 
 void QDeclarativeCamera::getCurrentVideoName(QString& videoName)

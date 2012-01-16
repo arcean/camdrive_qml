@@ -5,6 +5,7 @@ PageStackWindow {
     id: appWindow
     initialPage: mainPage
     showToolBar: false
+    showStatusBar: false
 
     property int _SMALL_FONT_SIZE: 18
     property int _STANDARD_FONT_SIZE: 24

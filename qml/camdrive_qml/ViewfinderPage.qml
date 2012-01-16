@@ -226,9 +226,9 @@ Page {
         onVideoPartNumberChanged: {
             viewfinderPage.videoPartCounter++;
         }
-        onCreateVideoDetailsTable: {
-            Database.createVideoDetailsTable(name);
-        }
+    //    onCreateVideoDetailsTable: {
+    //        Database.createVideoDetailsTable(name);
+    //   }
         onAddNewVideoSignal: {
             Database.addNewVideo(videoName, numberOfVideoParts, dateTime);
         }
