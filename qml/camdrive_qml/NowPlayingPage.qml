@@ -280,6 +280,8 @@ Page {
         anchors.leftMargin: 10
         anchors.top: parent.top
         anchors.topMargin: 10
+        z: 10
+        font.pixelSize: _STANDARD_FONT_SIZE
     }
 
     Video {
@@ -350,17 +352,89 @@ Page {
         width: nowPlayingPage.width - map.x - 20
         height: nowPlayingPage.height - 20 - toolBar.height
         color: "green"
-        opacity: 0
+        opacity: 0       
+    }
+
+    Flickable {
+        id: flicker
+
+        anchors.fill: details
+        contentWidth: width
+        contentHeight: column.height + 20
+
+        Column {
+            id: column
+
+            anchors { top: parent.top; left: parent.left; right: parent.right; margins: 20 }
+            spacing: 10
+
+            Label {
+                id: titleText
+
+                width: parent.width
+                font.pixelSize: 32
+                color: _TEXT_COLOR
+                wrapMode: Text.WordWrap
+                text: video.available ? video.metaData.fileName.slice(0, video.metaData.fileName.lastIndexOf(".")) : ""
+            }
+
+            Column {
+                width: parent.width
+
+                Label {
+                    color: _TEXT_COLOR
+                    text: video.available ? "Length" + ": " + Utils.getDuration(video.metaData.duration) : ""
+                }
+
+                Label {
+                    color: _TEXT_COLOR
+                    text: video.available ? "Format" + ": " + video.metaData.fileExtension.toUpperCase() : ""
+                }
+
+                Label {
+                    color: _TEXT_COLOR
+                    text: video.available ? "Size" + ": " + video.getFileSize() : ""
+                }
+
+                Label {
+                    color: _TEXT_COLOR
+                    text: video.available ? "Added" + ": " + Qt.formatDateTime(video.metaData.lastModified) : ""
+                }
+
+                Label {
+                    color: _TEXT_COLOR
+                    text: video.available ? "Times played" + ": " + video.metaData.playCount : ""
+                }
+
+                Label {
+                    id: actualSpeedLabel
+                    color: _TEXT_COLOR
+                    text: "Actual speed: n/a"
+                }
+
+                Label {
+                    id: longitudeLabel
+                    color: _TEXT_COLOR
+                    text: "Longitude: n/a"
+                }
+
+                Label {
+                    id: latitudeLabel
+                    color: _TEXT_COLOR
+                    text: "Latitude: n/a"
+                }
+            }
+        }
     }
 
     Map {
         id: map
         x: videoPlayer.x + videoPlayer.width + 10
         y: 10
-        width: nowPlayingPage.width - map.x - 20
+        width: nowPlayingPage.width - x - 20
         height: nowPlayingPage.height - 20 - toolBar.height
         plugin : Plugin { name: "nokia" }
-        zoomLevel: map.maximumZoomLevel - 2
+        zoomLevel: maximumZoomLevel - 2
         center: ourCoord
 
         MapImage {
@@ -378,57 +452,56 @@ Page {
         }
 
 
+    }
+    //! Map's mouse area for implementation of panning in the map and zoom on double click
+    MouseArea {
+        id: mousearea
+        z: 10
 
-        //! Map's mouse area for implementation of panning in the map and zoom on double click
-        MouseArea {
-            id: mousearea
+        //! Property used to indicate if panning the map
+        property bool __isPanning: false
 
-            //! Property used to indicate if panning the map
-            property bool __isPanning: false
+        //! Last pressed X and Y position
+        property int __lastX: -1
+        property int __lastY: -1
 
-            //! Last pressed X and Y position
-            property int __lastX: -1
-            property int __lastY: -1
+        anchors.fill: map
 
-            anchors.fill : parent
+        //! When pressed, indicate that panning has been started and update saved X and Y values
+        onPressed: {
+            __isPanning = true
+            __lastX = mouse.x
+            __lastY = mouse.y
+            console.log("LLLL")
+        }
 
-            //! When pressed, indicate that panning has been started and update saved X and Y values
-            onPressed: {
-                __isPanning = true
+        //! When released, indicate that panning has finished
+        onReleased: {
+            __isPanning = false
+        }
+
+        //! Move the map when panning
+        onPositionChanged: {
+            if (__isPanning) {
+                var dx = mouse.x - __lastX
+                var dy = mouse.y - __lastY
+                map.pan(-dx, -dy)
                 __lastX = mouse.x
                 __lastY = mouse.y
-                console.log("LLLL")
-            }
-
-            //! When released, indicate that panning has finished
-            onReleased: {
-                __isPanning = false
-            }
-
-            //! Move the map when panning
-            onPositionChanged: {
-                if (__isPanning) {
-                    var dx = mouse.x - __lastX
-                    var dy = mouse.y - __lastY
-                    map.pan(-dx, -dy)
-                    __lastX = mouse.x
-                    __lastY = mouse.y
-                }
-            }
-
-            //! When canceled, indicate that panning has finished
-            onCanceled: {
-                __isPanning = false;
-            }
-
-            //! Zoom one level when double clicked
-            onDoubleClicked: {
-                map.center = map.toCoordinate(Qt.point(__lastX,__lastY))
-                map.zoomLevel += 1
             }
         }
-    }
 
+        //! When canceled, indicate that panning has finished
+        onCanceled: {
+            __isPanning = false;
+        }
+
+        //! Zoom one level when double clicked
+        onDoubleClicked: {
+            map.center = map.toCoordinate(Qt.point(__lastX,__lastY))
+            map.zoomLevel += 1
+        }
+    }
     states: [
         State {
             name: "videoFullscreen"
@@ -537,78 +610,6 @@ Page {
             value: ""
         }
         onStatusChanged: if ((videoModel.status == DocumentGalleryModel.Finished) && (videoModel.count > 0)) video.item = videoModel.get(0).itemId;
-    }
-
-    Flickable {
-        id: flicker
-
-        anchors.fill: details
-        contentWidth: width
-        contentHeight: column.height + 20
-
-        Column {
-            id: column
-
-            anchors { top: parent.top; left: parent.left; right: parent.right; margins: 20 }
-            spacing: 10
-
-            Label {
-                id: titleText
-
-                width: parent.width
-                font.pixelSize: 32
-                color: _TEXT_COLOR
-                wrapMode: Text.WordWrap
-                text: video.available ? video.metaData.fileName.slice(0, video.metaData.fileName.lastIndexOf(".")) : ""
-            }
-
-            Column {
-                width: parent.width
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? "Length" + ": " + Utils.getDuration(video.metaData.duration) : ""
-                }
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? "Format" + ": " + video.metaData.fileExtension.toUpperCase() : ""
-                }
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? "Size" + ": " + video.getFileSize() : ""
-                }
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? "Added" + ": " + Qt.formatDateTime(video.metaData.lastModified) : ""
-                }
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? "Times played" + ": " + video.metaData.playCount : ""
-                }
-
-                Label {
-                    id: actualSpeedLabel
-                    color: _TEXT_COLOR
-                    text: "Actual speed: n/a"
-                }
-
-                Label {
-                    id: longitudeLabel
-                    color: _TEXT_COLOR
-                    text: "Longitude: n/a"
-                }
-
-                Label {
-                    id: latitudeLabel
-                    color: _TEXT_COLOR
-                    text: "Latitude: n/a"
-                }
-            }
-        }
     }
 
     ScrollDecorator {
