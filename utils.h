@@ -15,7 +15,7 @@ public slots:
 
 signals:
     void information(const QString &message);
-    void videoDeleted();
+    void videoDeleted(const QString &path);
 
 };
 

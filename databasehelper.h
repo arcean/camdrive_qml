@@ -5,6 +5,9 @@
 
 #include <QObject>
 
+#define APP_NAME "camdrive"
+#define APP_DIR "/home/user/MyDocs/"
+
 class DatabaseHelper : public QObject {
     Q_OBJECT
 
@@ -17,11 +20,15 @@ public slots:
     int getVideoInfoSpeedQML(const QString &videoName, int videoId);
     float getVideoInfoLatitudeQML(const QString &videoName, int videoId);
     float getVideoInfoLongitudeQML(const QString &videoName, int videoId);
+    void removeVideoQML(const QString &videoName);
+    void removeVideoFromMainQML(const QString &videoName);
+    bool isFileNameFreeQML(const QString &fileName);
 
 private:
     QString removePrefix(const QString &url);
     QString removePostfix(const QString &videoName);
     QString removePostfixAndMore(const QString &videoName);
+    QString removePrefixPath(const QString &videoName);
 
     Database *Db;
 };

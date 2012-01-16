@@ -8,7 +8,7 @@
 
 #include "settings.h"
 
-#define MAX_PARTS 9
+#define MAX_PARTS 6
 
 class Database : public QObject
 {
@@ -32,6 +32,7 @@ public slots:
     float getVideoInfoLongitude(const QString &videoName, int videoId);
     int getVideoInfoSpeed(const QString &videoName, int videoId);
     int getVideoStoredEach(const QString &videoName);
+    bool removeVideoFromMain(const QString &videoName);
 
 private:
     void createAppCatalog();

@@ -61,6 +61,12 @@ void QDeclarativeCamera::changeUsedFile()
     this->stopRecording();
     file->changeFile(videoPartNumber);
     setOutputLocation();
+
+    /* Create a table for the new video part. */
+    QString baseName = file->getGeneratedFileName();
+    QString name = baseName + "_part_" + QString::number(videoPartNumber+1);
+    this->addNewVideoPart(name);
+
     this->startRecording();
     qDebug() << "Changing temp file: DONE";
 }
@@ -83,17 +89,13 @@ void QDeclarativeCamera::startRecording()
         return;
 
     if(!isRecordingInParts) {
-        /* Create entry in main table for our new video */
+        /* Create entry in main table for our new video. */
         int videoParts = settingsObject->getStoreLastInMinutes();
         this->addNewVideo(file->getGeneratedFileName(), videoParts);
-        /* And now we want entries for all parts of the video */
+        /* And now we want entries for the first part of the video. */
         QString baseName = file->getGeneratedFileName();
-        QString name;
-
-        for (int i = 0; i < videoParts; i++) {
-            name = baseName + "_part_" + QString::number(i+1);
-            this->addNewVideoPart(name);
-        }
+        QString name = baseName + "_part_" + QString::number(videoPartNumber+1);
+        this->addNewVideoPart(name);
 
         isRecordingInParts = true;
     }

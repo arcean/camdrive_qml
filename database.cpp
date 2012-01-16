@@ -114,16 +114,22 @@ bool Database::removeVideo(const QString &videoName)
 {
     QSqlQuery query;
     bool result;
-    int parts = getNumberOfVideoParts(videoName);
-
-    qDebug() << "parts num" << parts;
 
     result = query.exec(QString("DROP TABLE IF EXISTS '%1'")
-                        .arg(videoName + "_part_" + QString::number( getNumberOfVideoParts(videoName) )));
+                        .arg(videoName));
 
-    if(result)
-        query.exec(QString("DELETE FROM main WHERE videoName = '%1'")
-                    .arg(videoName));
+    qDebug() << "DROPPING TABLE:" << videoName;
+
+    return result;
+}
+
+bool Database::removeVideoFromMain(const QString &videoName)
+{
+    QSqlQuery query;
+    bool result;
+
+    result = query.exec(QString("DELETE FROM main WHERE videoName = '%1'")
+                .arg(videoName));
 
     return result;
 }

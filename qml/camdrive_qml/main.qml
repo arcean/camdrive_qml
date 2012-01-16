@@ -58,8 +58,17 @@ PageStackWindow {
 
     Connections {
         target: Utils
-        onInformation: messageHandler.showMessage(message)
-        onVideoDeleted: videoListPage.reloadVideoList()
+        onInformation: messageHandler.showMessage(message);
+        onVideoDeleted: deleteVideo(path);
+    }
+
+    function deleteVideo(path)
+    {
+        videoListPage.reloadVideoList();
+        DatabaseHelper.removeVideoQML(path);
+        if (DatabaseHelper.isFileNameFreeQML(path)) {
+            DatabaseHelper.removeVideoFromMainQML(path);
+        }
     }
 
     function showToolbar()

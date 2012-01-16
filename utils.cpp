@@ -8,7 +8,7 @@ void Utils::deleteVideo(const QString &path) {
     QString message;
     if (QFile::remove(path)) {
         message = tr("Video deleted successfully");
-        emit videoDeleted();
+        emit videoDeleted(path);
     }
     else {
         message = tr("Video could not be deleted");
