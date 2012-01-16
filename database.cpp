@@ -114,6 +114,9 @@ bool Database::removeVideo(const QString &videoName)
 {
     QSqlQuery query;
     bool result;
+    int parts = getNumberOfVideoParts(videoName);
+
+    qDebug() << "parts num" << parts;
 
     result = query.exec(QString("DROP TABLE IF EXISTS '%1'")
                         .arg(videoName + "_part_" + QString::number( getNumberOfVideoParts(videoName) )));

@@ -8,6 +8,8 @@
 
 #include "settings.h"
 
+#define MAX_PARTS 9
+
 class Database : public QObject
 {
     Q_OBJECT

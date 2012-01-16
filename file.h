@@ -18,6 +18,7 @@ public:
     int getActiveFileNumber();
     QString getActiveFile();
     QString getGeneratedFileName();
+    bool isFileNameFree(const QString &fileName);
 
 private:
     void createAppCatalog();

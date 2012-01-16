@@ -8,27 +8,54 @@ File::File(const QString &fileName)
     generatedFileName = generateNewFileName(fileName);
 
     this->fileName = generatedFileName + "_part_" + QString::number(activeFileNumber) + ".mp4";
+    qDebug() << "FNAME:" << this->fileName;
+}
+
+bool File::isFileNameFree(const QString &fileName)
+{
+    QFile file1;
+    QFile file2;
+    QFile file3;
+    QFile file4;
+    QFile file5;
+    QFile file6;
+
+    file1.setFileName(fileName + "_part_1.mp4");
+    file2.setFileName(fileName + "_part_2.mp4");
+    file3.setFileName(fileName + "_part_3.mp4");
+    file4.setFileName(fileName + "_part_4.mp4");
+    file5.setFileName(fileName + "_part_5.mp4");
+    file6.setFileName(fileName + "_part_6.mp4");
+
+    if(!file1.exists() && !file2.exists() && !file3.exists()
+             && !file4.exists() && !file5.exists() && !file6.exists()) {
+        return true;
+    }
+
+    return false;
 }
 
 QString File::generateNewFileName(const QString &baseName)
 {
     bool ready = false;
+    bool fileFree = true;
     int counter = 0;
-    QFile file;
     QString data;
 
     while (!ready) {
+        fileFree = true;
+
         if(counter > 0)
-            file.setFileName(APP_DIR APP_NAME "/" + baseName + "_" + QString::number(counter) +"__part_1.mp4");
+            fileFree = isFileNameFree(APP_DIR APP_NAME "/" + baseName + "_" + QString::number(counter) + "_");
         else
-            file.setFileName(APP_DIR APP_NAME "/" + baseName + "_part_1.mp4");
+            fileFree = isFileNameFree(APP_DIR APP_NAME "/" + baseName);
 
         if(counter == 0)
             data = baseName;
         else
-            data = baseName + "_" + QString::number(counter) +"_";
+            data = baseName + "_" + QString::number(counter) + "_";
 
-        if(!file.exists()) {
+        if( fileFree) {
             return data;
         }
 
