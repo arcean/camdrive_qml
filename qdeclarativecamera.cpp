@@ -137,21 +137,17 @@ void QDeclarativeCamera::toggleCamera()
 
     if(!firstCamera) {
         viewfinder_ = new QGraphicsVideoItem(this);
-        //viewfinder_->setAspectRatioMode(Qt::IgnoreAspectRatio);
         camera_ = new QCamera("secondary");
         camera_->setViewfinder(viewfinder_);
         camera_->setCaptureMode(QCamera::CaptureVideo);
         mediaRecorder_ = new QMediaRecorder(camera_);
-        //firstCamera = true;
     }
     else {
         viewfinder_ = new QGraphicsVideoItem(this);
-       // viewfinder_->setAspectRatioMode(Qt::IgnoreAspectRatio);
         camera_ = new QCamera("primary");
         camera_->setViewfinder(viewfinder_);
         camera_->setCaptureMode(QCamera::CaptureVideo);
         mediaRecorder_ = new QMediaRecorder(camera_);
-        //firstCamera = false;
     }
     connect(viewfinder_, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(viewfinderSizeChanged(QSizeF)));
     connect(mediaRecorder_, SIGNAL(durationChanged(qint64)), this, SLOT(durationChangedFunc(qint64)));
@@ -186,7 +182,6 @@ void QDeclarativeCamera::toggleCamera()
     mediaRecorder_->setMuted(settingsObject->getEnableAudio());
 
     initFile();
-  //  start();
 }
 
 void QDeclarativeCamera::viewfinderSizeChanged(const QSizeF& size)
@@ -210,8 +205,8 @@ void QDeclarativeCamera::setAspectRatio(const Qt::AspectRatioMode &aspectRatio)
         viewfinder_->setAspectRatioMode(aspectRatio);
     else if(aspectRatio == Qt::KeepAspectRatioByExpanding)
         viewfinder_->setAspectRatioMode(aspectRatio);
-    else
-    {
+    else {
+        /* Nothing yet. */
     }
 }
 

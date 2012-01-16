@@ -17,15 +17,28 @@ int DatabaseHelper::getVideoStoredEachQML(const QString &videoName)
     return Db->getVideoStoredEach(data);
 }
 
-int DatabaseHelper::getVideoInfoSpeed(const QString &videoName, int videoId)
+int DatabaseHelper::getVideoInfoSpeedQML(const QString &videoName, int videoId)
 {
-    QSqlQuery query;
+    QString data = removePostfix(videoName);
+    data = removePrefix(data);
+    qDebug() << "PRINT: " << data << "videoID" << videoId;
+    return Db->getVideoInfoSpeed(data, videoId);
+}
 
-    query.exec(QString("SELECT speed FROM '%1' WHERE videoName=%2").arg(videoName).arg(videoId));
-    query.next();
-    int result = query.value(0).toInt();
+float DatabaseHelper::getVideoInfoLatitudeQML(const QString &videoName, int videoId)
+{
+    QString data = removePostfix(videoName);
+    data = removePrefix(data);
+    qDebug() << "PRINT: " << data << "videoID" << videoId;
+    return Db->getVideoInfoLatitude(data, videoId);
+}
 
-    return result;
+float DatabaseHelper::getVideoInfoLongitudeQML(const QString &videoName, int videoId)
+{
+    QString data = removePostfix(videoName);
+    data = removePrefix(data);
+    qDebug() << "PRINT: " << data << "videoID" << videoId;
+    return Db->getVideoInfoLongitude(data, videoId);
 }
 
 QString DatabaseHelper::removePostfix(const QString &videoName)

@@ -129,7 +129,7 @@ float Database::getVideoInfoLatitude(const QString &videoName, int videoId)
 {
     QSqlQuery query;
 
-    query.exec(QString("SELECT latitude FROM '%1' WHERE videoName=%2").arg(videoName).arg(videoId));
+    query.exec(QString("SELECT latitude FROM '%1' WHERE videoId=%2").arg(videoName).arg(videoId));
     query.next();
     float result = query.value(0).toFloat();
 
@@ -140,7 +140,7 @@ float Database::getVideoInfoLongitude(const QString &videoName, int videoId)
 {
     QSqlQuery query;
 
-    query.exec(QString("SELECT longitude FROM '%1' WHERE videoName=%2").arg(videoName).arg(videoId));
+    query.exec(QString("SELECT longitude FROM '%1' WHERE videoId=%2").arg(videoName).arg(videoId));
     query.next();
     float result = query.value(0).toFloat();
 
@@ -151,7 +151,7 @@ int Database::getVideoInfoSpeed(const QString &videoName, int videoId)
 {
     QSqlQuery query;
 
-    query.exec(QString("SELECT speed FROM '%1' WHERE videoName=%2").arg(videoName).arg(videoId));
+    query.exec(QString("SELECT speed FROM '%1' WHERE videoId=%2").arg(videoName).arg(videoId));
     query.next();
     int result = query.value(0).toInt();
 

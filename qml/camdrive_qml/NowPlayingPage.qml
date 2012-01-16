@@ -1,4 +1,4 @@
-import QtQuick 1.0
+import QtQuick 1.1
 import com.nokia.meego 1.0
 import QtMultimediaKit 1.1
 import QtMobility.gallery 1.1
@@ -32,6 +32,16 @@ Page {
         }
     }
 
+    function startSpeedInfoTimer()
+    {
+        videoInfoIterator = 1;
+        setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, videoInfoIterator));
+        setLatitude(DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator));
+        setLongitude(DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator));
+        videoInfoIterator++;
+        videoInfoTimer.restart();
+    }
+
     function startPlayback() {
         if (currentVideo.itemId) {
             video.item = currentVideo.itemId;
@@ -42,6 +52,7 @@ Page {
         videoPlayer.stop();
         videoPlayer.source = "";
         archivePlaybackTimer.restart();
+        state = "showMap";
     }
 
     function exitNowPlaying() {
@@ -55,7 +66,49 @@ Page {
         videoPlaying = false;
         videoPlayer.source = "";
         currentVideo = [];
+        videoInfoTimer.stop();
         appWindow.pageStack.pop();
+    }
+
+    /* Sets speedLabel's text. */
+    function setSpeed(value)
+    {
+        speedLabel.text = value + " km\h";
+        actualSpeedLabel.text = value + " km\h";
+    }
+
+    Coordinate {
+        id: ourCoord
+        latitude: 56.62
+        longitude: 16.16
+    }
+
+    /* Sets longitudeLabel's text and position on the map. */
+    function setLongitude(value)
+    {
+        var loc;
+
+        if (value > 0)
+            loc = " E";
+        else
+            loc = " W";
+
+        ourCoord.longitude = value;
+        longitudeLabel.text = value + loc;
+    }
+
+    /* Sets latitudeLabel's text and position on the map. */
+    function setLatitude(value)
+    {
+        var loc;
+
+        if (value > 0)
+            loc = " N";
+        else
+            loc = " S";
+
+        ourCoord.latitude = value;
+        latitudeLabel.text = value + loc;
     }
 
     //orientationLock: PageOrientation.LockLandscape
@@ -200,7 +253,10 @@ Page {
         /* Prevents segfault when switching between videos */
 
         interval: 1000
-        onTriggered: videoPlayer.setVideo(currentVideo.url)
+        onTriggered: {
+            videoPlayer.setVideo(currentVideo.url);
+            startSpeedInfoTimer();
+        }
     }
 
     Timer {
@@ -210,8 +266,25 @@ Page {
         running: false
 
         onTriggered: {
-            videoInfoIterator++;
+            /*
+             * Check if videoPlayer is in paused state.
+             * If so, do not update additional video infos.
+             */
+            if (!videoPlayer.setToPaused) {
+                setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, videoInfoIterator));
+                setLatitude(DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator));
+                setLongitude(DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator));
+                videoInfoIterator++;
+            }
         }
+    }
+
+    Label {
+        id: speedLabel
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        anchors.top: parent.top
+        anchors.topMargin: 10
     }
 
     Video {
@@ -233,8 +306,8 @@ Page {
                 video.metaData.playCount++;
                 video.metaData.resumePosition = 0;
                 videoPlayer.position = 0;
-                videoPlayer.play();
-
+                //videoPlayer.play();
+                videoInfoTimer.stop();
             }
         }
 
@@ -273,16 +346,6 @@ Page {
         }
     }
 
-    Map {
-        id: map
-        x: videoPlayer.x + videoPlayer.width + 10
-        y: -10 + map.height * -1
-        width: nowPlayingPage.width - map.x - 20
-        height: nowPlayingPage.height - 20 - toolBar.height
-        plugin : Plugin { name: "nokia" }
-        zoomLevel: 10
-    }
-
     Rectangle {
         id: details
         x: videoPlayer.x + videoPlayer.width + 10
@@ -291,6 +354,82 @@ Page {
         height: nowPlayingPage.height - 20 - toolBar.height
         color: "green"
         opacity: 0
+    }
+
+    Map {
+        id: map
+        x: videoPlayer.x + videoPlayer.width + 10
+        y: 10
+        width: nowPlayingPage.width - map.x - 20
+        height: nowPlayingPage.height - 20 - toolBar.height
+        plugin : Plugin { name: "nokia" }
+        zoomLevel: 10
+        center: ourCoord
+
+        MapImage {
+            id: mapPlacer
+            source: _ICON_LOCATION + "icon-m-common-location-selected.png"
+            coordinate: ourCoord
+
+            /*!
+             * We want that bottom middle edge of icon points to the location, so using offset parameter
+             * to change the on-screen position from coordinate. Values are calculated based on icon size,
+             * in our case icon is 48x48.
+             */
+            offset.x: -24
+            offset.y: -48
+        }
+
+
+
+        //! Map's mouse area for implementation of panning in the map and zoom on double click
+        MouseArea {
+            id: mousearea
+
+            //! Property used to indicate if panning the map
+            property bool __isPanning: false
+
+            //! Last pressed X and Y position
+            property int __lastX: -1
+            property int __lastY: -1
+
+            anchors.fill : parent
+
+            //! When pressed, indicate that panning has been started and update saved X and Y values
+            onPressed: {
+                __isPanning = true
+                __lastX = mouse.x
+                __lastY = mouse.y
+                console.log("LLLL")
+            }
+
+            //! When released, indicate that panning has finished
+            onReleased: {
+                __isPanning = false
+            }
+
+            //! Move the map when panning
+            onPositionChanged: {
+                if (__isPanning) {
+                    var dx = mouse.x - __lastX
+                    var dy = mouse.y - __lastY
+                    map.pan(-dx, -dy)
+                    __lastX = mouse.x
+                    __lastY = mouse.y
+                }
+            }
+
+            //! When canceled, indicate that panning has finished
+            onCanceled: {
+                __isPanning = false;
+            }
+
+            //! Zoom one level when double clicked
+            onDoubleClicked: {
+                map.center = map.toCoordinate(Qt.point(__lastX,__lastY))
+                map.zoomLevel += 1
+            }
+        }
     }
 
     states: [
@@ -452,6 +591,24 @@ Page {
                 Label {
                     color: _TEXT_COLOR
                     text: video.available ? "Times played" + ": " + video.metaData.playCount : ""
+                }
+
+                Label {
+                    id: actualSpeedLabel
+                    color: _TEXT_COLOR
+                    text: "Actual speed: n/a"
+                }
+
+                Label {
+                    id: longitudeLabel
+                    color: _TEXT_COLOR
+                    text: "Longitude: n/a"
+                }
+
+                Label {
+                    id: latitudeLabel
+                    color: _TEXT_COLOR
+                    text: "Latitude: n/a"
                 }
             }
         }

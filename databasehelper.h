@@ -14,7 +14,9 @@ public:
 public slots:
     void setDatabase(Database *db);
     int getVideoStoredEachQML(const QString &videoName);
-    int getVideoInfoSpeed(const QString &videoName, int videoId);
+    int getVideoInfoSpeedQML(const QString &videoName, int videoId);
+    float getVideoInfoLatitudeQML(const QString &videoName, int videoId);
+    float getVideoInfoLongitudeQML(const QString &videoName, int videoId);
 
 private:
     QString removePrefix(const QString &url);
