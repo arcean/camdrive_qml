@@ -11,6 +11,9 @@ File::File(const QString &fileName)
     qDebug() << "FNAME:" << this->fileName;
 }
 
+/*
+ * Checki if basename fileName is free for all parts.
+ */
 bool File::isFileNameFree(const QString &fileName)
 {
     QFile file1;
@@ -35,6 +38,9 @@ bool File::isFileNameFree(const QString &fileName)
     return false;
 }
 
+/*
+ * Generarte new filename based on baseName.
+ */
 QString File::generateNewFileName(const QString &baseName)
 {
     bool ready = false;
@@ -69,8 +75,8 @@ QString File::generateNewFileName(const QString &baseName)
 }
 
 /*
-  If not exists, creates app catalog (where are stored temporary files)
-  */
+ * If not exists, creates app catalog (where are stored temporary files)
+ */
 void File::createAppCatalog()
 {
     QDir dir(APP_DIR APP_NAME);
@@ -103,8 +109,8 @@ bool File::checkIfNotExists()
 }
 
 /*
-  Changes currenlty use temporary file
-  */
+ * Changes currenlty use temporary file
+ */
 void File::changeFile(int partNumber)
 {
     activeFileNumber = partNumber + 1;
@@ -112,24 +118,24 @@ void File::changeFile(int partNumber)
 }
 
 /*
-  Moves currently recorder part to .videos dir
-  */
+ * Moves currently recorder part to .videos dir
+ */
 bool File::fileReady()
 {
     return true;
 }
 
 /*
-  Returns number of the currently used temporary file
-  */
+ * Returns number of the currently used temporary file
+ */
 int File::getActiveFileNumber()
 {
     return activeFileNumber;
 }
 
 /*
-  Returns full name of the currently used temporary file
-  */
+ * Returns full name of the currently used temporary file
+ */
 QString File::getActiveFile()
 {
     QFile file(APP_DIR APP_NAME "/" + fileName);
