@@ -9,12 +9,6 @@ QDeclarativeCamera::QDeclarativeCamera(QDeclarativeItem *parent) :
     viewfinder_(0)
 {
     settingsObject = new Settings();
-    //Db = new Database();
-
-    /* Initialize database */
-   // Db->openDatabase();
-   // Db->createTables();
-
     firstCamera = true;
     toggleCamera();
 }
@@ -75,8 +69,8 @@ void QDeclarativeCamera::changeUsedFile()
 */
 void QDeclarativeCamera::setOutputLocation()
 {
-    qDebug() << "setOutputLocation: " << QDir::toNativeSeparators(file->getActiveFile());
-   qDebug() << "setOutputLocation succ: " << mediaRecorder_->setOutputLocation(QDir::toNativeSeparators(file->getActiveFile()));
+    QDir::toNativeSeparators(file->getActiveFile());
+    mediaRecorder_->setOutputLocation(QDir::toNativeSeparators(file->getActiveFile()));
 }
 
 /**
@@ -100,7 +94,6 @@ void QDeclarativeCamera::startRecording()
     }
     /* ============================================ */
 
-    qDebug() << "setOutputLocation refd: " << QDir::toNativeSeparators(file->getActiveFile());
     mediaRecorder_->record();
     if(!settingsObject->getEnableContinousRecording())
         timer->start();
@@ -122,6 +115,9 @@ void QDeclarativeCamera::stopRecording()
     file->fileReady();
 }
 
+/*
+ * Initialize camera and load settings.
+ */
 void QDeclarativeCamera::toggleCamera()
 {
     if(mediaRecorder_) {

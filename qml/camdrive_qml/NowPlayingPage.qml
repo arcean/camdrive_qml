@@ -111,8 +111,6 @@ Page {
         latitudeLabel.text = value + loc;
     }
 
-    //orientationLock: PageOrientation.LockLandscape
-
     ToolBar {
         id: toolBar
 
@@ -121,10 +119,10 @@ Page {
         z: 10
         anchors { left: parent.left; right: parent.right; top: parent.bottom }
         //visible: !appWindow.inPortrait
-        platformStyle: ToolBarStyle {
-            inverted: true
+       // platformStyle: ToolBarStyle {
+       //     inverted: true
            // background: Qt.resolvedUrl("images/toolbar-background-double.png")
-        }
+       // }
 
         states: State {
             name: "show"
@@ -232,24 +230,24 @@ Page {
                     onReleased: {
                         if (posInsideMouseArea) {
                             videoPlayer.position = Math.floor((mouseX / width) * videoPlayer.duration);
+                            videoInfoIterator = Math.ceil(videoPlayer.position / (DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000));
                         }
                     }
                 }
             }
         }
     }
-
+/*
     Timer {
         id: controlsTimer
 
         running: (toolBar.show) && (!seekMouseArea.pressed)
         interval: 3000
-      //  onTriggered: toolBar.show = false
-    }
+        onTriggered: toolBar.show = false
+    }*/
 
     Timer {
         id: archivePlaybackTimer
-
         /* Prevents segfault when switching between videos */
 
         interval: 1000
@@ -308,6 +306,8 @@ Page {
                 videoPlayer.position = 0;
                 //videoPlayer.play();
                 videoInfoTimer.stop();
+                /* Play the video again. */
+                startPlayback();
             }
         }
 
@@ -617,6 +617,4 @@ Page {
     ScrollDecorator {
         flickableItem: flicker
     }
-
-
 }
