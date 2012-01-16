@@ -1,4 +1,4 @@
-import QtQuick 1.1
+import QtQuick 1.0
 import com.nokia.meego 1.0
 import QtMultimediaKit 1.1
 import QtMobility.gallery 1.1
@@ -55,11 +55,6 @@ Page {
         state = "showMap";
     }
 
-    function exitNowPlaying() {
-        appWindow.pageStack.pop();
-        video.metaData.resumePosition = Math.floor(videoPlayer.position / 1000);
-    }
-
     function stopPlayback() {
         video.metaData.resumePosition = Math.floor(videoPlayer.position / 1000);
         videoPlayer.stop();
@@ -86,6 +81,9 @@ Page {
     /* Sets longitudeLabel's text and position on the map. */
     function setLongitude(value)
     {
+        if (value == 0)
+            return;
+
         var loc;
 
         if (value > 0)
@@ -100,6 +98,9 @@ Page {
     /* Sets latitudeLabel's text and position on the map. */
     function setLatitude(value)
     {
+        if (value == 0)
+            return;
+
         var loc;
 
         if (value > 0)
@@ -113,16 +114,10 @@ Page {
 
     ToolBar {
         id: toolBar
-
-        property bool show: true
-
         z: 10
         anchors { left: parent.left; right: parent.right; top: parent.bottom }
-        //visible: !appWindow.inPortrait
-       // platformStyle: ToolBarStyle {
-       //     inverted: true
-           // background: Qt.resolvedUrl("images/toolbar-background-double.png")
-       // }
+
+        property bool show: true
 
         states: State {
             name: "show"
@@ -143,7 +138,7 @@ Page {
                 id: stopButton
                 anchors { left: parent.left }
                 platformIconId: "toolbar-back";
-                onClicked: exitNowPlaying()
+                onClicked: stopPlayback()
             }
 
             ToolIcon {
@@ -274,6 +269,8 @@ Page {
                 setLongitude(DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator));
                 videoInfoIterator++;
             }
+            else
+                videoInfoTimer.stop();
         }
     }
 
@@ -363,7 +360,7 @@ Page {
         width: nowPlayingPage.width - map.x - 20
         height: nowPlayingPage.height - 20 - toolBar.height
         plugin : Plugin { name: "nokia" }
-        zoomLevel: 10
+        zoomLevel: map.maximumZoomLevel - 2
         center: ourCoord
 
         MapImage {

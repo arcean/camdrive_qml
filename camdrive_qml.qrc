@@ -3,7 +3,6 @@
         <file>qml/camdrive_qml/main.qml</file>
         <file>qml/camdrive_qml/ViewfinderPage.qml</file>
         <file>qml/camdrive_qml/MainPage.qml</file>
-        <file>icons/background.png</file>
         <file>icons/emergency_call.png</file>
         <file>icons/files.png</file>
         <file>icons/files_highlighted.png</file>
@@ -19,6 +18,7 @@
         <file>qml/camdrive_qml/Separator.qml</file>
         <file>icons/dialogStop.png</file>
         <file>icons/idea.png</file>
+        <file>icons/background.png</file>
         <file>icons/background-portrait.png</file>
     </qresource>
 </RCC>
