@@ -129,8 +129,6 @@ Page {
     function updateCounter(duration)
     {
         var add = (((settingsObject.getStoreLastInMinutes() * 60 * 1000) / 2)  * videoPartCounter) + duration;
-        console.log('IMP IMP IMP IMP:', (((settingsObject.getStoreLastInMinutes() * 60 * 1000) / 2)  * videoPartCounter))
-        console.log('DRRRRSSLALALALASSDWWD;', settingsObject.getStoreLastInMinutes())
         var value = add / 1000
         var seconds = value % 60
         var minutes = value / 60

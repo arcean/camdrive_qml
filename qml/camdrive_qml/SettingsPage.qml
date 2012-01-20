@@ -49,6 +49,8 @@ Page {
         settingsObject.setEnableContinousRecording(checked)
     }
 
+    /* Abandoned since 0.0.2. */
+/*
     function setTextStoreLastInfoLabel()
     {
         var temp = settingsObject.getStoreLastInMinutes();
@@ -58,6 +60,7 @@ Page {
         else
             storeLastInfoLabel.text = "Recorded video will be dividied into " + temp + " parts.";
     }
+*/
 
     Component.onCompleted: {
         theme.inverted = true;
@@ -66,7 +69,7 @@ Page {
         selectAudioQuality();
         selectVideoQuality();
         selectVideoResolution();
-        setTextStoreLastInfoLabel();
+        //setTextStoreLastInfoLabel();
     }
 
     Flickable {
@@ -121,6 +124,7 @@ Page {
             text: "Store last:"
         }
 
+
         TumblerButton {
             id: storeLastButton
             anchors.right: parent.right
@@ -137,6 +141,7 @@ Page {
             }
         }
 
+/*
         Label {
             id:storeLastInfoLabel
             anchors.leftMargin: 10
@@ -145,11 +150,12 @@ Page {
             color: recordingOptionsSwitch.checked ? "gray" : "white"
             font.pixelSize: appWindow._SMALL_FONT_SIZE
         }
+*/
 
         Label {
             id: videoSettingsLabel
             anchors.left: parent.left
-            y: storeLastInfoLabel.y + storeLastInfoLabel.height + 20
+            y: storeLastButton.y + storeLastButton.height + 20
             platformStyle: LabelStyle {
                 textColor: "gray"
                 fontPixelSize: 20
@@ -309,7 +315,7 @@ Page {
         onAccepted: {
             settingsObject.setStoreLast(recordLastDialog.selectedIndex)
             storeLastButton.text = settingsObject.getStoreLastToText()
-            setTextStoreLastInfoLabel()
+            //setTextStoreLastInfoLabel()
         }
     }
 }

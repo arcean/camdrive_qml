@@ -39,7 +39,7 @@ void Settings::setStoreLast(int selectedIndex)
 int Settings::getStoreLast()
 {
     QSettings settings;
-    int value =  settings.value("recording/store_last", 2).toInt();
+    int value =  settings.value("recording/store_last", 1).toInt();
 
     return value;
 }
@@ -47,7 +47,7 @@ int Settings::getStoreLast()
 QString Settings::getStoreLastToText()
 {
     QSettings settings;
-    int value = settings.value("recording/store_last", 2).toInt();
+    int value = settings.value("recording/store_last", 1).toInt();
     int valueToText;
     QString text;
 
@@ -85,7 +85,7 @@ QString Settings::getStoreLastToText()
 int Settings::getStoreLastInMinutes()
 {
     QSettings settings;
-    int value = settings.value("recording/store_last", 2).toInt();
+    int value = settings.value("recording/store_last", 1).toInt();
     int valueToPass;
 
     switch (value)
