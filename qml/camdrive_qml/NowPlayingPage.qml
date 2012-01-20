@@ -450,8 +450,6 @@ Page {
             offset.x: -24
             offset.y: -48
         }
-
-
     }
     //! Map's mouse area for implementation of panning in the map and zoom on double click
     MouseArea {

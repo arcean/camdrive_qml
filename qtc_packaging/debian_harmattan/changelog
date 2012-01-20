@@ -1,4 +1,9 @@
-mirror (0.0.1) unstable; urgency=low
+camdrive (0.0.2) unstable; urgency=low
+  * <Add change description here>
+
+ -- Tomasz Pieniążek <Tomek@unknown>  Fri, 20 Jan 2012 21:13:54 +0100
+
+camdrive (0.0.1) unstable; urgency=low
 
   * Initial Release.
 
