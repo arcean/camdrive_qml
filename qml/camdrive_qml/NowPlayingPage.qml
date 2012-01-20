@@ -431,7 +431,7 @@ Page {
         id: map
         x: videoPlayer.x + videoPlayer.width + 10
         y: 10
-        width: nowPlayingPage.width - x - 20
+        width: nowPlayingPage.width - x - 10
         height: nowPlayingPage.height - 20 - toolBar.height
         plugin : Plugin { name: "nokia" }
         zoomLevel: maximumZoomLevel - 2
