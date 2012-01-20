@@ -33,7 +33,7 @@ MenuItem {
             Label {
                 id: title
                 font.bold: true
-
+                color: _TEXT_COLOR
                 verticalAlignment: Text.AlignVCenter
             }
 
