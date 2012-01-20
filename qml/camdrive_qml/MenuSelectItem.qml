@@ -33,7 +33,7 @@ MenuItem {
             Label {
                 id: title
                 font.bold: true
-                color: _TEXT_COLOR
+
                 verticalAlignment: Text.AlignVCenter
             }
 
@@ -55,6 +55,7 @@ MenuItem {
         SelectionDialog {
             id: selectionDialog
             titleText: title.text
+            platformStyle: StyledSelectionDialog {}
             onAccepted: valueChosen(model.get(selectedIndex).value)
         }
     }
