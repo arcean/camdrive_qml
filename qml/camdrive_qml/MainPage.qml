@@ -19,9 +19,8 @@ Page {
 
     Row {
         anchors.fill: parent
-        anchors.verticalCenter: parent.verticalCenter
-        anchors.horizontalCenter: parent.horizontalCenter
-        //anchors.leftMargin: 51
+        anchors.topMargin: 120 //(480 - 240) / 2
+        anchors.leftMargin: 51
         spacing: 16
         enabled: !appWindow.inPortrait
         visible: !appWindow.inPortrait

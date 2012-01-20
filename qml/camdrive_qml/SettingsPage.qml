@@ -51,22 +51,22 @@ Page {
 
     function setTextStoreLastInfoLabel()
     {
-        var temp = settingsObject.getStoreLastInMinutes()
+        var temp = settingsObject.getStoreLastInMinutes();
 
         if (temp == 1)
-            storeLastInfoLabel.text = "Recorder video will be stored in one part."
+            storeLastInfoLabel.text = "Recorded video will be stored in one part.";
         else
-            storeLastInfoLabel.text = "Recorder video will be dividied into " + temp + " parts."
+            storeLastInfoLabel.text = "Recorded video will be dividied into " + temp + " parts.";
     }
 
     Component.onCompleted: {
-        theme.inverted = true
-       // theme.color = 8
-        storeLastButton.text = settingsObject.getStoreLastToText()
-        recordingOptionsSwitch.checked = settingsObject.getEnableContinousRecording()
-        selectAudioQuality()
-        selectVideoQuality()
-        selectVideoResolution()
+        theme.inverted = true;
+        storeLastButton.text = settingsObject.getStoreLastToText();
+        recordingOptionsSwitch.checked = settingsObject.getEnableContinousRecording();
+        selectAudioQuality();
+        selectVideoQuality();
+        selectVideoResolution();
+        setTextStoreLastInfoLabel();
     }
 
     Flickable {
