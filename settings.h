@@ -5,11 +5,10 @@
 #include <QSettings>
 
 #define CD_STORE_LAST_0 1
-#define CD_STORE_LAST_1 3
-#define CD_STORE_LAST_2 5
-#define CD_STORE_LAST_3 10
-#define CD_STORE_LAST_4 15
-#define CD_STORE_LAST_5 30
+#define CD_STORE_LAST_1 5
+#define CD_STORE_LAST_2 10
+#define CD_STORE_LAST_3 20
+#define CD_STORE_LAST_4 30
 
 class Settings : public QDeclarativeItem
 {

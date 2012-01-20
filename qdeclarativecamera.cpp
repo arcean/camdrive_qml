@@ -31,10 +31,11 @@ void QDeclarativeCamera::initFile()
     timer = new QTimer(this);
     //Default time interval - 10m = 10 * 60 * 1000,
     //It should be configurable, and loaded on app startup
-    //int time = settingsObject->getStoreLast();
-    //time = time * 60 * 1000;
-    int time = 1 * 60 * 1000;
+    int time = settingsObject->getStoreLastInMinutes();
+    time = (time * 60 * 1000) / 2;
+    //int time = 1 * 60 * 1000;
     timer->setInterval(time);
+    qDebug() << "TIMER: set to" << time;
 
     file = new File(CAM_DEFAULT_FILE_NAME);
     videoPartNumber = 0;
@@ -84,7 +85,9 @@ void QDeclarativeCamera::startRecording()
 
     if(!isRecordingInParts) {
         /* Create entry in main table for our new video. */
-        int videoParts = settingsObject->getStoreLastInMinutes();
+        /* Since 0.0.2 there're only 2 parts of the video. */
+        //int videoParts = settingsObject->getStoreLastInMinutes();
+        int videoParts = 2;
         this->addNewVideo(file->getGeneratedFileName(), videoParts);
         /* And now we want entries for the first part of the video. */
         QString baseName = file->getGeneratedFileName();

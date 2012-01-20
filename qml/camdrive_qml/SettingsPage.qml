@@ -299,11 +299,10 @@ Page {
         platformStyle: StyledSelectionDialog {}
 
         model: ListModel {
-            ListElement { name: "1 minute " }
             ListElement { name: "3 minutes " }
             ListElement { name: "5 minutes " }
             ListElement { name: "10 minutes " }
-            ListElement { name: "15 minutes " }
+            ListElement { name: "20 minutes " }
             ListElement { name: "30 minutes " }
         }
 

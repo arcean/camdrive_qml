@@ -82,14 +82,14 @@ Page {
 
     function clearRecordingStatus()
     {
-        clickMeMouseArea.enabled = true
-        timerTouchToStartRecording.start()
-        textTouchToStartRecording.visible = true
-        statusIconTimer.stop()
-        textStatusInfo.text = "Waiting..."
-        statusIcon.opacity = 0
-        statusIconInactive.opacity = 1
-        textCounter.text = "0:00/" + settingsObject.getStoreLastInMinutes() + ":00"
+        clickMeMouseArea.enabled = true;
+        timerTouchToStartRecording.start();
+        textTouchToStartRecording.visible = true;
+        statusIconTimer.stop();
+        textStatusInfo.text = "Waiting...";
+        statusIcon.opacity = 0;
+        statusIconInactive.opacity = 1;
+        textCounter.text = "0:00";
     }
 
     function setDirectionFromCompass(direction)
@@ -128,15 +128,16 @@ Page {
 
     function updateCounter(duration)
     {
-        var value = duration / 1000
+        var add = (((settingsObject.getStoreLastInMinutes() * 60 * 1000) / 2)  * videoPartCounter) + duration;
+        console.log('IMP IMP IMP IMP:', (((settingsObject.getStoreLastInMinutes() * 60 * 1000) / 2)  * videoPartCounter))
+        console.log('DRRRRSSLALALALASSDWWD;', settingsObject.getStoreLastInMinutes())
+        var value = add / 1000
         var seconds = value % 60
         var minutes = value / 60
         var spacer = "0"
 
         seconds = Math.floor(seconds)
         minutes = Math.floor(minutes)
-
-        minutes += viewfinderPage.videoPartCounter
 
         if(seconds < 10)
             spacer = "0"

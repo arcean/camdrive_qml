@@ -68,18 +68,16 @@ QString Settings::getStoreLastToText()
     case 4:
         valueToText = CD_STORE_LAST_4;
         break;
-    case 5:
-        valueToText = CD_STORE_LAST_5;
-        break;
     default:
         valueToText = CD_STORE_LAST_2;
         break;
     }
 
-    if(valueToText == 1)
-        text = QString::number(valueToText) + " minute";
-    else
-        text = QString::number(valueToText) + " minutes";
+    /* Since 0.0.2 it's abandoned. */
+    //if(valueToText == 1)
+    //    text = QString::number(valueToText) + " minute";
+    // else
+    text = QString::number(valueToText) + " minutes";
 
     return text;
 }
@@ -106,9 +104,6 @@ int Settings::getStoreLastInMinutes()
         break;
     case 4:
         valueToPass = CD_STORE_LAST_4;
-        break;
-    case 5:
-        valueToPass = CD_STORE_LAST_5;
         break;
     default:
         valueToPass = CD_STORE_LAST_2;
