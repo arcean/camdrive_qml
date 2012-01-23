@@ -480,10 +480,6 @@ Page {
              }
              Button {id: b2; text: "No"; onClicked: {
                      stopDialog.reject()
-                     frontCam.stopRecording()
-                     unloadCamera()
-                     screenSaver.screenSaverInhibited = false
-                     pageStack.pop()
                  }
              }
          }
