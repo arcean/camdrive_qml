@@ -43,42 +43,43 @@ Page {
         onStatusChanged: if ((videoModel.status == DocumentGalleryModel.Finished) && (videoModel.count > 0)) video.item = videoModel.get(0).itemId;
     }
 
+    Item {
+        id: videoItem
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.margins: 10
+        width:  appWindow.inPortrait ? 460 : 460
+        height: Math.floor((width / 16) * 9)
+
+        Image {
+            id: thumb
+            height: Math.floor((width / 16) * 9)
+            anchors { left: parent.left; right: parent.right; margins: mouseArea.pressed ? 10 : 0 }
+            source: video.available ? "file:///home/user/.thumbnails/video-grid/" + Qt.md5(video.metaData.url) + ".jpeg" : ""
+            smooth: true
+            onStatusChanged: if (thumb.status == Image.Error) thumb.source = "image://theme/meegotouch-video-placeholder";
+
+            MouseArea {
+                id: mouseArea
+                anchors.fill: parent
+                    enabled: root.allowToPlay
+                    onClicked: playVideos([Utils.cloneVideoObject(video.metaData, video.item)], true)
+            }
+        }
+    }
 
     Flickable {
-        id: flicker
+        id: contentText
+        anchors.top: appWindow.inPortrait ? videoItem.bottom : parent.top
+        anchors.left: appWindow.inPortrait ? parent.left : videoItem.right
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        anchors.margins: 10
 
-        anchors.fill: parent
-        contentWidth: width
-        contentHeight: column.height + 20
+        contentHeight: appWindow.inPortrait ? parent.height - videoItem.height - 30 + 1 : parent.height + 1 -20
 
         Column {
-            id: column
-
-            anchors { top: parent.top; left: parent.left; right: parent.right; margins: 10 }
-            spacing: 10
-
-            Item {
-                width: 460
-                height: Math.floor((width / 16) * 9)
-
-                Image {
-                    id: thumb
-
-                    height: Math.floor((width / 16) * 9)
-                    anchors { left: parent.left; right: parent.right; margins: mouseArea.pressed ? 10 : 0 }
-                    source: video.available ? "file:///home/user/.thumbnails/video-grid/" + Qt.md5(video.metaData.url) + ".jpeg" : ""
-                    smooth: true
-                    onStatusChanged: if (thumb.status == Image.Error) thumb.source = "image://theme/meegotouch-video-placeholder";
-
-                    MouseArea {
-                        id: mouseArea
-
-                        anchors.fill: parent
-                        enabled: root.allowToPlay
-                        onClicked: playVideos([Utils.cloneVideoObject(video.metaData, video.item)], true)
-                    }
-                }
-            }
+            width: parent.width
 
             Label {
                 id: titleText
@@ -110,7 +111,7 @@ Page {
 
                 Label {
                     color: _TEXT_COLOR
-                    text: video.available ? "Added" + ": " + Qt.formatDateTime(video.metaData.lastModified) : ""
+                    text: video.available ? "Added" + ": " + Qt.formatDateTime(video.metaData.z) : ""
                 }
 
                 Label {
@@ -119,9 +120,5 @@ Page {
                 }
             }
         }
-    }
-
-    ScrollDecorator {
-        flickableItem: flicker
     }
 }
