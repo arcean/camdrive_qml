@@ -97,6 +97,7 @@ Page {
 
     GridView {
         id: videoList
+        anchors { top: parent.top; topMargin: 10; left: parent.left; leftMargin: 10; right: parent.right; rightMargin: 10; bottom: parent.bottom }
 
         property int selectedIndex
         property real cellWidthScale: videoPageList.thumbnailSize == "large" ? 1.0 : 0.5
@@ -112,8 +113,6 @@ Page {
             videoListModel.reload();
         }
 
-        anchors { top: parent.top; topMargin: 10; left: parent.left; leftMargin: 10; right: parent.right; rightMargin: 10; bottom: parent.bottom }
-        //anchors.fill: parent
         cellWidth: appWindow.inPortrait ? Math.floor(width * cellWidthScale) : Math.floor((width / 2) * cellWidthScale)
         cellHeight: appWindow.inPortrait ? Math.floor(300 * cellHeightScale) : Math.floor(280 * cellHeightScale)
         flickableDirection: Flickable.VerticalFlick

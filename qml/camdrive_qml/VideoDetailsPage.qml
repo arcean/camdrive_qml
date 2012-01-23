@@ -50,6 +50,7 @@ Page {
         anchors.margins: 10
         width:  appWindow.inPortrait ? 460 : 460
         height: Math.floor((width / 16) * 9)
+        z: 1
 
         Image {
             id: thumb
