@@ -176,7 +176,7 @@ Page {
                 id: progressBar
 
                 anchors { left: playButton.right; topMargin: 20; leftMargin: 40; right: animStart2.left; rightMargin: 40 }
-                indeterminate: (videoPlayer.status == Video.Buffering) || (videoPlayer.status == Video.Loading)
+                indeterminate: (videoPlayer.status == Video.Buffering) || ((videoPlayer.status == Video.Loading) && !videoPlayer.setToPaused)
                 minimumValue: 0
                 maximumValue: 100
                 value: (nowPlayingPage.videoPlaying) ? Math.floor((videoPlayer.position / videoPlayer.duration) * 100) : 0
@@ -185,7 +185,7 @@ Page {
                     anchors { top: parent.bottom; horizontalCenter: parent.left }
                     font.pixelSize: _SMALL_FONT_SIZE
                     color: _TEXT_COLOR
-                    text: (!nowPlayingPage.videoPlaying) || (videoPlayer.status == Video.Loading) || (videoPlayer.status == Video.Buffering) ? "0:00" : Utils.getTime(videoPlayer.position)
+                    text: (!nowPlayingPage.videoPlaying) || ((videoPlayer.status == Video.Loading) && !videoPlayer.setToPaused) || (videoPlayer.status == Video.Buffering) ? "0:00" : Utils.getTime(videoPlayer.position)
                 }
 
                 Label {
@@ -324,7 +324,7 @@ Page {
                 size: "large"
             }
             anchors.centerIn: parent
-            visible: (videoPlayer.status == Video.Loading) || (videoPlayer.status == Video.Buffering)
+            visible: ((videoPlayer.status == Video.Loading) && !videoPlayer.setToPaused) || (videoPlayer.status == Video.Buffering)
             running: visible
 
         }
