@@ -30,6 +30,52 @@ Page {
         property int tresholdLevel: 75
         onReadingChanged: {
             setDirectionFromCompass(compass.reading.azimuth)
+            compassUI.azimuth = reading.azimuth;
+            compassUI.calibrationLevel = reading.calibrationLevel
+        }
+    }
+
+    RotationSensor {
+        id: rotation
+        active: true
+
+        onReadingChanged: {
+            compassUI.rotationX = reading.x;
+            compassUI.rotationY = reading.y;
+            compassUI.rotationZ = reading.z;
+        }
+    }
+
+    OrientationSensor {
+        id: orientation
+        active: true
+
+        onReadingChanged: {
+            compassUI.isFaceUp = (reading.orientation === OrientationReading.FaceUp);
+
+            switch (reading.orientation) {
+            case OrientationReading.FaceUp:
+                compassUI.orientationDesc = "Face Up";
+                break;
+            case OrientationReading.FaceDown:
+                compassUI.orientationDesc = "Face Down";
+                break;
+            case OrientationReading.LeftUp:
+                compassUI.orientationDesc = "Left Up";
+                break;
+            case OrientationReading.RightUp:
+                compassUI.orientationDesc = "Right Up";
+                break;
+            case OrientationReading.TopDown:
+                compassUI.orientationDesc = "Top Down"
+                break;
+            case OrientationReading.TopUp:
+                compassUI.orientationDesc = "Top Up";
+                break;
+            default:
+                compassUI.orientationDesc = reading.orientation
+                break;
+            }
         }
     }
 
@@ -95,21 +141,21 @@ Page {
     function setDirectionFromCompass(direction)
     {
         if(direction >= 23 && direction <= 68)
-            textCompass.text = "SW"
+            textCompass.text = "SE"
         else if(direction >= 69 && direction <= 112)
             textCompass.text = "S"
         else if(direction >= 113 && direction <= 158)
-            textCompass.text = "SE"
+            textCompass.text = "SW"
         else if(direction >= 159 && direction <= 202)
-            textCompass.text = "E"
+            textCompass.text = "W"
         else if(direction >= 203 && direction <= 248)
-            textCompass.text = "NE"
+            textCompass.text = "NW"
         else if(direction >= 249 && direction <= 292)
             textCompass.text = "N"
         else if(direction >= 293 && direction <= 339)
-            textCompass.text = "NW"
+            textCompass.text = "NE"
         else
-            textCompass.text = "W"
+            textCompass.text = "E"
     }
 
     PositionSource {
@@ -256,6 +302,18 @@ Page {
         opacity: 0.4
     }
 
+    Column {
+        anchors.fill: parent
+
+        CompassUI {
+            id: compassUI
+            width: parent.width
+            height: parent.height-50
+            enabled: false
+            visible: false
+        }
+    }
+
     Timer {
         id: statusIconTimer
         interval: 1500
@@ -336,6 +394,14 @@ Page {
         color: "white"
         font.bold: true
         font.pointSize: 18
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+                compassUI.enabled = !compassUI.enabled;
+                compassUI.visible = !compassUI.visible;
+            }
+        }
     }
 
     // Counter, elapsed time
