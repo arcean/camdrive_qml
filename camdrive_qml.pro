@@ -1,6 +1,6 @@
 # Add more folders to ship with the application, here
-folder_01.source = qml/camdrive_qml
-folder_01.target = qml
+folder_01.source = qml
+
 DEPLOYMENTFOLDERS = folder_01
 
 # Additional import path used to resolve QML modules in Creator's code model
