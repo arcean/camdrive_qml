@@ -9,9 +9,9 @@ import "Compass"
 import "StyledComponents"
 
 Page {
+    id: viewfinderPage
     tools: commonTools
 
-    id:videoPage
     property int orientation: 0
     property int videoPartCounter: 0
     property bool isCameraActive: false
@@ -23,6 +23,7 @@ Page {
         camMirrorScale.xScale = -1 * camMirrorScale.xScale
         Database.openDatabase();
         Database.createTables();
+        wakeCamera();
     }
 
     Compass {
@@ -83,7 +84,7 @@ Page {
 
     ScreenSaver {
         id: screenSaver
-        screenSaverInhibited: videoPage.isCameraRecording
+        screenSaverInhibited: viewfinderPage.isCameraRecording
     }
 
     Settings {
@@ -208,20 +209,20 @@ Page {
     function unloadCamera()
     {
         viewfinderPage.isCameraActive = false
-        videoPage.isCameraRecording = false
+        viewfinderPage.isCameraRecording = false
         frontCam.unload()
     }
 
     function startRecording()
     {
-        videoPage.isCameraRecording = true;
+        viewfinderPage.isCameraRecording = true;
         frontCam.startRecording();
         storeDataTimer.running = true;
     }
 
     function stopRecording()
     {
-        videoPage.isCameraRecording = false;
+        viewfinderPage.isCameraRecording = false;
         frontCam.stopRecording();
         viewfinderPage.videoPartCounter = 0;
         storeDataTimer.running = false;
@@ -250,7 +251,7 @@ Page {
                     frontCam.start()
             }
             else {
-                if(videoPage.isCameraRecording) {
+                if(viewfinderPage.isCameraRecording) {
                     stopRecording()
                     clearRecordingStatus()
                 }
@@ -263,8 +264,8 @@ Page {
     Camera {
         id:frontCam
         anchors.centerIn: parent
-        width:videoPage.width
-        height:videoPage.height
+        width: viewfinderPage.width
+        height: viewfinderPage.height
         transform: [camMirrorScale, camMirrorRotate]
         // aspectRatio:Qt.KeepAspectRatioByExpanding
         onDurationChanged: {

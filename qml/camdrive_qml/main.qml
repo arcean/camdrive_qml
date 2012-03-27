@@ -24,9 +24,9 @@ PageStackWindow {
         }
 
 
-    ViewfinderPage { id: viewfinderPage }
+    //ViewfinderPage { id: viewfinderPage }
     MainPage { id: mainPage }
-    SettingsPage2 { id: settingsPage }
+    //SettingsPage2 { id: settingsPage }
     VideoListPage { id: videoListPage }
     AboutDialog { id: aboutDialog }
     NowPlayingPage { id: nowPlayingPage }

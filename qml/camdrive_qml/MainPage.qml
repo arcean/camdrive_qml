@@ -42,9 +42,10 @@ Page {
                     parent.source = "qrc:/icons/start_recording.png"
                 }
                 onClicked: {
-                    viewfinderPage.clearRecordingStatus()
-                    viewfinderPage.wakeCamera()
-                    pageStack.push(viewfinderPage)
+                    //viewfinderPage.clearRecordingStatus()
+                    //viewfinderPage.wakeCamera()
+                    //pageStack.push(viewfinderPage)
+                    appWindow.pageStack.push(Qt.resolvedUrl("ViewfinderPage.qml"))
                 }
             }
         }
@@ -66,7 +67,7 @@ Page {
                         parent.source = "qrc:/icons/settings.png"
                     }
                     onClicked: {
-                        pageStack.push(settingsPage)
+                        appWindow.pageStack.push(Qt.resolvedUrl("Settings/SettingsPage2.qml"))
                         appWindow.showToolbar()
                     }
                 }
@@ -122,9 +123,10 @@ Page {
                     parent.source = "qrc:/icons/start_recording.png"
                 }
                 onClicked: {
-                    viewfinderPage.clearRecordingStatus()
-                    viewfinderPage.wakeCamera()
-                    pageStack.push(viewfinderPage)
+                    //viewfinderPage.clearRecordingStatus()
+                    //viewfinderPage.wakeCamera()
+                    //pageStack.push(viewfinderPage)
+                    appWindow.pageStack.push(Qt.resolvedUrl("ViewfinderPage.qml"))
                 }
             }
         }
@@ -146,7 +148,7 @@ Page {
                         parent.source = "qrc:/icons/settings.png"
                     }
                     onClicked: {
-                        pageStack.push(settingsPage)
+                        appWindow.pageStack.push(Qt.resolvedUrl("Settings/SettingsPage2.qml"))
                         appWindow.showToolbar()
                     }
                 }

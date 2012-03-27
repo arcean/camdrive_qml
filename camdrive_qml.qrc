@@ -14,8 +14,6 @@
         <file>icons/start_recording_highlighted.png</file>
         <file>icons/stop_recording.png</file>
         <file>icons/stop_recording_highlighted.png</file>
-        <file>qml/camdrive_qml/SettingsPage.qml</file>
-        <file>qml/camdrive_qml/Separator.qml</file>
         <file>icons/dialogStop.png</file>
         <file>icons/idea.png</file>
         <file>icons/background.png</file>
