@@ -5,6 +5,8 @@ import QtMobility.sensors 1.2
 import QtMobility.location 1.2
 import QtMobility.systeminfo 1.2
 import Settings 1.0
+import "Compass"
+import "StyledComponents"
 
 Page {
     tools: commonTools

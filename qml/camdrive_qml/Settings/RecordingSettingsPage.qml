@@ -4,6 +4,7 @@ import com.nokia.extras 1.1
 import Settings 1.0
 import "../"
 import "../Common"
+import "../StyledComponents"
 
 Page {
     tools: ToolBarLayout {

@@ -3,6 +3,7 @@ import com.nokia.meego 1.0
 import Settings 1.0
 import "../"
 import "../Common"
+import "../StyledComponents"
 
 Page {
     tools: ToolBarLayout {
