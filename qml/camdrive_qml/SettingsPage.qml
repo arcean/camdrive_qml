@@ -3,6 +3,7 @@ import com.nokia.meego 1.0
 import com.nokia.extras 1.1
 import Settings 1.0
 import "StyledComponents"
+import "Common"
 
 Page {
     tools: commonTools
