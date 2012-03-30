@@ -1,8 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/camdrive_qml/main.qml</file>
-        <file>qml/camdrive_qml/ViewfinderPage.qml</file>
-        <file>qml/camdrive_qml/MainPage.qml</file>
         <file>icons/emergency_call.png</file>
         <file>icons/files.png</file>
         <file>icons/files_highlighted.png</file>

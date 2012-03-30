@@ -15,10 +15,17 @@ QDeclarativeCamera::QDeclarativeCamera(QDeclarativeItem *parent) :
 
 QDeclarativeCamera::~QDeclarativeCamera()
 {
-    camera_->unload();
-    delete viewfinder_;
-    delete camera_;
-    delete settingsObject;
+    if(viewfinder_)
+        delete viewfinder_;
+
+    if(settingsObject)
+        delete settingsObject;
+/*
+    if(camera_) {
+        camera_->unload();
+        //delete camera_;
+    }
+ */
 }
 
 void QDeclarativeCamera::durationChangedFunc(qint64 duration)

@@ -3,7 +3,26 @@ import com.nokia.meego 1.0
 import "../Common"
 
 Page {
-    tools: commonTools
+    AboutDialog { id: aboutDialog }
+
+    tools: ToolBarLayout {
+        id: commonTools
+
+        visible: false
+        ToolIcon { platformIconId: "toolbar-back";
+            anchors.left: parent.left
+            onClicked: {
+                pageStack.pop()
+                hideToolbar()
+            }
+        }
+        ToolIcon { platformIconId: "toolbar-tag";
+            anchors.right: parent.right
+            onClicked: {
+                aboutDialog.open()
+            }
+        }
+    }
 
     Header {
         id: header

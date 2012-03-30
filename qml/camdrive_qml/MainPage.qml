@@ -45,7 +45,7 @@ Page {
                     //viewfinderPage.clearRecordingStatus()
                     //viewfinderPage.wakeCamera()
                     //pageStack.push(viewfinderPage)
-                    appWindow.pageStack.push(Qt.resolvedUrl("ViewfinderPage.qml"))
+                    appWindow.pageStack.push(Qt.resolvedUrl("Viewfinder/ViewfinderPage.qml"))
                 }
             }
         }
@@ -126,7 +126,7 @@ Page {
                     //viewfinderPage.clearRecordingStatus()
                     //viewfinderPage.wakeCamera()
                     //pageStack.push(viewfinderPage)
-                    appWindow.pageStack.push(Qt.resolvedUrl("ViewfinderPage.qml"))
+                    appWindow.pageStack.push(Qt.resolvedUrl("Viewfinder/ViewfinderPage.qml"))
                 }
             }
         }
