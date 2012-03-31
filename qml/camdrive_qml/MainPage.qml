@@ -1,12 +1,28 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import "scripts/utils.js" as Utils
 
 Page {
-    tools: commonTools
-
     id: mainPage
-   // property int orientation: 0
-   // orientationLock: PageOrientation.LockPortrait
+
+    function showViewfinderPage()
+    {
+        var viewfinderPage = Utils.createObject(Qt.resolvedUrl("Viewfinder/ViewfinderPage.qml"), appWindow.pageStack);
+        pageStack.push(viewfinderPage);
+    }
+
+    function showSettingsPage()
+    {
+        var settingsPage = Utils.createObject(Qt.resolvedUrl("Settings/SettingsPage2.qml"), appWindow.pageStack);
+        pageStack.push(settingsPage);
+        appWindow.showToolbar();
+    }
+
+    function showVideoListPage()
+    {
+        var videoListPage = Utils.createObject(Qt.resolvedUrl("VideoListPage.qml"), appWindow.pageStack);
+        pageStack.push(videoListPage);
+    }
 
     // Mask invisible region
     Rectangle {
@@ -45,7 +61,7 @@ Page {
                     //viewfinderPage.clearRecordingStatus()
                     //viewfinderPage.wakeCamera()
                     //pageStack.push(viewfinderPage)
-                    appWindow.pageStack.push(Qt.resolvedUrl("Viewfinder/ViewfinderPage.qml"))
+                    showViewfinderPage();
                 }
             }
         }
@@ -67,8 +83,7 @@ Page {
                         parent.source = "qrc:/icons/settings.png"
                     }
                     onClicked: {
-                        appWindow.pageStack.push(Qt.resolvedUrl("Settings/SettingsPage2.qml"))
-                        appWindow.showToolbar()
+                        showSettingsPage();
                     }
                 }
             }
@@ -93,7 +108,7 @@ Page {
                         //pageStack.push(videoListPage)
                         //appWindow.showToolbar()
                         //videoListPage.reloadVideoList()
-                        appWindow.pageStack.push(Qt.resolvedUrl("VideoListPage.qml"))
+                        showVideoListPage();
                     }
                 }
             }
@@ -127,7 +142,7 @@ Page {
                     //viewfinderPage.clearRecordingStatus()
                     //viewfinderPage.wakeCamera()
                     //pageStack.push(viewfinderPage)
-                    appWindow.pageStack.push(Qt.resolvedUrl("Viewfinder/ViewfinderPage.qml"))
+                    showViewfinderPage();
                 }
             }
         }
@@ -149,8 +164,7 @@ Page {
                         parent.source = "qrc:/icons/settings.png"
                     }
                     onClicked: {
-                        appWindow.pageStack.push(Qt.resolvedUrl("Settings/SettingsPage2.qml"))
-                        appWindow.showToolbar()
+                        showSettingsPage();
                     }
                 }
             }
@@ -175,7 +189,7 @@ Page {
                         //pageStack.push(videoListPage)
                         //appWindow.showToolbar()
                         //videoListPage.reloadVideoList()
-                        appWindow.pageStack.push(Qt.resolvedUrl("VideoListPage.qml"))
+                        showVideoListPage();
                     }
                 }
             }
