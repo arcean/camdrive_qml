@@ -1,5 +1,5 @@
 #include <QDir>
-#include <QDebug>
+#include <QCryptographicHash>
 #include "videothumbnails.h"
 
 VideoThumbnails::VideoThumbnails(QObject *parent) :
@@ -12,7 +12,6 @@ bool VideoThumbnails::checkIfExists(const QString &path) {
         return true;
     }
     else {
-        emit finished();
         return false;
     }
 }
@@ -41,20 +40,38 @@ void VideoThumbnails::clearVideoFileList() {
     mimes.clear();
 }
 
+bool VideoThumbnails::checkIfThumbnailExists(const QString &path) {
+    QUrl uri = parameterToUri(path);
+    QString hash = QCryptographicHash::hash((uri.toString().toLatin1()),QCryptographicHash::Md5).toHex().constData();;
+    QString file = "/home/user/.thumbnails/video-grid/" + hash + ".jpeg";
+
+    if (QFile::exists(file)) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
 void VideoThumbnails::loadAllVideoFilesToList() {
     QString path = "/home/user/MyDocs/camdrive";
     QDir dir(path);
     QStringList filters; filters << "*.mp4";
     dir.setNameFilters(filters);
     QStringList files = dir.entryList(QDir::Files | QDir::Readable);
+    QString filePath;
 
     uris.clear();
     mimes.clear();
 
     foreach(QString file, files) {
-        file = "file://" + path + "/" + file;
-        uris << QUrl(file);
-        mimes << "video/mp4";
+        filePath = path + "/" + file;
+        file = "file://" + filePath;
+
+        if (!checkIfThumbnailExists(filePath)) {
+            uris << QUrl(file);
+            mimes << "video/mp4";
+        }
     }
 }
 

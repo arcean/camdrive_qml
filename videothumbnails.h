@@ -27,6 +27,7 @@ private slots:
 private:
     QUrl parameterToUri(const QString &param);
     bool checkIfExists(const QString &path);
+    bool checkIfThumbnailExists(const QString &path);
 
     QList<QUrl> uris;
     QStringList mimes;
