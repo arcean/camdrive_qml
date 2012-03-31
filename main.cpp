@@ -7,6 +7,7 @@
 #include "settings.h"
 #include "utils.h"
 #include "databasehelper.h"
+#include "videothumbnails.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +20,7 @@ int main(int argc, char *argv[])
     Utils utils;
     DatabaseHelper databaseHelper;
     Database database;
+    VideoThumbnails thumbnails;
 
     viewer.setViewport(new QGLWidget());
     qmlRegisterType<QDeclarativeCamera>("Camera", 1, 0, "Camera");
@@ -28,6 +30,7 @@ int main(int argc, char *argv[])
     context->setContextProperty("Utils", &utils);
     context->setContextProperty("DatabaseHelper", &databaseHelper);
     context->setContextProperty("Database", &database);
+    context->setContextProperty("Thumbnails", &thumbnails);
 
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
     viewer.setMainQmlFile(QLatin1String("qml/camdrive_qml/main.qml"));

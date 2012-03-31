@@ -90,9 +90,10 @@ Page {
                         parent.source = "qrc:/icons/files.png"
                     }
                     onClicked: {
-                        pageStack.push(videoListPage)
-                        appWindow.showToolbar()
-                        videoListPage.reloadVideoList()
+                        //pageStack.push(videoListPage)
+                        //appWindow.showToolbar()
+                        //videoListPage.reloadVideoList()
+                        appWindow.pageStack.push(Qt.resolvedUrl("VideoListPage.qml"))
                     }
                 }
             }
@@ -171,9 +172,10 @@ Page {
                         parent.source = "qrc:/icons/files.png"
                     }
                     onClicked: {
-                        pageStack.push(videoListPage)
-                        appWindow.showToolbar()
-                        videoListPage.reloadVideoList()
+                        //pageStack.push(videoListPage)
+                        //appWindow.showToolbar()
+                        //videoListPage.reloadVideoList()
+                        appWindow.pageStack.push(Qt.resolvedUrl("VideoListPage.qml"))
                     }
                 }
             }

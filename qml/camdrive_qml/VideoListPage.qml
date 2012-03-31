@@ -7,6 +7,7 @@ Page {
     id: videoPageList
 
     property string thumbnailSize: "large"
+    property bool loading: true
 
     function showDeleteDialog(video)
     {
@@ -24,10 +25,30 @@ Page {
 
     function reloadVideoList()
     {
-        reloadTimer.restart()
+        reloadTimer.restart();
+    }
+
+    function prepareVideoDetailsPage()
+    {
+        Thumbnails.loadAllVideoFilesToList();
+        Thumbnails.createNewThumbnail();
     }
 
     //orientationLock: PageOrientation.LockLandscape
+
+    Component.onCompleted: {
+        appWindow.showToolbar();
+        prepareVideoDetailsPage();
+        reloadTimer.start();
+    }
+
+    Connections {
+        target: Thumbnails
+        onFinished: {
+            videoPageList.loading = false;
+            reloadVideoList();
+        }
+    }
 
     tools: ToolBarLayout {
         id: toolBar
@@ -98,6 +119,7 @@ Page {
     GridView {
         id: videoList
         anchors { top: parent.top; topMargin: 10; left: parent.left; leftMargin: 10; right: parent.right; rightMargin: 10; bottom: parent.bottom }
+        visible: !loading
 
         property int selectedIndex
         property real cellWidthScale: videoPageList.thumbnailSize == "large" ? 1.0 : 0.5
@@ -119,8 +141,8 @@ Page {
         model: DocumentGalleryModel {
             id: videoListModel
             rootType: DocumentGallery.Video
-            properties: ["filePath", "url", "fileName", "title", "duration", "resumePosition"]
-            sortProperties: ["+title"]
+            properties: ["filePath", "url", "fileName", "title", "lastModified", "duration", "resumePosition"]
+            sortProperties: ["-lastModified"]
             filter: GalleryFilterIntersection {
                 filters: [
                     GalleryEndsWithFilter {
@@ -176,13 +198,13 @@ Page {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         text: qsTr("No videos found")
-        visible: (videoListModel.status == DocumentGalleryModel.Finished) && (videoListModel.count == 0)
+        visible: ((videoListModel.status == DocumentGalleryModel.Finished) && (videoListModel.count == 0)) || loading
     }
 
     BusyIndicator {
         anchors.centerIn: videoList
         running: visible
-        visible: videoListModel.status == DocumentGalleryModel.Active
+        visible: (videoListModel.status == DocumentGalleryModel.Active) || loading
         platformStyle: BusyIndicatorStyle {
             inverted: theme.inverted
             size: "large"

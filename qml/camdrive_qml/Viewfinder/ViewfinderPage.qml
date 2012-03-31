@@ -22,8 +22,6 @@ Page {
 
     Component.onCompleted: {
         camMirrorScale.xScale = -1 * camMirrorScale.xScale
-        Database.openDatabase();
-        Database.createTables();
         wakeCamera();
     }
 
