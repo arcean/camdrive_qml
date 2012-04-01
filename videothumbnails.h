@@ -20,6 +20,7 @@ public slots:
     void addVideoFileToList(const QString &path);
     void clearVideoFileList();
     void loadAllVideoFilesToList();
+    bool checkIfThumbnailExists(const QString &path, bool remove);
 
 private slots:
     void completed(int left);
@@ -27,7 +28,6 @@ private slots:
 private:
     QUrl parameterToUri(const QString &param);
     bool checkIfExists(const QString &path);
-    bool checkIfThumbnailExists(const QString &path);
 
     QList<QUrl> uris;
     QStringList mimes;

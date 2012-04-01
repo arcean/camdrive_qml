@@ -40,12 +40,14 @@ void VideoThumbnails::clearVideoFileList() {
     mimes.clear();
 }
 
-bool VideoThumbnails::checkIfThumbnailExists(const QString &path) {
+bool VideoThumbnails::checkIfThumbnailExists(const QString &path, bool remove) {
     QUrl uri = parameterToUri(path);
     QString hash = QCryptographicHash::hash((uri.toString().toLatin1()),QCryptographicHash::Md5).toHex().constData();;
     QString file = "/home/user/.thumbnails/video-grid/" + hash + ".jpeg";
 
     if (QFile::exists(file)) {
+        if (remove)
+            QFile::remove(file);
         return true;
     }
     else {
@@ -68,7 +70,7 @@ void VideoThumbnails::loadAllVideoFilesToList() {
         filePath = path + "/" + file;
         file = "file://" + filePath;
 
-        if (!checkIfThumbnailExists(filePath)) {
+        if (!checkIfThumbnailExists(filePath, false)) {
             uris << QUrl(file);
             mimes << "video/mp4";
         }

@@ -1,7 +1,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
-import "scripts/utils.js" as Utils
+import "scripts/utils.js" as UtilsScript
 
 Page {
     id: videoPageList
@@ -11,14 +11,14 @@ Page {
 
     function showDeleteDialog(video)
     {
-        var deleteDialog = Utils.createObject(Qt.resolvedUrl("DeleteDialog.qml"), appWindow.pageStack);
+        var deleteDialog = UtilsScript.createObject(Qt.resolvedUrl("DeleteDialog.qml"), appWindow.pageStack);
         deleteDialog.video = video;
         deleteDialog.open();
     }
 
     function showVideoDetails(itemId)
     {
-        var detailsPage = Utils.createObject(Qt.resolvedUrl("VideoDetailsPage.qml"), appWindow.pageStack);
+        var detailsPage = UtilsScript.createObject(Qt.resolvedUrl("VideoDetailsPage.qml"), appWindow.pageStack);
         detailsPage.id = itemId;
         appWindow.pageStack.push(detailsPage);
     }
@@ -34,7 +34,16 @@ Page {
         Thumbnails.createNewThumbnail();
     }
 
-    //orientationLock: PageOrientation.LockLandscape
+    function deleteVideo(path)
+    {
+        Thumbnails.checkIfThumbnailExists(path, true);
+        console.log('PATH:', path)
+        videoPageList.reloadVideoList();
+        DatabaseHelper.removeVideoQML(path);
+        if (DatabaseHelper.isFileNameFreeQML(path)) {
+            DatabaseHelper.removeVideoFromMainQML(path);
+        }
+    }
 
     Component.onCompleted: {
         appWindow.showToolbar();
@@ -48,6 +57,11 @@ Page {
             videoPageList.loading = false;
             reloadVideoList();
         }
+    }
+
+    Connections {
+        target: Utils
+        onVideoDeleted: deleteVideo(path);
     }
 
     tools: ToolBarLayout {
@@ -177,8 +191,8 @@ Page {
 
             width: videoList.cellWidth
             height: videoList.cellHeight
-            useMarqueeText: appWindow.pageStack.currentPage == videoListPage
-            onClicked: playVideos([Utils.cloneVideoObject(videoListModel.get(index))])
+            useMarqueeText: appWindow.pageStack.currentPage == videoPageList
+            onClicked: playVideos([UtilsScript.cloneVideoObject(videoListModel.get(index))])
             onPressAndHold: {
                 videoList.selectedIndex = index;
                 contextMenu.open();
