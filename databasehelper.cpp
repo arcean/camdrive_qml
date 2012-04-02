@@ -100,7 +100,7 @@ QString DatabaseHelper::removePrefixPath(const QString &videoName)
 }
 
 /*
- * Checki if basename fileName is free for all parts.
+ * Check if basename fileName is free for all parts.
  */
 bool DatabaseHelper::isFileNameFreeQML(const QString &fileName)
 {

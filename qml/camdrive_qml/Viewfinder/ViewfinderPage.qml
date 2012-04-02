@@ -11,7 +11,6 @@ import "../"
 
 Page {
     id: viewfinderPage
-    tools: commonTools
 
     property int orientation: 0
     property int videoPartCounter: 0
@@ -21,8 +20,14 @@ Page {
     orientationLock: PageOrientation.LockLandscape
 
     Component.onCompleted: {
-        camMirrorScale.xScale = -1 * camMirrorScale.xScale
-        wakeCamera();
+        Database.openDatabase();
+        Database.createTables();
+        camMirrorScale.xScale = -1 * camMirrorScale.xScale;
+    }
+
+    function firstTimeFunction() {
+        viewfinderPage.clearRecordingStatus();
+        viewfinderPage.wakeCamera();
     }
 
     Compass {

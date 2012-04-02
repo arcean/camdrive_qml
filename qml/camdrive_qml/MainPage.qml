@@ -7,15 +7,16 @@ Page {
 
     function showViewfinderPage()
     {
-        var viewfinderPage = Utils.createObject(Qt.resolvedUrl("Viewfinder/ViewfinderPage.qml"), appWindow.pageStack);
+        //var viewfinderPage = Utils.createObject(Qt.resolvedUrl("Viewfinder/ViewfinderPage.qml"), appWindow.pageStack);
+        viewfinderPage.firstTimeFunction();
         pageStack.push(viewfinderPage);
     }
 
     function showSettingsPage()
     {
         var settingsPage = Utils.createObject(Qt.resolvedUrl("Settings/SettingsPage2.qml"), appWindow.pageStack);
-        pageStack.push(settingsPage);
         appWindow.showToolbar();
+        pageStack.push(settingsPage);
     }
 
     function showVideoListPage()

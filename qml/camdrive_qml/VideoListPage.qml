@@ -37,7 +37,6 @@ Page {
     function deleteVideo(path)
     {
         Thumbnails.checkIfThumbnailExists(path, true);
-        console.log('PATH:', path)
         videoPageList.reloadVideoList();
         DatabaseHelper.removeVideoQML(path);
         if (DatabaseHelper.isFileNameFreeQML(path)) {
