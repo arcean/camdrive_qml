@@ -21,7 +21,7 @@ symbian:TARGET.CAPABILITY += NetworkServices
 # If your application uses the Qt Mobility libraries, uncomment the following
 # lines and add the respective components to the MOBILITY variable.
 CONFIG += mobility
-MOBILITY += multimedia
+MOBILITY += multimedia sensors
 
 LIBS += -lthumbnailer
 
@@ -33,7 +33,8 @@ SOURCES += main.cpp \
     utils.cpp \
     database.cpp \
     databasehelper.cpp \
-    videothumbnails.cpp
+    videothumbnails.cpp \
+    accelerometer.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -61,7 +62,8 @@ HEADERS += \
     utils.h \
     database.h \
     databasehelper.h \
-    videothumbnails.h
+    videothumbnails.h \
+    accelerometer.h
 
 RESOURCES += \
     camdrive_qml.qrc
