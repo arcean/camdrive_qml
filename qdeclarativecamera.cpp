@@ -1,5 +1,6 @@
 #include <QGraphicsVideoItem>
 #include <QDateTime>
+#include <QCameraExposure>
 
 #include "qdeclarativecamera.h"
 
@@ -220,6 +221,42 @@ void QDeclarativeCamera::setAspectRatio(const Qt::AspectRatioMode &aspectRatio)
 Qt::AspectRatioMode QDeclarativeCamera::aspectRatio() const
 {
     return aspectRatio_;
+}
+
+bool QDeclarativeCamera::enableInfinityFocus(bool enable)
+{
+    if (camera_->focus()) {
+        if(enable) {
+            /* Force infinity focus. */
+            camera_->focus()->setFocusMode(QCameraFocus::InfinityFocus);
+        }
+        else {
+            /* Revert to auto focus. */
+            camera_->focus()->setFocusMode(QCameraFocus::AutoFocus);
+        }
+        /* Return success. */
+        return true;
+    }
+
+    return false;
+}
+
+bool QDeclarativeCamera::enableNightMode(bool enable)
+{
+    if (camera_->exposure()) {
+        if(enable) {
+            /* Force night mode exposure. */
+            camera_->exposure()->setExposureMode(QCameraExposure::ExposureNight);
+        }
+        else {
+            /* Revert to auto mode exposure. */
+            camera_->exposure()->setExposureMode(QCameraExposure::ExposureAuto);
+        }
+        /* Return success. */
+        return true;
+    }
+
+    return false;
 }
 
 void QDeclarativeCamera::start()

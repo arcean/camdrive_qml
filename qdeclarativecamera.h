@@ -54,6 +54,9 @@ public slots:
     void stop();
     void unload();
 
+    bool enableNightMode(bool enable);
+    bool enableInfinityFocus(bool enable);
+
 protected slots:
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
     void durationChangedFunc(qint64 duration);
