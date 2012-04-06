@@ -6,8 +6,6 @@ Accelerometer::Accelerometer(QObject *parent) :
 {
     accelerometer = new QAccelerometer();
     connect(accelerometer, SIGNAL(readingChanged()), this, SLOT(readingChanged()));
-    qDebug() << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!! OK";
-    accelerometer->start();
 }
 
 void Accelerometer::readingChanged()
@@ -17,4 +15,14 @@ void Accelerometer::readingChanged()
     qreal acc_z = accelerometer->reading()->z();
 
     qDebug() << "X:" << acc_x << " Y:" << acc_y << " Z:" << acc_z;
+}
+
+void Accelerometer::start()
+{
+    accelerometer->start();
+}
+
+void Accelerometer::stop()
+{
+    accelerometer->stop();
 }
