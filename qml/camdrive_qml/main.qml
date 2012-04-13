@@ -3,7 +3,7 @@ import com.nokia.meego 1.0
 import "Settings"
 import "Common"
 import "Viewfinder"
-import "scripts/utils.js" as Utils
+import "scripts/utils.js" as UtilsScript
 
 PageStackWindow {
     id: appWindow
@@ -18,7 +18,7 @@ PageStackWindow {
     property string _TEXT_COLOR: theme.inverted ? "white" : "black"
     property string _ICON_LOCATION: "/usr/share/themes/blanco/meegotouch/icons/"
     property string _ACTIVE_COLOR: "color11"
-    property string _APP_VERSION: "0.1.4"
+    property string _APP_VERSION: "0.1.6"
 
     platformStyle: PageStackWindowStyle {
             background: appWindow.inPortrait ? "qrc:/icons/background-portrait.png" : "qrc:/icons/background.png"
@@ -58,7 +58,7 @@ PageStackWindow {
     }
 
     function playVideos(video) {
-        var videoPlaybackPage = Utils.createObject(Qt.resolvedUrl("VideoPlaybackPage.qml"), appWindow.pageStack);
+        var videoPlaybackPage = UtilsScript.createObject(Qt.resolvedUrl("VideoPlaybackPage.qml"), appWindow.pageStack);
         videoPlaybackPage.setPlaylist(video)
         videoPlaybackPage.startPlayback()
         pageStack.push(videoPlaybackPage)

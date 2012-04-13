@@ -56,7 +56,7 @@ void Database::createVideoDetailsTable(const QString &videoName)
 {
     QSqlQuery query;
     query.exec(QString("CREATE TABLE IF NOT EXISTS '%1' (videoId INTEGER PRIMARY KEY, "
-                    "latitude FLOAT, longitude FLOAT, speed INT)")
+                    "latitude FLOAT, longitude FLOAT, speed INT, accelX FLOAT, accelY FLOAT, accelZ FLOAT, specialCode INT)")
                     .arg(videoName));
 }
 
@@ -94,19 +94,33 @@ void Database::addNewVideo(const QString &videoName, int numberOfVideoParts, con
                 .arg(videoName).arg(settings->getStoreDataEachXSeconds()).arg(numberOfVideoParts).arg(dateTime));
 }
 
-void Database::addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed)
+void Database::addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed, float accelX, float accelY, float accelZ, int specialCode)
 {
     QSqlQuery query;
+    QString accelx;
+    QString accely;
+    QString accelz;
+
+    if (!settings->getEnableStoringAccelInfo()) {
+        accelx = "NULL";
+        accely = "NULL";
+        accelz = "NULL";
+    }
+    else {
+        accelx = QString::number(accelX);
+        accely = QString::number(accelY);
+        accelz = QString::number(accelZ);
+    }
 
     if(settings->getEnableStoringPositionInfo() && settings->getEnableStoringSpeedInfo())
-        query.exec(QString("INSERT INTO '%1' VALUES(NULL,'%2','%3','%4')")
-                    .arg(videoName).arg(latitude).arg(longitude).arg(speed));
+        query.exec(QString("INSERT INTO '%1' VALUES(NULL,'%2','%3','%4','%5','%6','%7', '%8')")
+                    .arg(videoName).arg(latitude).arg(longitude).arg(speed).arg(accelx).arg(accely).arg(accelz).arg(specialCode));
     else if (!settings->getEnableStoringPositionInfo() && settings->getEnableStoringSpeedInfo())
-        query.exec(QString("INSERT INTO '%1' VALUES(NULL,NULL,NULL,'%2')")
-                    .arg(videoName).arg(speed));
+        query.exec(QString("INSERT INTO '%1' VALUES(NULL,NULL,NULL,'%2','%3','%4','%5','%6')")
+                    .arg(videoName).arg(speed).arg(accelx).arg(accely).arg(accelz).arg(specialCode));
     else if (settings->getEnableStoringPositionInfo() && !settings->getEnableStoringSpeedInfo())
-        query.exec(QString("INSERT INTO '%1' VALUES(NULL,'%1','%2',NULL)")
-                    .arg(videoName).arg(latitude).arg(longitude));
+        query.exec(QString("INSERT INTO '%1' VALUES(NULL,'%2','%3',NULL,'%4','%5','%6','%7')")
+                    .arg(videoName).arg(latitude).arg(longitude).arg(accelx).arg(accely).arg(accelz).arg(specialCode));
     /* Else -> do nothing */
 }
 
@@ -152,6 +166,50 @@ float Database::getVideoInfoLongitude(const QString &videoName, int videoId)
     query.exec(QString("SELECT longitude FROM '%1' WHERE videoId=%2").arg(videoName).arg(videoId));
     query.next();
     float result = query.value(0).toFloat();
+
+    return result;
+}
+
+float Database::getVideoInfoAccelX(const QString &videoName, int videoId)
+{
+    QSqlQuery query;
+
+    query.exec(QString("SELECT accelX FROM '%1' WHERE videoId=%2").arg(videoName).arg(videoId));
+    query.next();
+    float result = query.value(0).toFloat();
+
+    return result;
+}
+
+float Database::getVideoInfoAccelY(const QString &videoName, int videoId)
+{
+    QSqlQuery query;
+
+    query.exec(QString("SELECT accelY FROM '%1' WHERE videoId=%2").arg(videoName).arg(videoId));
+    query.next();
+    float result = query.value(0).toFloat();
+
+    return result;
+}
+
+float Database::getVideoInfoAccelZ(const QString &videoName, int videoId)
+{
+    QSqlQuery query;
+
+    query.exec(QString("SELECT accelZ FROM '%1' WHERE videoId=%2").arg(videoName).arg(videoId));
+    query.next();
+    float result = query.value(0).toFloat();
+
+    return result;
+}
+
+int Database::getVideoInfoSpecialCode(const QString &videoName, int videoId)
+{
+    QSqlQuery query;
+
+    query.exec(QString("SELECT specialCode FROM '%1' WHERE videoId=%2").arg(videoName).arg(videoId));
+    query.next();
+    int result = query.value(0).toInt();
 
     return result;
 }

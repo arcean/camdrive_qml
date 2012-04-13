@@ -295,9 +295,10 @@ void QDeclarativeCamera::addNewVideo(const QString& videoName, int videoParts)
     emit this->addNewVideoSignal(videoName, videoParts, dt);
 }
 
-void QDeclarativeCamera::addNewVideoInfo(const QString& videoName, float latitude, float longitude, int speed)
+void QDeclarativeCamera::addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed,
+                                         float accelX, float accelY, float accelZ, int specialCode)
 {
-    emit this->addNewVideoInfoSignal(videoName, latitude, longitude, speed);
+    emit this->addNewVideoInfoSignal(videoName, latitude, longitude, speed, accelX, accelY, accelZ, specialCode);
 }
 
 void QDeclarativeCamera::removeVideo(const QString& videoName)
@@ -315,12 +316,13 @@ void QDeclarativeCamera::getCurrentVideoName(QString& videoName)
     videoName = file->getGeneratedFileName() + "_part_" + QString::number(videoPartNumber + 1);
 }
 
-void QDeclarativeCamera::addNewVideoInfoQML(float latitude, float longitude, int speed)
+void QDeclarativeCamera::addNewVideoInfoQML(float latitude, float longitude, int speed,
+                                            float accelX, float accelY, float accelZ, int specialCode)
 {
     QString videoName = "";
     getCurrentVideoName(videoName);
 
-    addNewVideoInfo(videoName, latitude, longitude, speed);
+    addNewVideoInfo(videoName, latitude, longitude, speed, accelX, accelY, accelZ, specialCode);
 }
 
 float QDeclarativeCamera::getVideoInfoLatitude(const QString &videoName, int videoId)

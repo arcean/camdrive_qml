@@ -209,6 +209,21 @@ bool Settings::getEnableStoringSpeedInfo()
     return value;
 }
 
+void Settings::setEnableStoringAccelInfo(bool enable)
+{
+    QSettings settings;
+
+    settings.setValue("store/accel", enable);
+}
+
+bool Settings::getEnableStoringAccelInfo()
+{
+    QSettings settings;
+    bool value =  settings.value("store/accel", true).toBool();
+
+    return value;
+}
+
 void Settings::setStoreDataEachXSeconds(int seconds)
 {
     QSettings settings;

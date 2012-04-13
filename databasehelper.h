@@ -18,8 +18,12 @@ public slots:
     void setDatabase(Database *db);
     int getVideoStoredEachQML(const QString &videoName);
     int getVideoInfoSpeedQML(const QString &videoName, int videoId);
+    int getVideoInfoSpecialCodeQML(const QString &videoName, int videoId);
     float getVideoInfoLatitudeQML(const QString &videoName, int videoId);
     float getVideoInfoLongitudeQML(const QString &videoName, int videoId);
+    float getVideoInfoAccelXQML(const QString &videoName, int videoId);
+    float getVideoInfoAccelYQML(const QString &videoName, int videoId);
+    float getVideoInfoAccelZQML(const QString &videoName, int videoId);
     void removeVideoQML(const QString &videoName);
     void removeVideoFromMainQML(const QString &videoName);
     bool isFileNameFreeQML(const QString &fileName);

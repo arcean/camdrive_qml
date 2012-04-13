@@ -41,9 +41,9 @@ void Accelerometer::readingChanged()
 
 void Accelerometer::parseReading()
 {
-    qreal x = accelerometer->reading()->x();
-    qreal y = 0;//accelerometer->reading()->y();
-    qreal z = accelerometer->reading()->z();
+    /*qreal x = accelerometer->reading()->x();
+    qreal y = accelerometer->reading()->y();
+    qreal z = accelerometer->reading()->z();*/
 
     // Check, if there's one value > G + min_treshold -> ALARM
     int result_phase1G = phase1_checkG(true);
@@ -75,7 +75,7 @@ void Accelerometer::parseReading()
 int Accelerometer::phase1_check22G()
 {
     qreal x = accelerometer->reading()->x();
-    qreal y = accelerometer->reading()->y();
+    //qreal y = accelerometer->reading()->y();
     qreal z = accelerometer->reading()->z();
 
     int counter = 0;
@@ -93,7 +93,7 @@ int Accelerometer::phase1_check22G()
 int Accelerometer::phase1_checkMinTreshold()
 {
     qreal x = accelerometer->reading()->x();
-    qreal y = accelerometer->reading()->y();
+    //qreal y = accelerometer->reading()->y();
     qreal z = accelerometer->reading()->z();
 
     int counter = 0;
@@ -205,17 +205,17 @@ bool Accelerometer::isGTreshold(qreal value)
     }
 }
 
-qreal Accelerometer::getX()
+float Accelerometer::getX()
 {
     return accelerometer->reading()->x();
 }
 
-qreal Accelerometer::getY()
+float Accelerometer::getY()
 {
     return accelerometer->reading()->y();
 }
 
-qreal Accelerometer::getZ()
+float Accelerometer::getZ()
 {
     return accelerometer->reading()->z();
 }

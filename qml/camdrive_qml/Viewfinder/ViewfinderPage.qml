@@ -102,7 +102,9 @@ Page {
         running: false
 
         onTriggered: {
-            frontCam.addNewVideoInfoQML(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude, speed);
+            /* TODO: special code for events (such as collision) is stored as the last value */
+            frontCam.addNewVideoInfoQML(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude,
+                                        speed, AccelDevice.getX(), AccelDevice.getY(), AccelDevice.getZ(), 0);
         }
     }
 
@@ -220,6 +222,7 @@ Page {
     function startRecording()
     {
         viewfinderPage.isCameraRecording = true;
+        AccelDevice.start();
         frontCam.startRecording();
         storeDataTimer.running = true;
     }
@@ -228,6 +231,7 @@ Page {
     {
         viewfinderPage.isCameraRecording = false;
         frontCam.stopRecording();
+        AccelDevice.stop();
         viewfinderPage.videoPartCounter = 0;
         storeDataTimer.running = false;
     }
@@ -285,7 +289,7 @@ Page {
             Database.addNewVideo(videoName, numberOfVideoParts, dateTime);
         }
         onAddNewVideoInfoSignal: {
-            Database.addNewVideoInfo(videoName, latitude, longitude, speed);
+            Database.addNewVideoInfo(videoName, latitude, longitude, speed, accelX, accelY, accelZ, specialCode);
         }
     }
 

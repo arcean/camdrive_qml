@@ -26,10 +26,15 @@ public slots:
     void createTables();
     int countsIds();
     void addNewVideo(const QString &videoName, int numberOfVideoParts, const QString &dateTime);
-    void addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed);
+    void addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed,
+                         float accelX, float accelY, float accelZ, int specialCode);
     void createVideoDetailsTable(const QString &videoName);
     float getVideoInfoLatitude(const QString &videoName, int videoId);
     float getVideoInfoLongitude(const QString &videoName, int videoId);
+    float getVideoInfoAccelX(const QString &videoName, int videoId);
+    float getVideoInfoAccelY(const QString &videoName, int videoId);
+    float getVideoInfoAccelZ(const QString &videoName, int videoId);
+    int getVideoInfoSpecialCode(const QString &videoName, int videoId);
     int getVideoInfoSpeed(const QString &videoName, int videoId);
     int getVideoStoredEach(const QString &videoName);
     bool removeVideoFromMain(const QString &videoName);

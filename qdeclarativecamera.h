@@ -35,14 +35,16 @@ signals:
     void videoPartNumberChanged(int videoPartNumber);
     void createVideoDetailsTable(const QString &name);
     void addNewVideoSignal(const QString &videoName, int numberOfVideoParts, const QString &dateTime);
-    void addNewVideoInfoSignal(const QString& videoName, float latitude, float longitude, int speed);
+    void addNewVideoInfoSignal(const QString &videoName, float latitude, float longitude, int speed,
+                               float accelX, float accelY, float accelZ, int specialCode);
 
 public slots:
     void viewfinderSizeChanged(const QSizeF& size);
     void toggleCamera();
     void changeUsedFile();
 
-    void addNewVideoInfoQML(float latitude, float longitude, int speed);
+    void addNewVideoInfoQML(float latitude, float longitude, int speed,
+                            float accelX, float accelY, float accelZ, int specialCode);
     float getVideoInfoLatitude(const QString &videoName, int videoId);
     float getVideoInfoLongitude(const QString &videoName, int videoId);
     int getVideoInfoSpeed(const QString &videoName, int videoId);
@@ -63,7 +65,8 @@ protected slots:
 
 private:
     void addNewVideo(const QString& videoName, int videoParts);
-    void addNewVideoInfo(const QString& videoName, float latitude, float longitude, int speed);
+    void addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed,
+                         float accelX, float accelY, float accelZ, int specialCode);
     void removeVideo(const QString& videoName);
     void addNewVideoPart(const QString& videoName);
     void getCurrentVideoName(QString& videoName);

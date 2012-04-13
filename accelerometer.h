@@ -28,9 +28,9 @@ public slots:
     void stop();
     void changeTresholdTo(int treshold_level);
 
-    qreal getX();
-    qreal getY();
-    qreal getZ();
+    float getX();
+    float getY();
+    float getZ();
 
 private slots:
     void readingChanged();

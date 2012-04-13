@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     context->setContextProperty("DatabaseHelper", &databaseHelper);
     context->setContextProperty("Database", &database);
     context->setContextProperty("Thumbnails", &thumbnails);
-    context->setContextProperty("Accelerometer", &accelerometer);
+    context->setContextProperty("AccelDevice", &accelerometer);
 
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
     viewer.setMainQmlFile(QLatin1String("qml/camdrive_qml/main.qml"));

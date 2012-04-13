@@ -39,6 +39,8 @@ public slots:
     int getAudioQuality();    
     void setStoreDataEachXSeconds(int seconds);
     int getStoreDataEachXSeconds();
+    void setEnableStoringAccelInfo(bool enable);
+    bool getEnableStoringAccelInfo();
 
 };
 
