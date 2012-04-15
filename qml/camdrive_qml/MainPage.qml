@@ -7,7 +7,6 @@ Page {
 
     function showViewfinderPage()
     {
-        //var viewfinderPage = Utils.createObject(Qt.resolvedUrl("Viewfinder/ViewfinderPage.qml"), appWindow.pageStack);
         viewfinderPage.firstTimeFunction();
         pageStack.push(viewfinderPage);
     }
@@ -59,9 +58,6 @@ Page {
                     parent.source = "qrc:/icons/start_recording.png"
                 }
                 onClicked: {
-                    //viewfinderPage.clearRecordingStatus()
-                    //viewfinderPage.wakeCamera()
-                    //pageStack.push(viewfinderPage)
                     showViewfinderPage();
                 }
             }
@@ -69,8 +65,6 @@ Page {
 
             Image {
                 id: settingsImage
-                //x: (startRecordingImage.x+startRecordingImage.width+16)
-                //y:100
                 width: 240
                 height: startRecordingImage.width
                 source: "qrc:/icons/settings.png"
@@ -91,8 +85,6 @@ Page {
 
             Image {
                 id: filesImage
-                //x: (settingsImage.x+settingsImage.width+16)
-                //y:100
                 width: 240
                 height: startRecordingImage.width
                 source:"qrc:/icons/files.png"
@@ -106,9 +98,6 @@ Page {
                         parent.source = "qrc:/icons/files.png"
                     }
                     onClicked: {
-                        //pageStack.push(videoListPage)
-                        //appWindow.showToolbar()
-                        //videoListPage.reloadVideoList()
                         showVideoListPage();
                     }
                 }
@@ -125,8 +114,6 @@ Page {
 
         Image {
             id: startRecordingImageP
-            //x: 51
-            //y: 100
             width: 240
             height: 240
             source: "qrc:/icons/start_recording.png"
@@ -140,9 +127,6 @@ Page {
                     parent.source = "qrc:/icons/start_recording.png"
                 }
                 onClicked: {
-                    //viewfinderPage.clearRecordingStatus()
-                    //viewfinderPage.wakeCamera()
-                    //pageStack.push(viewfinderPage)
                     showViewfinderPage();
                 }
             }
@@ -150,8 +134,6 @@ Page {
 
             Image {
                 id: settingsImageP
-                //x: (startRecordingImage.x+startRecordingImage.width+16)
-                //y:100
                 width: 240
                 height: startRecordingImageP.width
                 source: "qrc:/icons/settings.png"
@@ -172,8 +154,6 @@ Page {
 
             Image {
                 id: filesImageP
-                //x: (settingsImage.x+settingsImage.width+16)
-                //y:100
                 width: 240
                 height: startRecordingImageP.width
                 source:"qrc:/icons/files.png"
@@ -187,9 +167,6 @@ Page {
                         parent.source = "qrc:/icons/files.png"
                     }
                     onClicked: {
-                        //pageStack.push(videoListPage)
-                        //appWindow.showToolbar()
-                        //videoListPage.reloadVideoList()
                         showVideoListPage();
                     }
                 }

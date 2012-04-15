@@ -20,7 +20,6 @@ Item {
         verticalAlignment: Text.AlignVCenter
         wrapMode: Text.NoWrap
         font.bold: true
-        //color: _TEXT_COLOR
         x: textAnimation.running ? root.width : 0
     }
 

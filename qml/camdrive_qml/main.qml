@@ -28,10 +28,6 @@ PageStackWindow {
 
     ViewfinderPage { id: viewfinderPage }
     MainPage { id: mainPage }
-    //SettingsPage2 { id: settingsPage }
-    //VideoListPage { id: videoListPage }
-   // NowPlayingPage { id: nowPlayingPage }
-    //VideoPlaybackPage { id: videoPlaybackPage }
 
     Component.onCompleted: {
         theme.inverted = true;
