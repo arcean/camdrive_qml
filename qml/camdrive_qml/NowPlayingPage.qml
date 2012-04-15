@@ -7,9 +7,11 @@ import "scripts/utils.js" as Utils
 
 Page {
     id: nowPlayingPage
-    state: "smallVideo"
-    property bool videoPlaying: false
 
+    //! Property holding height of swiping page
+    property int pageHeight: (nowPlayingPage.height - pageIndicator.height)
+
+    property bool videoPlaying: false
     property variant currentVideo: []
     property int playlistPosition: 0
     property bool videoPaused: videoPlayer.paused
@@ -52,7 +54,7 @@ Page {
         videoPlayer.stop();
         videoPlayer.source = "";
         archivePlaybackTimer.restart();
-        state = "showMap";
+        //state = "showMap";
     }
 
     function stopPlayback() {
@@ -147,39 +149,22 @@ Page {
                 platformIconId: videoPlayer.paused ? "toolbar-mediacontrol-play" : "toolbar-mediacontrol-pause"
                 onClicked: videoPlayer.setToPaused = !videoPlayer.setToPaused
             }
-            ToolIcon {
-                id: animStart2
-                anchors.right: animStart.left
-                platformIconId: "toolbar-view-menu"
-                onClicked: {
-                    if(nowPlayingPage.state == "showSmall" || nowPlayingPage.state == "showMap") {
-                        nowPlayingPage.state = "showDetails"
-                    }
-                    else
-                        nowPlayingPage.state = "showMap"
-                }
-            }
-            ToolIcon {
-                id: animStart
-                anchors.right: parent.right
-                platformIconId: "toolbar-view-menu"
-                onClicked: {
-                    if(nowPlayingPage.state == "videoFullscreen") {
-                        nowPlayingPage.state = "videoSmall"
-                    }
-                    else
-                        nowPlayingPage.state = "videoFullscreen"
-                }
-            }
 
             NewProgressBar {
                 id: progressBar
 
-                anchors { left: playButton.right; topMargin: 20; leftMargin: 40; right: animStart2.left; rightMargin: 40 }
+                anchors {
+                    left: (nowPlayingPage.width > nowPlayingPage.height) ? playButton.right : parent.right;
+                    topMargin: 20;
+                    leftMargin: 40;
+                    right: parent.right;
+                    rightMargin: 40
+                }
                 indeterminate: (videoPlayer.status == Video.Buffering) || ((videoPlayer.status == Video.Loading) && !videoPlayer.setToPaused)
                 minimumValue: 0
                 maximumValue: 100
                 value: (nowPlayingPage.videoPlaying) ? Math.floor((videoPlayer.position / videoPlayer.duration) * 100) : 0
+                visible: nowPlayingPage.width > nowPlayingPage.height
 
                 Label {
                     anchors { top: parent.bottom; horizontalCenter: parent.left }
@@ -287,9 +272,9 @@ Page {
     Video {
         id: videoPlayer
         x: 10
-        y: 10
-        width: 460
-        height: nowPlayingPage.height - 20 - toolBar.height
+        y: (nowPlayingPage.height > nowPlayingPage.width) ? 20 : 10
+        width: (nowPlayingPage.height > nowPlayingPage.width) ? 460 : 844
+        height: (nowPlayingPage.height > nowPlayingPage.width) ? 300 : (nowPlayingPage.height - 20 - toolBar.height)
         fillMode: Video.PreserveAspectFit
 
         property bool repeat: false // True if playback of the current video is to be repeated
@@ -345,243 +330,236 @@ Page {
         }
     }
 
-    Rectangle {
-        id: details
-        x: videoPlayer.x + videoPlayer.width + 10
-        y: nowPlayingPage.height + 10
-        width: nowPlayingPage.width - map.x - 20
-        height: nowPlayingPage.height - 20 - toolBar.height
-        color: "green"
-        opacity: 0       
-    }
+    //! Model containing system information pages
+    VisualItemModel {
+        id: itemModel
 
-    Flickable {
-        id: flicker
+        //! Page displaying details
+        Item {
+            width: nowPlayingPage.width; height: pageHeight
 
-        anchors.fill: details
-        contentWidth: width
-        contentHeight: column.height + 20
+            Rectangle {
+                id: details
+                anchors.fill: parent
+                color: "green"
+                opacity: 0
+                visible: nowPlayingPage.height > nowPlayingPage.width
+            }
+            Flickable {
+                id: flicker
 
-        Column {
-            id: column
+                anchors.fill: details
+                contentWidth: width
+                contentHeight: column.height + 20
+                visible: nowPlayingPage.height > nowPlayingPage.width
 
-            anchors { top: parent.top; left: parent.left; right: parent.right; margins: 20 }
-            spacing: 10
+                Column {
+                    id: column
 
-            Label {
-                id: titleText
+                    anchors { top: parent.top; left: parent.left; right: parent.right; margins: 20 }
+                    spacing: 10
 
-                width: parent.width
-                font.pixelSize: 32
-                color: _TEXT_COLOR
-                wrapMode: Text.WordWrap
-                text: video.available ? video.metaData.fileName.slice(0, video.metaData.fileName.lastIndexOf(".")) : ""
+                    Label {
+                        id: titleText
+
+                        width: parent.width
+                        font.pixelSize: 32
+                        color: _ACTIVE_COLOR_TEXT
+                        wrapMode: Text.WordWrap
+                        text: video.available ? video.metaData.fileName.slice(0, video.metaData.fileName.lastIndexOf(".")) : ""
+                    }
+
+                    Column {
+                        width: parent.width
+
+                        Label {
+                            color: _TEXT_COLOR
+                            text: video.available ? "Length" + ": " + Utils.getDuration(video.metaData.duration) : ""
+                        }
+
+                        Label {
+                            color: _TEXT_COLOR
+                            text: video.available ? "Format" + ": " + video.metaData.fileExtension.toUpperCase() : ""
+                        }
+
+                        Label {
+                            color: _TEXT_COLOR
+                            text: video.available ? "Size" + ": " + video.getFileSize() : ""
+                        }
+
+                        Label {
+                            color: _TEXT_COLOR
+                            text: video.available ? "Added" + ": " + Qt.formatDateTime(video.metaData.lastModified) : ""
+                        }
+
+                        Label {
+                            color: _TEXT_COLOR
+                            text: video.available ? "Times played" + ": " + video.metaData.playCount : ""
+                        }
+
+                        Label {
+                            id: actualSpeedLabel
+                            color: _TEXT_COLOR
+                            text: "Actual speed: n/a"
+                        }
+
+                        Label {
+                            id: longitudeLabel
+                            color: _TEXT_COLOR
+                            text: "Longitude: n/a"
+                        }
+
+                        Label {
+                            id: latitudeLabel
+                            color: _TEXT_COLOR
+                            text: "Latitude: n/a"
+                        }
+                    }
+                }
             }
 
-            Column {
-                width: parent.width
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? "Length" + ": " + Utils.getDuration(video.metaData.duration) : ""
-                }
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? "Format" + ": " + video.metaData.fileExtension.toUpperCase() : ""
-                }
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? "Size" + ": " + video.getFileSize() : ""
-                }
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? "Added" + ": " + Qt.formatDateTime(video.metaData.lastModified) : ""
-                }
-
-                Label {
-                    color: _TEXT_COLOR
-                    text: video.available ? "Times played" + ": " + video.metaData.playCount : ""
-                }
-
-                Label {
-                    id: actualSpeedLabel
-                    color: _TEXT_COLOR
-                    text: "Actual speed: n/a"
-                }
-
-                Label {
-                    id: longitudeLabel
-                    color: _TEXT_COLOR
-                    text: "Longitude: n/a"
-                }
-
-                Label {
-                    id: latitudeLabel
-                    color: _TEXT_COLOR
-                    text: "Latitude: n/a"
-                }
-            }
-        }
-    }
-
-    Map {
-        id: map
-        x: videoPlayer.x + videoPlayer.width + 10
-        y: 10
-        width: nowPlayingPage.width - x - 10
-        height: nowPlayingPage.height - 20 - toolBar.height
-        plugin : Plugin { name: "nokia" }
-        zoomLevel: maximumZoomLevel - 2
-        center: ourCoord
-
-        MapImage {
-            id: mapPlacer
-            source: _ICON_LOCATION + "icon-m-common-location-selected.png"
-            coordinate: ourCoord
-
-            /*!
-             * We want that bottom middle edge of icon points to the location, so using offset parameter
-             * to change the on-screen position from coordinate. Values are calculated based on icon size,
-             * in our case icon is 48x48.
-             */
-            offset.x: -24
-            offset.y: -48
-        }
-    }
-    //! Map's mouse area for implementation of panning in the map and zoom on double click
-    MouseArea {
-        id: mousearea
-        z: 10
-
-        //! Property used to indicate if panning the map
-        property bool __isPanning: false
-
-        //! Last pressed X and Y position
-        property int __lastX: -1
-        property int __lastY: -1
-
-        anchors.fill: map
-
-        //! When pressed, indicate that panning has been started and update saved X and Y values
-        onPressed: {
-            __isPanning = true
-            __lastX = mouse.x
-            __lastY = mouse.y
-            console.log("LLLL")
-        }
-
-        //! When released, indicate that panning has finished
-        onReleased: {
-            __isPanning = false
-        }
-
-        //! Move the map when panning
-        onPositionChanged: {
-            if (__isPanning) {
-                var dx = mouse.x - __lastX
-                var dy = mouse.y - __lastY
-                map.pan(-dx, -dy)
-                __lastX = mouse.x
-                __lastY = mouse.y
+            ScrollDecorator {
+                flickableItem: flicker
             }
         }
 
-        //! When canceled, indicate that panning has finished
-        onCanceled: {
-            __isPanning = false;
-        }
+        //! Page displaying map
+        Item {
+            width: nowPlayingPage.width; height: pageHeight
 
-        //! Zoom one level when double clicked
-        onDoubleClicked: {
-            map.center = map.toCoordinate(Qt.point(__lastX,__lastY))
-            map.zoomLevel += 1
-        }
-    }
-    states: [
-        State {
-            name: "videoFullscreen"
-            PropertyChanges {
-                target: videoPlayer
-                width: nowPlayingPage.width - 20
-            }
-            PropertyChanges {
-                target: map
-                y: -10 + map.height * -1
-            }
-            PropertyChanges {
-                target: details
-                y: nowPlayingPage.height + 10
-            }
-        },
-        State {
-            name: "videoSmall"
-            PropertyChanges {
-                target: videoPlayer
+            Map {
+                id: map
                 width: 460
-                height: nowPlayingPage.height - 20 - toolBar.height
-            }
-            PropertyChanges {
-                target: map
-                y: -10 + map.height * -1
-            }
-            PropertyChanges {
-                target: details
-                y: 10
-            }
-        },
-        State {
-            name: "showDetails"
-            PropertyChanges {
-                target: details
-                y: 10
-            }
-            PropertyChanges {
-                target: map
-                y: -10 + map.height * -1
-            }
-        },
-        State {
-            name: "showMap"
-            PropertyChanges {
-                target: map
-                y: 10
-            }
-            PropertyChanges {
-                target: details
-                y: nowPlayingPage.height + 10
-            }
-        }
-    ]
+                height: 400
+                plugin : Plugin { name: "nokia" }
+                zoomLevel: maximumZoomLevel - 4
+                center: ourCoord
+                visible: nowPlayingPage.height > nowPlayingPage.width
 
-    transitions: [
-        Transition {
-            to: "videoFullscreen";
-            ParallelAnimation {
-                NumberAnimation { properties: "x,y,width,height"; duration: 500; easing.type: Easing.InOutQuad }
-            }
-        },
-        Transition {
-            from: "videoFullscreen"; to: "videoSmall";
-            ParallelAnimation {
-                NumberAnimation { properties: "x,y,width,height"; duration: 500; easing.type: Easing.InOutQuad }
-            }
-        },
-        Transition {
-            to: "showMap";
-            ParallelAnimation {
-                NumberAnimation { properties: "x,y,width,height"; duration: 500; easing.type: Easing.InOutQuad }
-            }
-        },
-        Transition {
-            to: "showDetails";
-            ParallelAnimation {
-                NumberAnimation { properties: "x,y,width,height"; duration: 500; easing.type: Easing.InOutQuad }
+                MapImage {
+                    id: mapPlacer
+                    source: _ICON_LOCATION + "icon-m-common-location-selected.png"
+                    coordinate: ourCoord
+
+                    /*!
+                     * We want that bottom middle edge of icon points to the location, so using offset parameter
+                     * to change the on-screen position from coordinate. Values are calculated based on icon size,
+                     * in our case icon is 48x48.
+                     */
+                    offset.x: -24
+                    offset.y: -48
+                }
+
+                //! Map's mouse area for implementation of panning in the map and zoom on double click
+                MouseArea {
+                    id: mousearea
+                    z: 10
+
+                    //! Property used to indicate if panning the map
+                    property bool __isPanning: false
+
+                    //! Last pressed X and Y position
+                    property int __lastX: -1
+                    property int __lastY: -1
+
+                    anchors.fill: parent
+                    enabled: nowPlayingPage.height > nowPlayingPage.width
+
+                    //! When pressed, indicate that panning has been started and update saved X and Y values
+                    onPressed: {
+                        __isPanning = true
+                        __lastX = mouse.x
+                        __lastY = mouse.y
+                        console.log("LLLL")
+                    }
+/*
+                    //! When released, indicate that panning has finished
+                    onReleased: {
+                        __isPanning = false
+                    }
+
+                    //! Move the map when panning
+                    onPositionChanged: {
+                        if (__isPanning) {
+                            var dx = mouse.x - __lastX
+                            var dy = mouse.y - __lastY
+                            map.pan(-dx, -dy)
+                            __lastX = mouse.x
+                            __lastY = mouse.y
+                        }
+                    }
+
+                    //! When canceled, indicate that panning has finished
+                    onCanceled: {
+                        __isPanning = false;
+                    }
+
+                    //! Zoom one level when double clicked
+                    onDoubleClicked: {
+                        map.center = map.toCoordinate(Qt.point(__lastX,__lastY))
+                        map.zoomLevel += 1
+                    }*/
+                }
             }
         }
-    ]
+    }
+
+    /*!
+     * Displaying all available system information pages, they can be swiped to navigate
+     * from one page to another.
+     * Such functionality implemented with PathView element.
+     */
+    PathView {
+        id: view
+        anchors { margins: 10; top: pageIndicator.bottom; left: parent.left;
+            right: parent.right; bottom: toolBar.top; }
+        model: itemModel
+        preferredHighlightBegin: 0.5
+        preferredHighlightEnd: 0.5
+        highlightRangeMode: PathView.StrictlyEnforceRange
+        clip: true
+        visible: nowPlayingPage.height > nowPlayingPage.width
+
+        //! Jump to the page that was clicked
+        currentIndex: 1
+
+        //! Put high number for flickDeceleration to make sure, that swiping only one page at time
+        flickDeceleration: 500000
+
+        path: Path {
+            startX: - nowPlayingPage.width * itemModel.count / 2 + nowPlayingPage.width / 2
+            startY: pageHeight / 2
+            PathLine {
+                x: nowPlayingPage.width * itemModel.count / 2 + nowPlayingPage.width / 2
+                y: pageHeight / 2
+            }
+        }
+    }
+
+    //! Page indicator shows total number of pages and highlight icon for selected page
+    Item {
+        id: pageIndicator
+
+        width: parent.width
+        height: 40
+        anchors.top: videoPlayer.bottom
+
+        visible: nowPlayingPage.height > nowPlayingPage.width
+
+        //! Page indicator icons placed horizontally in a row
+        Row {
+            anchors.centerIn: parent
+            spacing: 5
+
+            Repeater {
+                model: itemModel.count
+                delegate: Image {
+                    source: view.currentIndex === index ? "image://theme/icon-s-current-page"
+                                                       : "image://theme/icon-s-unselected-page"
+                }
+            }
+        }
+    }
 
     DocumentGalleryItem {
         id: video
@@ -608,9 +586,5 @@ Page {
             value: ""
         }
         onStatusChanged: if ((videoModel.status == DocumentGalleryModel.Finished) && (videoModel.count > 0)) video.item = videoModel.get(0).itemId;
-    }
-
-    ScrollDecorator {
-        flickableItem: flicker
     }
 }

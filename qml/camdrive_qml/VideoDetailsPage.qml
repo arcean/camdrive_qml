@@ -87,7 +87,7 @@ Page {
 
                 width: parent.width
                 font.pixelSize: 32
-                color: _TEXT_COLOR
+                color: _ACTIVE_COLOR_TEXT
                 wrapMode: Text.WordWrap
                 text: video.available ? video.metaData.fileName.slice(0, video.metaData.fileName.lastIndexOf(".")) : ""
             }

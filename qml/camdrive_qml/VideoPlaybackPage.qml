@@ -7,7 +7,7 @@ Page {
     property bool videoPaused: nowPlayingPage.videoPaused
     property bool videoStopped: nowPlayingPage.videoStopped
     property alias currentVideo: nowPlayingPage.currentVideo
-    orientationLock: PageOrientation.LockLandscape
+   // orientationLock: PageOrientation.LockLandscape
 
     function setPlaylist(videoList) {
         nowPlayingPage.setPlaylist(videoList);
