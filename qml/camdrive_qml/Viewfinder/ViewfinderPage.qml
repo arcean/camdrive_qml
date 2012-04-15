@@ -8,6 +8,7 @@ import Settings 1.0
 import "../Compass"
 import "../StyledComponents"
 import "../"
+import "../Common/"
 
 Page {
     id: viewfinderPage
@@ -470,27 +471,26 @@ Page {
     }
 
     // Emergency button
-    Item {
+    EmergencyButton {
         id: emergencyButton
         anchors.right: parent.right
         anchors.rightMargin: 20
         anchors.top: upperToolbar.bottom
         anchors.topMargin: 20
-        width: 96
-        height: 96
 
-        Image {
-            width:96
-            height:96
-            anchors.centerIn: parent
-            source:"qrc:/icons/emergency_call.png"
-
-        }
         MouseArea {
             anchors.fill: parent
             onClicked: {
                 console.log("Emergency call clicked")
+                emergencyButton.startAlarm();
             }
+        }
+    }
+
+    Connections {
+        target: AccelDevice
+        onAlarm: {
+            emergencyButton.startAlarm();
         }
     }
 

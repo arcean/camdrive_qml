@@ -22,6 +22,7 @@ public:
 
 signals:
     void newReading();
+    void alarm(int alarmLevel);
 
 public slots:
     void start();
