@@ -12,6 +12,8 @@
 #include "file.h"
 #include "settings.h"
 #include "database.h"
+#include "accelerometer.h"
+#include "gps.h"
 
 #define CAM_DEFAULT_FILE_NAME "camdrive_file"
 
@@ -34,20 +36,16 @@ signals:
     void durationChanged(qint64 duration);
     void videoPartNumberChanged(int videoPartNumber);
     void createVideoDetailsTable(const QString &name);
-    void addNewVideoSignal(const QString &videoName, int numberOfVideoParts, const QString &dateTime);
-    void addNewVideoInfoSignal(const QString &videoName, float latitude, float longitude, int speed,
-                               float accelX, float accelY, float accelZ, int specialCode);
+    void gpsUpdated();
 
 public slots:
     void viewfinderSizeChanged(const QSizeF& size);
+    void setGps(Gps *gps);
+    void setAccelerometer(Accelerometer *accelerometer);
+    void setDatabase(Database *db);
+
     void toggleCamera();
     void changeUsedFile();
-
-    void addNewVideoInfoQML(float latitude, float longitude, int speed,
-                            float accelX, float accelY, float accelZ, int specialCode);
-    float getVideoInfoLatitude(const QString &videoName, int videoId);
-    float getVideoInfoLongitude(const QString &videoName, int videoId);
-    int getVideoInfoSpeed(const QString &videoName, int videoId);
 
     void startRecording();
     void stopRecording();
@@ -63,14 +61,14 @@ protected slots:
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
     void durationChangedFunc(qint64 duration);
 
+private slots:
+    void storeData();
+    void gpsUpdatedSlot();
+
 private:
-    void addNewVideo(const QString& videoName, int videoParts);
-    void addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed,
-                         float accelX, float accelY, float accelZ, int specialCode);
-    void removeVideo(const QString& videoName);
-    void addNewVideoPart(const QString& videoName);
     void getCurrentVideoName(QString& videoName);
     void getDateTime(QString &dateTime);
+    void storeNewVideo(const QString& videoName, int videoParts);
 
     QCamera* camera_;
     QCameraImageCapture* imageprocessing_;
@@ -81,12 +79,15 @@ private:
     bool firstCamera;
     File *file;
     QTimer *timer;
+    QTimer *storeDataTimer;
     Settings *settingsObject;
     bool isRecording;
     bool isRecordingInParts;
     int videoPartNumber;
 
     Database *Db;
+    Accelerometer *accelerometer;
+    Gps *gps;
 };
 
 #endif // QDeclarativeCamera_H

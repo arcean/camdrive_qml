@@ -20,8 +20,11 @@ Page {
     orientationLock: PageOrientation.LockLandscape
 
     Component.onCompleted: {
-        Database.openDatabase();
-        Database.createTables();
+       // frontCam.setGps(Gps);
+       // frontCam.setAccelerometer(AccelDevice);
+       // frontCam.setDatabase(Database);
+       // Database.openDatabase();
+       // Database.createTables();
         camMirrorScale.xScale = -1 * camMirrorScale.xScale;
     }
 
@@ -94,19 +97,19 @@ Page {
     Settings {
         id: settingsObject
     }
-
+/*
     Timer {
         id: storeDataTimer
         interval: settingsObject.getStoreDataEachXSeconds() * 1000
         repeat: true
         running: false
 
-        onTriggered: {
+        onTriggered: {*/
             /* TODO: special code for events (such as collision) is stored as the last value */
-            frontCam.addNewVideoInfoQML(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude,
-                                        speed, AccelDevice.getX(), AccelDevice.getY(), AccelDevice.getZ(), 0);
-        }
-    }
+           // frontCam.addNewVideoInfoQML(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude,
+           //                             speed, AccelDevice.getX(), AccelDevice.getY(), AccelDevice.getZ(), 0);
+     /*   }
+    }*/
 
     Timer {
         id: timerTouchToStartRecording
@@ -166,7 +169,7 @@ Page {
         else
             textCompass.text = "E"
     }
-
+/*
     PositionSource {
         id: positionSource
         updateInterval: 1000
@@ -180,7 +183,7 @@ Page {
             setSpeed(speed);
         }
     }
-
+*/
     function updateCounter(duration)
     {
         var add = (((settingsObject.getStoreLastInMinutes() * 60 * 1000) / 2)  * videoPartCounter) + duration;
@@ -224,7 +227,7 @@ Page {
         viewfinderPage.isCameraRecording = true;
         AccelDevice.start();
         frontCam.startRecording();
-        storeDataTimer.running = true;
+        //storeDataTimer.running = true;
     }
 
     function stopRecording()
@@ -233,7 +236,7 @@ Page {
         frontCam.stopRecording();
         AccelDevice.stop();
         viewfinderPage.videoPartCounter = 0;
-        storeDataTimer.running = false;
+        //storeDataTimer.running = false;
     }
 
     Scale {
@@ -282,15 +285,19 @@ Page {
         onVideoPartNumberChanged: {
             viewfinderPage.videoPartCounter++;
         }
+        onGpsUpdated: {
+            setSpeed(Gps.getSpeed());
+        }
+
     //    onCreateVideoDetailsTable: {
     //        Database.createVideoDetailsTable(name);
     //   }
-        onAddNewVideoSignal: {
-            Database.addNewVideo(videoName, numberOfVideoParts, dateTime);
-        }
-        onAddNewVideoInfoSignal: {
-            Database.addNewVideoInfo(videoName, latitude, longitude, speed, accelX, accelY, accelZ, specialCode);
-        }
+    //    onAddNewVideoSignal: {
+           // Database.addNewVideo(videoName, numberOfVideoParts, dateTime);
+    //    }
+      //  onAddNewVideoInfoSignal: {
+//            Database.addNewVideoInfo(videoName, latitude, longitude, speed, accelX, accelY, accelZ, specialCode);
+       // }
     }
 
     Rectangle {

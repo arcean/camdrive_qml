@@ -11,7 +11,14 @@ QDeclarativeCamera::QDeclarativeCamera(QDeclarativeItem *parent) :
 {
     settingsObject = new Settings();
     firstCamera = true;
+    Db = new Database();
+    accelerometer = new Accelerometer();
+    gps = new Gps();
+
+    connect (gps, SIGNAL(updated()), this, SLOT(gpsUpdatedSlot()));
+
     toggleCamera();
+    gps->start();
 }
 
 QDeclarativeCamera::~QDeclarativeCamera()
@@ -27,6 +34,26 @@ QDeclarativeCamera::~QDeclarativeCamera()
         //delete camera_;
     }
  */
+}
+
+void QDeclarativeCamera::gpsUpdatedSlot()
+{
+    emit gpsUpdated();
+}
+
+void QDeclarativeCamera::setGps(Gps *gps)
+{
+    this->gps = gps;
+}
+
+void QDeclarativeCamera::setAccelerometer(Accelerometer *accelerometer)
+{
+    this->accelerometer = accelerometer;
+}
+
+void QDeclarativeCamera::setDatabase(Database *db)
+{
+    this->Db = db;
 }
 
 void QDeclarativeCamera::durationChangedFunc(qint64 duration)
@@ -45,11 +72,16 @@ void QDeclarativeCamera::initFile()
     timer->setInterval(time);
     qDebug() << "TIMER: set to" << time;
 
+    storeDataTimer = new QTimer(this);
+    /* TODO: Make it configurable, currently 1 sec. */
+    storeDataTimer->setInterval(1000);
+
     file = new File(CAM_DEFAULT_FILE_NAME);
     videoPartNumber = 0;
     isRecordingInParts = false;
 
     connect(timer, SIGNAL(timeout()), this, SLOT(changeUsedFile()));
+    connect(storeDataTimer, SIGNAL(timeout()), this, SLOT(storeData()));
     setOutputLocation();
 }
 
@@ -91,13 +123,18 @@ void QDeclarativeCamera::startRecording()
     if(!isRecording)
         return;
 
+    Db->openDatabase();
+    Db->createTables();
+    accelerometer->start();
+
     if(!isRecordingInParts) {
         /* Create entry in main table for our new video. */
         /* Since 0.0.2 there're only 2 parts of the video. */
         //int videoParts = settingsObject->getStoreLastInMinutes();
         int videoParts = 2;
-        this->addNewVideo(file->getGeneratedFileName(), videoParts);
+        this->storeNewVideo(file->getGeneratedFileName(), videoParts);
         /* And now we want entries for the first part of the video. */
+        qDebug() << "A1b";
         QString baseName = file->getGeneratedFileName();
         QString name = baseName + "_part_" + QString::number(videoPartNumber+1);
         Db->createVideoDetailsTable(name);
@@ -106,6 +143,7 @@ void QDeclarativeCamera::startRecording()
     }
     /* ============================================ */
 
+    storeDataTimer->start();
     mediaRecorder_->record();
     if(!settingsObject->getEnableContinousRecording())
         timer->start();
@@ -116,15 +154,19 @@ void QDeclarativeCamera::startRecording()
 */
 void QDeclarativeCamera::pauseRecording()
 {
+    storeDataTimer->stop();
     timer->stop();
     mediaRecorder_->pause();
 }
 
 void QDeclarativeCamera::stopRecording()
 {
+    storeDataTimer->stop();
     timer->stop();
     mediaRecorder_->stop();
     file->fileReady();
+   // Db->closeDatabase();
+    accelerometer->stop();
 }
 
 /*
@@ -287,55 +329,27 @@ void QDeclarativeCamera::getDateTime(QString &dateTime)
     dateTime += dt.toString("hh:mm:ss");
 }
 
-void QDeclarativeCamera::addNewVideo(const QString& videoName, int videoParts)
+/* Store details about current video file. */
+void QDeclarativeCamera::storeData()
+{
+    QString videoName = "";
+    getCurrentVideoName(videoName);
+
+    /* Take care of specialCode, currently '0'. */
+    Db->addNewVideoInfo(videoName, gps->getLatitude(), gps->getLongitude(), gps->getSpeed(),
+                        accelerometer->getX(), accelerometer->getY(), accelerometer->getZ(), 0);
+}
+
+/* Create entry for new video file. */
+void QDeclarativeCamera::storeNewVideo(const QString& videoName, int videoParts)
 {
     QString dt;
-
     getDateTime(dt);
-    emit this->addNewVideoSignal(videoName, videoParts, dt);
-}
 
-void QDeclarativeCamera::addNewVideoInfo(const QString &videoName, float latitude, float longitude, int speed,
-                                         float accelX, float accelY, float accelZ, int specialCode)
-{
-    emit this->addNewVideoInfoSignal(videoName, latitude, longitude, speed, accelX, accelY, accelZ, specialCode);
-}
-
-void QDeclarativeCamera::removeVideo(const QString& videoName)
-{
-    Db->removeVideo(videoName);
-}
-
-void QDeclarativeCamera::addNewVideoPart(const QString& videoName)
-{
-    emit this->createVideoDetailsTable(videoName);
+    Db->addNewVideo(videoName, videoParts, dt);
 }
 
 void QDeclarativeCamera::getCurrentVideoName(QString& videoName)
 {
     videoName = file->getGeneratedFileName() + "_part_" + QString::number(videoPartNumber + 1);
-}
-
-void QDeclarativeCamera::addNewVideoInfoQML(float latitude, float longitude, int speed,
-                                            float accelX, float accelY, float accelZ, int specialCode)
-{
-    QString videoName = "";
-    getCurrentVideoName(videoName);
-
-    addNewVideoInfo(videoName, latitude, longitude, speed, accelX, accelY, accelZ, specialCode);
-}
-
-float QDeclarativeCamera::getVideoInfoLatitude(const QString &videoName, int videoId)
-{
-    return Db->getVideoInfoLatitude(videoName, videoId);
-}
-
-float QDeclarativeCamera::getVideoInfoLongitude(const QString &videoName, int videoId)
-{
-    return Db->getVideoInfoLongitude(videoName, videoId);
-}
-
-int QDeclarativeCamera::getVideoInfoSpeed(const QString &videoName, int videoId)
-{
-    return Db->getVideoInfoSpeed(videoName, videoId);
 }

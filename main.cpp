@@ -9,6 +9,7 @@
 #include "databasehelper.h"
 #include "videothumbnails.h"
 #include "accelerometer.h"
+#include "gps.h"
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +24,7 @@ int main(int argc, char *argv[])
     Database database;
     VideoThumbnails thumbnails;
     Accelerometer accelerometer;
+    Gps gps;
 
     viewer.setViewport(new QGLWidget());
     qmlRegisterType<QDeclarativeCamera>("Camera", 1, 0, "Camera");
@@ -34,6 +36,7 @@ int main(int argc, char *argv[])
     context->setContextProperty("Database", &database);
     context->setContextProperty("Thumbnails", &thumbnails);
     context->setContextProperty("AccelDevice", &accelerometer);
+    context->setContextProperty("Gps", &gps);
 
     viewer.setOrientation(QmlApplicationViewer::ScreenOrientationAuto);
     viewer.setMainQmlFile(QLatin1String("qml/camdrive_qml/main.qml"));

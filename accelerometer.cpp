@@ -28,12 +28,7 @@ void Accelerometer::changeTresholdTo(int treshold_level)
 
 void Accelerometer::readingChanged()
 {
-    qreal acc_x = accelerometer->reading()->x();
-    qreal acc_y = accelerometer->reading()->y();
-    qreal acc_z = accelerometer->reading()->z();
-
-    qDebug() << "X:" << acc_x << " Y:" << acc_y << " Z:" << acc_z;
-
+    /* Check if there's an alarm condition. */
     parseReading();
 
     emit newReading();
@@ -41,10 +36,6 @@ void Accelerometer::readingChanged()
 
 void Accelerometer::parseReading()
 {
-    /*qreal x = accelerometer->reading()->x();
-    qreal y = accelerometer->reading()->y();
-    qreal z = accelerometer->reading()->z();*/
-
     // Check, if there's one value > G + min_treshold -> ALARM
     int result_phase1G = phase1_checkG(true);
     int result_phase2G = phase1_checkG(false);
@@ -67,7 +58,7 @@ void Accelerometer::parseReading()
     }
     else {
         //Do nothing
-        qDebug() << "nothing";
+       // qDebug() << "nothing";
     }
 
 }
