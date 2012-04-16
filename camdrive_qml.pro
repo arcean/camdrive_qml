@@ -35,7 +35,8 @@ SOURCES += main.cpp \
     databasehelper.cpp \
     videothumbnails.cpp \
     accelerometer.cpp \
-    gps.cpp
+    gps.cpp \
+    geocoder.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -65,7 +66,8 @@ HEADERS += \
     databasehelper.h \
     videothumbnails.h \
     accelerometer.h \
-    gps.h
+    gps.h \
+    geocoder.h
 
 RESOURCES += \
     camdrive_qml.qrc

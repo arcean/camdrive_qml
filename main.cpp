@@ -10,6 +10,7 @@
 #include "videothumbnails.h"
 #include "accelerometer.h"
 #include "gps.h"
+#include "geocoder.h"
 
 int main(int argc, char *argv[])
 {
@@ -29,6 +30,7 @@ int main(int argc, char *argv[])
     viewer.setViewport(new QGLWidget());
     qmlRegisterType<QDeclarativeCamera>("Camera", 1, 0, "Camera");
     qmlRegisterType<Settings>("Settings", 1, 0, "Settings");
+    qmlRegisterType<GeoCoder>("GeoCoder",1,0 ,"GeoCoder");
 
     QDeclarativeContext *context = viewer.rootContext();
     context->setContextProperty("Utils", &utils);
