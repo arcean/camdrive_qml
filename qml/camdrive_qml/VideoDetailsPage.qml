@@ -2,6 +2,7 @@ import QtQuick 1.0
 import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
 import "scripts/utils.js" as Utils
+import "Common/"
 
 Page {
     id: root
@@ -43,9 +44,19 @@ Page {
         onStatusChanged: if ((videoModel.status == DocumentGalleryModel.Finished) && (videoModel.count > 0)) video.item = videoModel.get(0).itemId;
     }
 
+    Header {
+        id: header
+        anchors {
+            left: parent.left
+            right: parent.right
+            top: parent.top
+        }
+        text: "Video details"
+    }
+
     Item {
         id: videoItem
-        anchors.top: parent.top
+        anchors.top: header.bottom
         anchors.left: parent.left
         anchors.margins: 10
         width:  appWindow.inPortrait ? 460 : 460
@@ -71,7 +82,7 @@ Page {
 
     Flickable {
         id: contentText
-        anchors.top: appWindow.inPortrait ? videoItem.bottom : parent.top
+        anchors.top: appWindow.inPortrait ? videoItem.bottom : header.bottom
         anchors.left: appWindow.inPortrait ? parent.left : videoItem.right
         anchors.right: parent.right
         anchors.bottom: parent.bottom

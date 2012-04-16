@@ -555,11 +555,11 @@ Page {
              platformStyle: StyledButton {}
              anchors.horizontalCenter: parent.horizontalCenter
              Button {id: b1; text: "Yes"; onClicked: {
-                     stopDialog.accept()
-                     frontCam.stopRecording()
-                     unloadCamera()
-                     appWindow.pageStack.pop()
-                     screenSaver.screenSaverInhibited = false
+                     stopDialog.accept();
+                     frontCam.stopRecording();
+                     unloadCamera();
+                     appWindow.pageStack.pop();
+                     screenSaver.screenSaverInhibited = false;
                  }
              }
              Button {id: b2; text: "No"; onClicked: {

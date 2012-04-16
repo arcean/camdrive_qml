@@ -20,7 +20,11 @@ Page {
 
     function showVideoListPage()
     {
-        var videoListPage = Utils.createObject(Qt.resolvedUrl("VideoListPage.qml"), appWindow.pageStack);
+        //! Reload videoList
+        videoListPage.prepareVideoDetailsPage();
+        videoListPage.reloadVideoListImmediately();
+
+        appWindow.showToolbar();
         pageStack.push(videoListPage);
     }
 

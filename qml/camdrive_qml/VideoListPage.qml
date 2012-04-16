@@ -28,6 +28,11 @@ Page {
         reloadTimer.restart();
     }
 
+    function reloadVideoListImmediately()
+    {
+        videoListModel.reload();
+    }
+
     function prepareVideoDetailsPage()
     {
         Thumbnails.loadAllVideoFilesToList();

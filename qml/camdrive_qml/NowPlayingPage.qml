@@ -3,6 +3,7 @@ import com.nokia.meego 1.0
 import QtMultimediaKit 1.1
 import QtMobility.gallery 1.1
 import QtMobility.location 1.2
+import QtMobility.systeminfo 1.2
 import GeoCoder 1.0
 import "scripts/utils.js" as Utils
 import "Common/"
@@ -25,6 +26,7 @@ Page {
         playlistPosition = 0;
         currentVideo = videoList[0];
         startPlayback();
+        console.log('setPlaylist DONE')
     }
 
     function appendPlaylist(videoList) {
@@ -53,24 +55,31 @@ Page {
     }
 
     function startPlayback() {
+        console.log('startPlayback ')
         if (currentVideo.itemId) {
             video.item = currentVideo.itemId;
+            console.log('startPlayback IF')
         }
         else {
             videoModel.getVideo(currentVideo.filePath);
+            console.log('startPlayback ELSE')
         }
         videoPlayer.stop();
+        console.log('startPlayback stop')
         videoPlayer.source = "";
         archivePlaybackTimer.restart();
+        console.log('startPlayback DONE')
         //state = "showMap";
     }
 
     function stopPlayback() {
         video.metaData.resumePosition = Math.floor(videoPlayer.position / 1000);
         videoPlayer.stop();
+        console.log('stopPlayback stop')
         videoPlaying = false;
         videoPlayer.source = "";
         currentVideo = [];
+        console.log('stopPlayback stop 2')
         videoInfoTimer.stop();
         appWindow.pageStack.pop();
     }
@@ -154,6 +163,11 @@ Page {
                 break;
             }
         }
+    }
+
+    ScreenSaver {
+        id: screenSaver
+        screenSaverInhibited: nowPlayingPage.videoPlaying
     }
 
     ToolBar {
@@ -285,7 +299,9 @@ Page {
 
         interval: 1000
         onTriggered: {
+            console.log('archivePlaybackTimer setVideo')
             videoPlayer.setVideo(currentVideo.url);
+            console.log('archivePlaybackTimer setVideo DONE')
             startSpeedInfoTimer();
         }
     }
