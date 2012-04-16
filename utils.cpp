@@ -4,7 +4,8 @@ Utils::Utils(QObject *parent) :
     QObject(parent) {
 }
 
-void Utils::deleteVideo(const QString &path) {
+void Utils::deleteVideo(const QString &path)
+{
     QString message;
     if (QFile::remove(path)) {
         message = tr("Video deleted successfully");

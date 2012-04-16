@@ -112,7 +112,7 @@ Page {
 
                 Label {
                     color: _TEXT_COLOR
-                    text: video.available ? "Added" + ": " + Qt.formatDateTime(video.metaData.z) : ""
+                    text: video.available ? "Created" + ": " + Qt.formatDateTime(video.metaData.lastModified) : ""
                 }
 
                 Label {

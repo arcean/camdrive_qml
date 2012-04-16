@@ -47,7 +47,7 @@ Page {
     Component.onCompleted: {
         appWindow.showToolbar();
         prepareVideoDetailsPage();
-        reloadTimer.start();
+        //reloadTimer.start();
     }
 
     Connections {
@@ -191,7 +191,15 @@ Page {
             width: videoList.cellWidth
             height: videoList.cellHeight
             useMarqueeText: appWindow.pageStack.currentPage == videoPageList
-            onClicked: playVideos([UtilsScript.cloneVideoObject(videoListModel.get(index))])
+            onClicked: {
+                console.log('STARTING')
+                if (videoListModel.status == DocumentGalleryModel.Finished) {
+                    console.log('GALLERY OK')
+                    console.log('DATA:', videoListModel.get(index))
+                    playVideos([UtilsScript.cloneVideoObject(videoListModel.get(index))])
+                }
+                console.log('CONTINUING')
+            }
             onPressAndHold: {
                 videoList.selectedIndex = index;
                 contextMenu.open();

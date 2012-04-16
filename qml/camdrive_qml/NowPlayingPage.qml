@@ -3,7 +3,9 @@ import com.nokia.meego 1.0
 import QtMultimediaKit 1.1
 import QtMobility.gallery 1.1
 import QtMobility.location 1.2
+import GeoCoder 1.0
 import "scripts/utils.js" as Utils
+import "Common/"
 
 Page {
     id: nowPlayingPage
@@ -37,9 +39,14 @@ Page {
     function startSpeedInfoTimer()
     {
         videoInfoIterator = 1;
+        var latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator);
+        var longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator);
+
         setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, videoInfoIterator));
-        setLatitude(DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator));
-        setLongitude(DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator));
+        setLatitude(latitude);
+        setLongitude(longitude);
+        reverseGeoCode.coordToAddress(latitude, longitude);
+
         videoInfoIterator++;
         videoInfoTimer.restart();
     }
@@ -70,8 +77,8 @@ Page {
     /* Sets speedLabel's text. */
     function setSpeed(value)
     {
-        speedLabel.text = value + " km\h";
-        actualSpeedLabel.text = value + " km\h";
+        speedLabel.text = "Speed: " + value + " km\h";
+        actualSpeedLabel.text = "Actual speed: " + value + " km\h";
     }
 
     Coordinate {
@@ -94,7 +101,7 @@ Page {
             loc = " W";
 
         ourCoord.longitude = value;
-        longitudeLabel.text = value + loc;
+        longitudeLabel.text = "Longitude: " + value.toFixed(2) + loc;
     }
 
     /* Sets latitudeLabel's text and position on the map. */
@@ -111,7 +118,33 @@ Page {
             loc = " S";
 
         ourCoord.latitude = value;
-        latitudeLabel.text = value + loc;
+        latitudeLabel.text = "Latitude: " + value.toFixed(2) + loc;
+    }
+
+    Keys.onPressed: {
+        if (!event.isAutoRepeat) {
+            switch (event.key) {
+            case Qt.Key_Right:
+                console.log("TODO: Fast forward");
+                event.accepted = true;
+                break;
+            case Qt.Key_Left:
+                console.log("TODO: Reverse");
+                event.accepted = true;
+                break;
+            case Qt.Key_Select:
+            case Qt.Key_Enter:
+            case Qt.Key_Return:
+                if (nowPlayingPage.videoStopped) {
+                    startPlayback();
+                }
+                else {
+                    videoPlayer.setToPaused = !videoPlayer.setToPaused;
+                }
+                event.accepted = true;
+                break;
+            }
+        }
     }
 
     ToolBar {
@@ -228,7 +261,7 @@ Page {
             }
         }
     }
-/*
+    /*
     Timer {
         id: controlsTimer
 
@@ -260,9 +293,12 @@ Page {
              * If so, do not update additional video infos.
              */
             if (!videoPlayer.setToPaused) {
+                var latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator);
+                var longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator);
                 setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, videoInfoIterator));
-                setLatitude(DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator));
-                setLongitude(DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator));
+                setLatitude(latitude);
+                setLongitude(longitude);
+                reverseGeoCode.coordToAddress(latitude, longitude);
                 videoInfoIterator++;
             }
             else
@@ -289,7 +325,7 @@ Page {
         fillMode: Video.PreserveAspectFit
 
         property bool repeat: false // True if playback of the current video is to be repeated
-        property bool setToPaused: false        
+        property bool setToPaused: false
 
         paused: ((platformWindow.viewMode == WindowState.Thumbnail) && ((videoPlayer.playing)) || ((appWindow.pageStack.currentPage != videoPlaybackPage) && (videoPlayer.playing)) || (videoPlayer.setToPaused))
         onError: {
@@ -303,7 +339,7 @@ Page {
                 //videoPlayer.play();
                 videoInfoTimer.stop();
                 videoPlaying = false;
-               // /* Play the video again. */
+                // /* Play the video again. */
                 //startPlayback();
             }
         }
@@ -388,6 +424,7 @@ Page {
                     }
 
                     Column {
+                        id: column1
                         width: parent.width
 
                         Label {
@@ -397,22 +434,38 @@ Page {
 
                         Label {
                             color: _TEXT_COLOR
-                            text: video.available ? "Format" + ": " + video.metaData.fileExtension.toUpperCase() : ""
-                        }
-
-                        Label {
-                            color: _TEXT_COLOR
                             text: video.available ? "Size" + ": " + video.getFileSize() : ""
                         }
 
                         Label {
                             color: _TEXT_COLOR
-                            text: video.available ? "Added" + ": " + Qt.formatDateTime(video.metaData.lastModified) : ""
+                            text: video.available ? "Created" + ": " + Qt.formatDateTime(video.metaData.lastModified) : ""
+                        }
+                    }
+
+                    Separator {
+                        anchors {
+                            left: parent.left
+                            right: parent.right
+                            leftMargin: 10
+                            rightMargin: 10
+                        }
+                    }
+
+                    Column {
+                        id: column2
+                        width: parent.width
+
+                        Label {
+                            id: cityLabel
+                            color: _TEXT_COLOR
+                            text: "City: n/a"
                         }
 
                         Label {
+                            id: streetLabel
                             color: _TEXT_COLOR
-                            text: video.available ? "Times played" + ": " + video.metaData.playCount : ""
+                            text: "Street: n/a"
                         }
 
                         Label {
@@ -458,6 +511,7 @@ Page {
                     id: mapPlacer
                     source: _ICON_LOCATION + "icon-m-common-location-selected.png"
                     coordinate: ourCoord
+                    visible: map.visible
 
                     /*!
                      * We want that bottom middle edge of icon points to the location, so using offset parameter
@@ -512,6 +566,17 @@ Page {
         }
     }
 
+    GeoCoder {
+        id:reverseGeoCode
+
+        function updateStreetInfo(postCode, streetadd, cityname, countryName) {
+            cityLabel.text = "City: " + cityname;
+            streetLabel.text = "Street: " + streetadd;
+        }
+
+        onReverseGeocodeInfoRetrieved: updateStreetInfo(postCode, streetadd, cityname, countryName)
+    }
+
     /*!
      * Displaying all available system information pages, they can be swiped to navigate
      * from one page to another.
@@ -563,7 +628,7 @@ Page {
                 model: itemModel.count
                 delegate: Image {
                     source: view.currentIndex === index ? "image://theme/icon-s-current-page"
-                                                       : "image://theme/icon-s-unselected-page"
+                                                        : "image://theme/icon-s-unselected-page"
                 }
             }
         }

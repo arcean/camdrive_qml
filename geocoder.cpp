@@ -14,7 +14,7 @@
 /*!
  * INCLUDES
  */
-#include "reversegeocode.h"
+#include "geocoder.h"
 
 /*!
  * Constructor is called when the instance is created. We get access to geocoding services and
