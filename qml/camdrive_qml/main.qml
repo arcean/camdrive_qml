@@ -26,12 +26,11 @@ PageStackWindow {
             backgroundFillMode: Image.Tile
         }
 
-
     ViewfinderPage { id: viewfinderPage }
     MainPage { id: mainPage }
     //SettingsPage2 { id: settingsPage }
-    VideoListPage { id: videoListPage }
-   // NowPlayingPage { id: nowPlayingPage }
+    //VideoListPage { id: videoListPage }
+    //NowPlayingPage { id: nowPlayingPage }
     //VideoPlaybackPage { id: videoPlaybackPage }
 
     Component.onCompleted: {
@@ -61,15 +60,6 @@ PageStackWindow {
     }
 
     function playVideos(video) {
-        console.log('MAIN playVideos')
-        console.log('MAIN playlist ', video)
-        console.log('MAIN video[0] ', video[0])
-
-        if (video === undefined) {
-            console.log('video undefined');
-            return;
-        }
-
         var videoPlaybackPage = UtilsScript.createObject(Qt.resolvedUrl("VideoPlaybackPage.qml"), appWindow.pageStack);
         videoPlaybackPage.setPlaylist(video)
         //videoPlaybackPage.startPlayback()

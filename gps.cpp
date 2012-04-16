@@ -16,8 +16,6 @@ Gps::Gps(QObject *parent) :
 
 void Gps::positionUpdated(const QGeoPositionInfo &info)
 {
-    qDebug() << "Position updated:" << info;
-
     lastLatitude = info.coordinate().latitude();
     lastLongitude = info.coordinate().longitude();
     lastSpeed = info.attribute(QGeoPositionInfo::GroundSpeed);
@@ -26,35 +24,27 @@ void Gps::positionUpdated(const QGeoPositionInfo &info)
 
 void Gps::start()
 {
-    qDebug() << "starting gps";
     source->startUpdates();
 }
 
 void Gps::stop()
 {
-    qDebug() << "stopping gps";
     source->stopUpdates();
 }
 
 qreal Gps::getLatitude()
 {
-    qDebug() << "gps latitude";
     return lastLatitude;
 }
 
 qreal Gps::getLongitude()
 {
-    qDebug() << "gps longitude";
     return lastLongitude;
 }
 
 qreal Gps::getSpeed()
 {
-    qDebug() << "gps speed";
-
     qreal speed = lastSpeed * 3.6;
-
-    qDebug() << "speed" << speed;
 
     if (speed < 4)
         return 0;

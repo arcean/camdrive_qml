@@ -35,6 +35,7 @@ Page {
 
     function prepareVideoDetailsPage()
     {
+        videoPageList.loading = true;
         Thumbnails.loadAllVideoFilesToList();
         Thumbnails.createNewThumbnail();
     }
@@ -58,8 +59,8 @@ Page {
     Connections {
         target: Thumbnails
         onFinished: {
+            reloadVideoListImmediately();
             videoPageList.loading = false;
-            reloadVideoList();
         }
     }
 
@@ -75,8 +76,8 @@ Page {
         ToolIcon { platformIconId: "toolbar-back";
             anchors.left: parent.left
             onClicked: {
-                pageStack.pop()
-                hideToolbar()
+                pageStack.pop();
+                hideToolbar();
             }
         }
         ToolIcon {
@@ -201,7 +202,22 @@ Page {
                 if (videoListModel.status == DocumentGalleryModel.Finished) {
                     console.log('GALLERY OK')
                     console.log('DATA:', videoListModel.get(index))
-                    playVideos([UtilsScript.cloneVideoObject(videoListModel.get(index))])
+                    console.log('COUNT ', videoListModel.count)
+                    console.log('INDEX ', index)
+                    var data = UtilsScript.cloneVideoObject(videoListModel.get(index));
+
+                    var temp = data || 0;
+
+                    if (temp == 0) {
+                        console.log('err:F:F:F::F:F:F:F')
+                        return;
+                    }
+
+                    if (videoListModel.count == 0 || data === undefined || data === null) {
+                        console.log('Emergency exit, videoListModel failure')
+                        return;
+                    }
+                    playVideos([data])
                 }
                 console.log('CONTINUING')
             }

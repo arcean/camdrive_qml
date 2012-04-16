@@ -20,6 +20,10 @@ Page {
     property bool videoPaused: videoPlayer.paused
     property bool videoStopped: !videoPlayer.playing
     property int videoInfoIterator: 1
+
+    //! Property to observe the application shown/hidden status
+    property bool applicationActive: Qt.application.active
+    //! Needed by hw keyboard
     focus: true
 
     function setPlaylist(videoList) {
@@ -165,6 +169,16 @@ Page {
         }
     }
 
+    // When going to background, pause the playback. And when returning from
+    // background, resume playback.
+    onApplicationActiveChanged: {
+        if (!videoPlayer.paused || !nowPlayingPage.videoStopped) {
+            if(!applicationActive) {
+                videoPlayer.pause();
+            }
+        }
+    }
+
     ScreenSaver {
         id: screenSaver
         screenSaverInhibited: nowPlayingPage.videoPlaying
@@ -303,6 +317,7 @@ Page {
             videoPlayer.setVideo(currentVideo.url);
             console.log('archivePlaybackTimer setVideo DONE')
             startSpeedInfoTimer();
+            mapPlacer.visible = true;
         }
     }
 
@@ -413,6 +428,77 @@ Page {
     VisualItemModel {
         id: itemModel
 
+        //! Page displaying map
+        Item {
+            width: nowPlayingPage.width; height: pageHeight
+
+            Map {
+                id: map
+                width: 460
+                height: 400
+                plugin : Plugin { name: "nokia" }
+                zoomLevel: maximumZoomLevel - 4
+                center: ourCoord
+                visible: nowPlayingPage.height > nowPlayingPage.width
+
+                MapImage {
+                    id: mapPlacer
+                    source: _ICON_LOCATION + "icon-m-common-location-selected.png"
+                    coordinate: ourCoord
+                    visible: false
+
+                    /*!
+                     * We want that bottom middle edge of icon points to the location, so using offset parameter
+                     * to change the on-screen position from coordinate. Values are calculated based on icon size,
+                     * in our case icon is 48x48.
+                     */
+                    offset.x: -24
+                    offset.y: -48
+                }
+
+                //! Panning and pinch implementation on the maps
+                PinchArea {
+                    id: pinchArea
+
+                    //! Holds previous zoom level value
+                    property double __oldZoom
+
+                    anchors.fill: map
+
+                    //! Calculate zoom level
+                    function calcZoomDelta(zoom, percent) {
+                        return zoom + Math.log(percent)/Math.log(2)
+                    }
+
+                    //! Save previous zoom level when pinch gesture started
+                    onPinchStarted: {
+                        __oldZoom = map.zoomLevel
+                    }
+
+                    //! Update map's zoom level when pinch is updating
+                    onPinchUpdated: {
+                        map.zoomLevel = calcZoomDelta(__oldZoom, pinch.scale)
+                    }
+
+                    //! Update map's zoom level when pinch is finished
+                    onPinchFinished: {
+                        map.zoomLevel = calcZoomDelta(__oldZoom, pinch.scale)
+                    }
+                }
+
+                //! Map's mouse area for implementation of panning in the map and zoom on double click
+                MouseArea {
+                    id: mousearea
+                    anchors.fill: map
+
+                    //! Set default zoom level
+                    onDoubleClicked: {
+                        map.zoomLevel = map.maximumZoomLevel - 4;
+                    }
+                }
+            }
+        }
+
         //! Page displaying details
         Item {
             width: nowPlayingPage.width; height: pageHeight
@@ -518,77 +604,6 @@ Page {
                 flickableItem: flicker
             }
         }
-
-        //! Page displaying map
-        Item {
-            width: nowPlayingPage.width; height: pageHeight
-
-            Map {
-                id: map
-                width: 460
-                height: 400
-                plugin : Plugin { name: "nokia" }
-                zoomLevel: maximumZoomLevel - 4
-                center: ourCoord
-                visible: nowPlayingPage.height > nowPlayingPage.width
-
-                MapImage {
-                    id: mapPlacer
-                    source: _ICON_LOCATION + "icon-m-common-location-selected.png"
-                    coordinate: ourCoord
-                    visible: map.visible
-
-                    /*!
-                     * We want that bottom middle edge of icon points to the location, so using offset parameter
-                     * to change the on-screen position from coordinate. Values are calculated based on icon size,
-                     * in our case icon is 48x48.
-                     */
-                    offset.x: -24
-                    offset.y: -48
-                }
-
-                //! Panning and pinch implementation on the maps
-                PinchArea {
-                    id: pinchArea
-
-                    //! Holds previous zoom level value
-                    property double __oldZoom
-
-                    anchors.fill: map
-
-                    //! Calculate zoom level
-                    function calcZoomDelta(zoom, percent) {
-                        return zoom + Math.log(percent)/Math.log(2)
-                    }
-
-                    //! Save previous zoom level when pinch gesture started
-                    onPinchStarted: {
-                        __oldZoom = map.zoomLevel
-                    }
-
-                    //! Update map's zoom level when pinch is updating
-                    onPinchUpdated: {
-                        map.zoomLevel = calcZoomDelta(__oldZoom, pinch.scale)
-                    }
-
-                    //! Update map's zoom level when pinch is finished
-                    onPinchFinished: {
-                        map.zoomLevel = calcZoomDelta(__oldZoom, pinch.scale)
-                    }
-                }
-
-                //! Map's mouse area for implementation of panning in the map and zoom on double click
-                MouseArea {
-                    id: mousearea
-                    anchors.fill: map
-
-                    //! Set default zoom level
-                    onDoubleClicked: {
-                        map.zoomLevel = map.maximumZoomLevel - 4;
-                    }
-                }
-            }
-        }
     }
 
     GeoCoder {
@@ -619,7 +634,7 @@ Page {
         visible: nowPlayingPage.height > nowPlayingPage.width
 
         //! Jump to the page that was clicked
-        currentIndex: 1
+        currentIndex: 0
 
         //! Put high number for flickDeceleration to make sure, that swiping only one page at time
         flickDeceleration: 500000

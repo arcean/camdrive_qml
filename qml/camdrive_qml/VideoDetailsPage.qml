@@ -28,7 +28,7 @@ Page {
             return mb.slice(0, mb.indexOf(".") + 2) + "MB";
         }
 
-        properties: ["title", "fileName", "duration", "fileSize", "fileExtension", "playCount", "lastModified", "url", "filePath"]
+        properties: ["title", "fileName", "duration", "fileSize", "fileExtension", "lastModified", "width", "height", "url", "filePath"]
     }
 
     DocumentGalleryModel {
@@ -54,44 +54,50 @@ Page {
         text: "Video details"
     }
 
-    Item {
-        id: videoItem
-        anchors.top: header.bottom
-        anchors.left: parent.left
-        anchors.margins: 10
-        width:  appWindow.inPortrait ? 460 : 460
-        height: Math.floor((width / 16) * 9)
-        z: 1
-
-        Image {
-            id: thumb
-            height: Math.floor((width / 16) * 9)
-            anchors { left: parent.left; right: parent.right; margins: mouseArea.pressed ? 10 : 0 }
-            source: video.available ? "file:///home/user/.thumbnails/video-grid/" + Qt.md5(video.metaData.url) + ".jpeg" : ""
-            smooth: true
-            onStatusChanged: if (thumb.status == Image.Error) thumb.source = "image://theme/meegotouch-video-placeholder";
-
-            MouseArea {
-                id: mouseArea
-                anchors.fill: parent
-                    enabled: root.allowToPlay
-                    onClicked: playVideos([Utils.cloneVideoObject(video.metaData, video.item)], true)
-            }
-        }
-    }
-
     Flickable {
         id: contentText
-        anchors.top: appWindow.inPortrait ? videoItem.bottom : header.bottom
-        anchors.left: appWindow.inPortrait ? parent.left : videoItem.right
+        anchors.top: header.bottom
+        anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.margins: 10
 
-        contentHeight: appWindow.inPortrait ? parent.height - videoItem.height - 30 + 1 : parent.height + 1 -20
+        contentHeight: appWindow.inPortrait ? (column.height + videoItem.height + 10) : column.height
+
+        Item {
+            id: videoItem
+            anchors.top: parent.top
+            anchors.left: parent.left
+            width:  460
+            height: Math.floor((width / 16) * 9)
+            z: 1
+
+            Image {
+                id: thumb
+                height: Math.floor((width / 16) * 9)
+                anchors { left: parent.left; right: parent.right; margins: mouseArea.pressed ? 10 : 0 }
+                source: video.available ? "file:///home/user/.thumbnails/video-grid/" + Qt.md5(video.metaData.url) + ".jpeg" : ""
+                smooth: true
+                onStatusChanged: if (thumb.status == Image.Error) thumb.source = "image://theme/meegotouch-video-placeholder";
+
+                MouseArea {
+                    id: mouseArea
+                    anchors.fill: parent
+                        enabled: root.allowToPlay
+                        onClicked: playVideos([Utils.cloneVideoObject(video.metaData, video.item)], true)
+                }
+            }
+        }
 
         Column {
+            id: column
             width: parent.width
+
+            anchors.top: appWindow.inPortrait ? videoItem.bottom : parent.top
+            anchors.left: appWindow.inPortrait ? parent.left : videoItem.right
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
+            anchors.leftMargin: 10
 
             Label {
                 id: titleText
@@ -128,7 +134,12 @@ Page {
 
                 Label {
                     color: _TEXT_COLOR
-                    text: video.available ? "Times played" + ": " + video.metaData.playCount : ""
+                    text: video.available ? "Width" + ": " + video.metaData.width + " px" : ""
+                }
+
+                Label {
+                    color: _TEXT_COLOR
+                    text: video.available ? "Height" + ": " + video.metaData.height + " px" : ""
                 }
             }
         }
