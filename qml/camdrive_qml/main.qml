@@ -18,8 +18,8 @@ PageStackWindow {
     property string _TEXT_COLOR: theme.inverted ? "white" : "black"
     property string _ICON_LOCATION: "/usr/share/themes/blanco/meegotouch/icons/"
     property string _ACTIVE_COLOR: "color11"
-    property string _ACTIVE_COLOR_TEXT: "#9020C0"
-    property string _APP_VERSION: "0.1.9"
+    property string _ACTIVE_COLOR_TEXT: "#8D18BE"
+    property string _APP_VERSION: "0.1.10-pre3"
 
     platformStyle: PageStackWindowStyle {
             background: appWindow.inPortrait ? "qrc:/icons/background-portrait.png" : "qrc:/icons/background.png"

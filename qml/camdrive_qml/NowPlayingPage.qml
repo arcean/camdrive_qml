@@ -1,4 +1,4 @@
-import QtQuick 1.0
+import QtQuick 1.1
 import com.nokia.meego 1.0
 import QtMultimediaKit 1.1
 import QtMobility.gallery 1.1
@@ -145,9 +145,20 @@ Page {
 
             ToolIcon {
                 id: playButton
-                anchors { left: stopButton.right }
-                platformIconId: videoPlayer.paused ? "toolbar-mediacontrol-play" : "toolbar-mediacontrol-pause"
-                onClicked: videoPlayer.setToPaused = !videoPlayer.setToPaused
+                anchors {
+                    left: (nowPlayingPage.width > nowPlayingPage.height) ? stopButton.right : undefined;
+                    centerIn: (nowPlayingPage.width > nowPlayingPage.height) ? undefined : layout;
+                }
+                iconSource: (videoPlayer.paused || nowPlayingPage.videoStopped) ?
+                                "images/play-accent-" + _ACTIVE_COLOR + ".png" : "images/pause-accent-" + _ACTIVE_COLOR + ".png"
+                onClicked: {
+                    if (nowPlayingPage.videoStopped) {
+                        startPlayback();
+                    }
+                    else {
+                        videoPlayer.setToPaused = !videoPlayer.setToPaused;
+                    }
+                }
             }
 
             NewProgressBar {
@@ -177,7 +188,7 @@ Page {
                     anchors { top: parent.bottom; horizontalCenter: parent.right }
                     font.pixelSize: _SMALL_FONT_SIZE
                     color: _TEXT_COLOR
-                    text: (nowPlayingPage.videoPlaying) ? Utils.getTime(videoPlayer.duration) : "0:00"
+                    text: Utils.getTime(videoPlayer.duration)
                 }
 
                 SeekBubble {
@@ -285,13 +296,15 @@ Page {
         }
         onStatusChanged: {
             if (videoPlayer.status == Video.EndOfMedia) {
-                video.metaData.playCount++;
-                video.metaData.resumePosition = 0;
-                videoPlayer.position = 0;
+                //video.metaData.playCount++;
+                //video.metaData.resumePosition = 0;
+                videoPlayer.stop();
+                //videoPlayer.position = 0;
                 //videoPlayer.play();
                 videoInfoTimer.stop();
-                /* Play the video again. */
-                startPlayback();
+                videoPlaying = false;
+               // /* Play the video again. */
+                //startPlayback();
             }
         }
 
@@ -317,7 +330,7 @@ Page {
         Image {
             anchors.centerIn: videoPlayer
             source: videoMouseArea.pressed ? "images/play-button-" + _ACTIVE_COLOR + ".png" : "images/play-button.png"
-            visible: (videoPlayer.paused) && (!busyIndicator.visible)
+            visible: (videoPlayer.paused && !busyIndicator.visible) || (nowPlayingPage.videoStopped)
         }
 
         MouseArea {
@@ -325,7 +338,12 @@ Page {
             anchors.fill: videoPlayer
 
             onReleased: {
-                videoPlayer.setToPaused = !videoPlayer.setToPaused;
+                if (nowPlayingPage.videoStopped) {
+                    startPlayback();
+                }
+                else {
+                    videoPlayer.setToPaused = !videoPlayer.setToPaused;
+                }
             }
         }
     }
@@ -450,55 +468,45 @@ Page {
                     offset.y: -48
                 }
 
+                //! Panning and pinch implementation on the maps
+                PinchArea {
+                    id: pinchArea
+
+                    //! Holds previous zoom level value
+                    property double __oldZoom
+
+                    anchors.fill: map
+
+                    //! Calculate zoom level
+                    function calcZoomDelta(zoom, percent) {
+                        return zoom + Math.log(percent)/Math.log(2)
+                    }
+
+                    //! Save previous zoom level when pinch gesture started
+                    onPinchStarted: {
+                        __oldZoom = map.zoomLevel
+                    }
+
+                    //! Update map's zoom level when pinch is updating
+                    onPinchUpdated: {
+                        map.zoomLevel = calcZoomDelta(__oldZoom, pinch.scale)
+                    }
+
+                    //! Update map's zoom level when pinch is finished
+                    onPinchFinished: {
+                        map.zoomLevel = calcZoomDelta(__oldZoom, pinch.scale)
+                    }
+                }
+
                 //! Map's mouse area for implementation of panning in the map and zoom on double click
                 MouseArea {
                     id: mousearea
-                    z: 10
+                    anchors.fill: map
 
-                    //! Property used to indicate if panning the map
-                    property bool __isPanning: false
-
-                    //! Last pressed X and Y position
-                    property int __lastX: -1
-                    property int __lastY: -1
-
-                    anchors.fill: parent
-                    enabled: nowPlayingPage.height > nowPlayingPage.width
-
-                    //! When pressed, indicate that panning has been started and update saved X and Y values
-                    onPressed: {
-                        __isPanning = true
-                        __lastX = mouse.x
-                        __lastY = mouse.y
-                        console.log("LLLL")
-                    }
-/*
-                    //! When released, indicate that panning has finished
-                    onReleased: {
-                        __isPanning = false
-                    }
-
-                    //! Move the map when panning
-                    onPositionChanged: {
-                        if (__isPanning) {
-                            var dx = mouse.x - __lastX
-                            var dy = mouse.y - __lastY
-                            map.pan(-dx, -dy)
-                            __lastX = mouse.x
-                            __lastY = mouse.y
-                        }
-                    }
-
-                    //! When canceled, indicate that panning has finished
-                    onCanceled: {
-                        __isPanning = false;
-                    }
-
-                    //! Zoom one level when double clicked
+                    //! Set default zoom level
                     onDoubleClicked: {
-                        map.center = map.toCoordinate(Qt.point(__lastX,__lastY))
-                        map.zoomLevel += 1
-                    }*/
+                        map.zoomLevel = map.maximumZoomLevel - 4;
+                    }
                 }
             }
         }
