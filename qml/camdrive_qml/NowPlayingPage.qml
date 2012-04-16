@@ -19,6 +19,7 @@ Page {
     property bool videoPaused: videoPlayer.paused
     property bool videoStopped: !videoPlayer.playing
     property int videoInfoIterator: 1
+    focus: true
 
     function setPlaylist(videoList) {
         playlistPosition = 0;
@@ -125,13 +126,21 @@ Page {
         if (!event.isAutoRepeat) {
             switch (event.key) {
             case Qt.Key_Right:
-                console.log("TODO: Fast forward");
+                videoPlayer.position = videoPlayer.position + 10000;
+                videoInfoIterator = Math.ceil(videoPlayer.position / (DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000));
                 event.accepted = true;
                 break;
             case Qt.Key_Left:
-                console.log("TODO: Reverse");
+                videoPlayer.position = videoPlayer.position - 10000;
+                videoInfoIterator = Math.ceil(videoPlayer.position / (DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000));
                 event.accepted = true;
                 break;
+            case Qt.Key_Q:
+            case Qt.Key_Backspace:
+                stopPlayback();
+                event.accepted = true;
+                break;
+            case Qt.Key_Space:
             case Qt.Key_Select:
             case Qt.Key_Enter:
             case Qt.Key_Return:

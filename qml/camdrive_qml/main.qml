@@ -19,7 +19,7 @@ PageStackWindow {
     property string _ICON_LOCATION: "/usr/share/themes/blanco/meegotouch/icons/"
     property string _ACTIVE_COLOR: "color11"
     property string _ACTIVE_COLOR_TEXT: "#8D18BE"
-    property string _APP_VERSION: "0.1.10-pre5"
+    property string _APP_VERSION: "0.1.10-pre6"
 
     platformStyle: PageStackWindowStyle {
             background: appWindow.inPortrait ? "qrc:/icons/background-portrait.png" : "qrc:/icons/background.png"
@@ -63,6 +63,12 @@ PageStackWindow {
     function playVideos(video) {
         console.log('MAIN playVideos')
         console.log('MAIN playlist '. video)
+
+        if (video === undefined) {
+            console.log('video undefined');
+            return;
+        }
+
         var videoPlaybackPage = UtilsScript.createObject(Qt.resolvedUrl("VideoPlaybackPage.qml"), appWindow.pageStack);
         videoPlaybackPage.setPlaylist(video)
         videoPlaybackPage.startPlayback()
