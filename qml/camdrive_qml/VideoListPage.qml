@@ -198,28 +198,9 @@ Page {
             height: videoList.cellHeight
             useMarqueeText: appWindow.pageStack.currentPage == videoPageList
             onClicked: {
-                console.log('STARTING')
                 if (videoListModel.status == DocumentGalleryModel.Finished) {
-                    console.log('GALLERY OK')
-                    console.log('DATA:', videoListModel.get(index))
-                    console.log('COUNT ', videoListModel.count)
-                    console.log('INDEX ', index)
-                    var data = UtilsScript.cloneVideoObject(videoListModel.get(index));
-
-                    var temp = data || 0;
-
-                    if (temp == 0) {
-                        console.log('err:F:F:F::F:F:F:F')
-                        return;
-                    }
-
-                    if (videoListModel.count == 0 || data === undefined || data === null) {
-                        console.log('Emergency exit, videoListModel failure')
-                        return;
-                    }
-                    playVideos([data])
+                    playVideos([UtilsScript.cloneVideoObject(videoListModel.get(index))])
                 }
-                console.log('CONTINUING')
             }
             onPressAndHold: {
                 videoList.selectedIndex = index;

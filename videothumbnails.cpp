@@ -42,7 +42,7 @@ void VideoThumbnails::clearVideoFileList() {
 
 bool VideoThumbnails::checkIfThumbnailExists(const QString &path, bool remove) {
     QUrl uri = parameterToUri(path);
-    QString hash = QCryptographicHash::hash((uri.toString().toLatin1()),QCryptographicHash::Md5).toHex().constData();;
+    QString hash = QCryptographicHash::hash((uri.toString().toLatin1()),QCryptographicHash::Md5).toHex().constData();
     QString file = "/home/user/.thumbnails/video-grid/" + hash + ".jpeg";
 
     if (QFile::exists(file)) {
@@ -78,6 +78,12 @@ void VideoThumbnails::loadAllVideoFilesToList() {
 }
 
 void VideoThumbnails::createNewThumbnail() {
+
+    if (uris.isEmpty()) {
+        emit finished();
+        return;
+    }
+
     Thumbnails::Thumbnailer *thumbler = new Thumbnails::Thumbnailer();
 
     connect(thumbler, SIGNAL(finished(int)), this, SLOT(completed(int)));
