@@ -67,7 +67,7 @@ void QDeclarativeCamera::initFile()
     //Default time interval - 10m = 10 * 60 * 1000,
     //It should be configurable, and loaded on app startup
     int time = settingsObject->getStoreLastInMinutes();
-    time = (time * 60 * 1000) / 2;
+    time = (time * 60 * 1000);
     //int time = 1 * 60 * 1000;
     timer->setInterval(time);
     qDebug() << "TIMER: set to" << time;
@@ -88,9 +88,10 @@ void QDeclarativeCamera::initFile()
 void QDeclarativeCamera::changeUsedFile()
 {
     videoPartNumber++;
-    if(videoPartNumber >= settingsObject->getStoreLastInMinutes()) {
+
+    if (videoPartNumber > 1)
         videoPartNumber = 0;
-    }
+
     emit videoPartNumberChanged(videoPartNumber);
     qDebug() << "Changing used temp file for recording...";
     this->stopRecording();
@@ -102,7 +103,7 @@ void QDeclarativeCamera::changeUsedFile()
     QString name = baseName + "_part_" + QString::number(videoPartNumber+1);
     Db->createVideoDetailsTable(name);
 
-    this->startRecording();
+    this->startRecording(true);
     qDebug() << "Changing temp file: DONE";
 }
 
@@ -118,7 +119,7 @@ void QDeclarativeCamera::setOutputLocation()
 /**
   Start recording
 */
-void QDeclarativeCamera::startRecording()
+void QDeclarativeCamera::startRecording(bool ignoreCurrentVideoCounter)
 {
     if(!isRecording)
         return;
@@ -128,8 +129,10 @@ void QDeclarativeCamera::startRecording()
     accelerometer->start();
 
     /* Increase counter, used to replace old video files. */
-    settingsObject->addCurrentVideoFiles(1);
-    file->deleteTheOldestFiles();
+    if (!ignoreCurrentVideoCounter) {
+        settingsObject->addCurrentVideoFiles(1);
+        file->deleteTheOldestFiles();
+    }
 
     if(!isRecordingInParts) {
         /* Create entry in main table for our new video. */
@@ -168,8 +171,8 @@ void QDeclarativeCamera::stopRecording()
     timer->stop();
     mediaRecorder_->stop();
     file->fileReady();
-   // Db->closeDatabase();
     accelerometer->stop();
+   // Db->closeDatabase();
 }
 
 /*

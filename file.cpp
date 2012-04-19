@@ -17,14 +17,13 @@ File::File(const QString &fileName, Settings *settingsObject)
         qDebug() << "currentNumVideo >= maxVideo";
         generatedFileName = getTheOldestFileName();
         qDebug() << "generatedFileName: " << generatedFileName;
-        this->fileName = generatedFileName;
     }
     else {
         qDebug() << "everything's ok";
         generatedFileName = generateNewFileName(fileName);
-        this->fileName = generatedFileName + "_part_" + QString::number(activeFileNumber) + ".mp4";
     }
 
+    this->fileName = generatedFileName + "_part_" + QString::number(activeFileNumber) + ".mp4";
     qDebug() << "FNAME:" << this->fileName;
 }
 
@@ -32,6 +31,12 @@ void File::deleteTheOldestFiles()
 {
     QDir files(QString(APP_DIR APP_NAME "/"));
     int index;
+    int currentNumVideo = settingsObject->getCurrentVideoFiles();
+    int maxVideo = settingsObject->getMaxVideoFiles();
+
+    if (!(currentNumVideo >= maxVideo && maxVideo != -1)) {
+        return;
+    }
 
     QFileInfoList fileList = files.entryInfoList(QDir::Files, QDir::Time);
     for (int i = 0; i < fileList.length(); i++) {
@@ -49,12 +54,12 @@ void File::deleteTheOldestFiles()
         QFile::remove(fileList.at(fileList.length()-1).absoluteFilePath());
         settingsObject->addCurrentVideoFiles(-1);
     }
-    qDebug() << "OK2";
+    qDebug() << " RM OK2";
     index = fileList.length() - 2;
     if (index > 0) {
         if (fileList.at(fileList.length()-2).absoluteFilePath().contains("part_2.mp4"))
             QFile::remove(fileList.at(fileList.length()-2).absoluteFilePath());
-        qDebug() << "OK3";
+        qDebug() << "RM OK3";
     }
 }
 
@@ -86,19 +91,17 @@ QString File::getTheOldestFileName()
     else
         fileName = "err";
 
-    /* Remove the oldest video files. */
-/*    index = fileList.length() - 1;
-    if (index > 0) {
-        QFile::remove(fileList.at(fileList.length()-1).absoluteFilePath());
-        settingsObject->addCurrentVideoFiles(-1);
+    list = fileName.split("__");
+
+    if (list.length() > 1)
+        fileName = list.at(0);
+    else {
+        list = fileName.split("_part");
+        if (list.length() > 1)
+            fileName = list.at(0);
+        else
+            fileName = "err";
     }
-    qDebug() << "OK2";
-    index = fileList.length() - 2;
-    if (index > 0) {
-        if (fileList.at(fileList.length()-2).absoluteFilePath().contains("part_2.mp4"))
-            QFile::remove(fileList.at(fileList.length()-2).absoluteFilePath());
-        qDebug() << "OK3";
-    }*/
 
     return fileName;
 }

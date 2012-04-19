@@ -32,6 +32,7 @@ Page {
     function firstTimeFunction() {
         viewfinderPage.clearRecordingStatus();
         viewfinderPage.wakeCamera();
+        screenSaver.screenSaverInhibited = true;
     }
 
     Compass {
@@ -92,7 +93,7 @@ Page {
 
     ScreenSaver {
         id: screenSaver
-        screenSaverInhibited: viewfinderPage.isCameraRecording
+        screenSaverInhibited: false
     }
 
     Settings {
@@ -187,7 +188,7 @@ Page {
 */
     function updateCounter(duration)
     {
-        var add = (((settingsObject.getStoreLastInMinutes() * 60 * 1000) / 2)  * videoPartCounter) + duration;
+        var add = duration;
         var value = add / 1000
         var seconds = value % 60
         var minutes = value / 60
@@ -226,8 +227,7 @@ Page {
     function startRecording()
     {
         viewfinderPage.isCameraRecording = true;
-        AccelDevice.start();
-        frontCam.startRecording();
+        frontCam.startRecording(false);
         //storeDataTimer.running = true;
     }
 
@@ -235,7 +235,6 @@ Page {
     {
         viewfinderPage.isCameraRecording = false;
         frontCam.stopRecording();
-        AccelDevice.stop();
         viewfinderPage.videoPartCounter = 0;
         //storeDataTimer.running = false;
     }
@@ -264,10 +263,12 @@ Page {
             }
             else {
                 if(viewfinderPage.isCameraRecording) {
-                    stopRecording()
-                    clearRecordingStatus()
+                    //stopRecording()
+                    //clearRecordingStatus()
                 }
-                frontCam.stop()
+                else {
+                    frontCam.stop()
+                }
             }
         }
     }
@@ -556,7 +557,7 @@ Page {
              anchors.horizontalCenter: parent.horizontalCenter
              Button {id: b1; text: "Yes"; onClicked: {
                      stopDialog.accept();
-                     frontCam.stopRecording();
+                     stopRecording();
                      unloadCamera();
                      appWindow.pageStack.pop();
                      screenSaver.screenSaverInhibited = false;

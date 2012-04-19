@@ -47,7 +47,7 @@ public slots:
     void toggleCamera();
     void changeUsedFile();
 
-    void startRecording();
+    void startRecording(bool ignoreCurrentVideoCounter);
     void stopRecording();
     void pauseRecording();
     void start();
