@@ -23,6 +23,9 @@ symbian:TARGET.CAPABILITY += NetworkServices
 CONFIG += mobility
 MOBILITY += multimedia sensors location
 
+# enable booster
+CONFIG += qt-boostable qdeclarative-boostable meegotouch
+
 LIBS += -lthumbnailer
 
 # The .cpp file which was generated for your project. Feel free to hack it.
@@ -79,7 +82,10 @@ contains(MEEGO_EDITION,harmattan) {
     desktop.path = /usr/share/applications
     desktop.files = data/camdrive.desktop
 
-    INSTALLS += icon desktop
+    data.path = /opt/camdrive_qml/data/
+    data.files = data/splash.png data/splash_landscape.png
+
+    INSTALLS += icon desktop data
 }
 
 
