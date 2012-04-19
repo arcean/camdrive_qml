@@ -238,3 +238,50 @@ int Settings::getStoreDataEachXSeconds()
 
     return value;
 }
+
+void Settings::setMaxVideoFiles(int numberOfFiles)
+{
+    QSettings settings;
+
+    settings.setValue("store/numberOfFiles", numberOfFiles);
+}
+
+int Settings::getMaxVideoFiles()
+{
+    QSettings settings;
+    int value =  settings.value("store/numberOfFiles", -1).toInt();
+
+    return value;
+}
+
+void Settings::addCurrentVideoFiles(int value)
+{
+    int currentNumber = getCurrentVideoFiles();
+    int max = getMaxVideoFiles();
+
+    if (max == -1)
+        max = 100;
+
+    if (currentNumber < max && value > 0)
+        setCurrentVideoFiles(getCurrentVideoFiles() + value);
+    else if (currentNumber > 0 && value <= 0)
+        setCurrentVideoFiles(getCurrentVideoFiles() + value);
+
+    qDebug() << "Actual current video:" << getCurrentVideoFiles();
+    qDebug() << "Actual MAX video:" << getMaxVideoFiles();
+}
+
+void Settings::setCurrentVideoFiles(int number)
+{
+    QSettings settings;
+
+    settings.setValue("store/currentNumber", number);
+}
+
+int Settings::getCurrentVideoFiles()
+{
+    QSettings settings;
+    int value =  settings.value("store/currentNumber", 0).toInt();
+
+    return value;
+}

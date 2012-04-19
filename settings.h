@@ -41,6 +41,11 @@ public slots:
     int getStoreDataEachXSeconds();
     void setEnableStoringAccelInfo(bool enable);
     bool getEnableStoringAccelInfo();
+    void setMaxVideoFiles(int numberOfFiles);
+    int getMaxVideoFiles();
+    void setCurrentVideoFiles(int number);
+    int getCurrentVideoFiles();
+    void addCurrentVideoFiles(int value);
 
 };
 

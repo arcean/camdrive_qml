@@ -76,7 +76,7 @@ void QDeclarativeCamera::initFile()
     /* TODO: Make it configurable, currently 1 sec. */
     storeDataTimer->setInterval(1000);
 
-    file = new File(CAM_DEFAULT_FILE_NAME);
+    file = new File(CAM_DEFAULT_FILE_NAME, settingsObject);
     videoPartNumber = 0;
     isRecordingInParts = false;
 
@@ -127,6 +127,10 @@ void QDeclarativeCamera::startRecording()
     Db->createTables();
     accelerometer->start();
 
+    /* Increase counter, used to replace old video files. */
+    settingsObject->addCurrentVideoFiles(1);
+    file->deleteTheOldestFiles();
+
     if(!isRecordingInParts) {
         /* Create entry in main table for our new video. */
         /* Since 0.0.2 there're only 2 parts of the video. */
@@ -134,7 +138,6 @@ void QDeclarativeCamera::startRecording()
         int videoParts = 2;
         this->storeNewVideo(file->getGeneratedFileName(), videoParts);
         /* And now we want entries for the first part of the video. */
-        qDebug() << "A1b";
         QString baseName = file->getGeneratedFileName();
         QString name = baseName + "_part_" + QString::number(videoPartNumber+1);
         Db->createVideoDetailsTable(name);

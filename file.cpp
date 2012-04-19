@@ -1,14 +1,106 @@
 #include "file.h"
 #include <QDebug>
 
-File::File(const QString &fileName)
+File::File(const QString &fileName, Settings *settingsObject)
 {
+    this->settingsObject = settingsObject;
+
+    int currentNumVideo = settingsObject->getCurrentVideoFiles();
+    int maxVideo = settingsObject->getMaxVideoFiles();
+
+    qDebug() << "max" << maxVideo;
+    qDebug() << "curr" << currentNumVideo;
+
     init();
 
-    generatedFileName = generateNewFileName(fileName);
+    if (currentNumVideo >= maxVideo && maxVideo != -1) {
+        qDebug() << "currentNumVideo >= maxVideo";
+        generatedFileName = getTheOldestFileName();
+        qDebug() << "generatedFileName: " << generatedFileName;
+        this->fileName = generatedFileName;
+    }
+    else {
+        qDebug() << "everything's ok";
+        generatedFileName = generateNewFileName(fileName);
+        this->fileName = generatedFileName + "_part_" + QString::number(activeFileNumber) + ".mp4";
+    }
 
-    this->fileName = generatedFileName + "_part_" + QString::number(activeFileNumber) + ".mp4";
     qDebug() << "FNAME:" << this->fileName;
+}
+
+void File::deleteTheOldestFiles()
+{
+    QDir files(QString(APP_DIR APP_NAME "/"));
+    int index;
+
+    QFileInfoList fileList = files.entryInfoList(QDir::Files, QDir::Time);
+    for (int i = 0; i < fileList.length(); i++) {
+        qDebug() << "A1:" << fileList.at(i).absoluteFilePath() << fileList.at(i).lastModified().toString();
+    }
+
+    if (fileList.length() < 1)
+        return;
+
+    qDebug() << "The oldest file: " << fileList.at(fileList.length()-1).absoluteFilePath() << fileList.at(fileList.length()-1).lastModified().toString();
+
+    /* Remove the oldest video files. */
+    index = fileList.length() - 1;
+    if (index > 0) {
+        QFile::remove(fileList.at(fileList.length()-1).absoluteFilePath());
+        settingsObject->addCurrentVideoFiles(-1);
+    }
+    qDebug() << "OK2";
+    index = fileList.length() - 2;
+    if (index > 0) {
+        if (fileList.at(fileList.length()-2).absoluteFilePath().contains("part_2.mp4"))
+            QFile::remove(fileList.at(fileList.length()-2).absoluteFilePath());
+        qDebug() << "OK3";
+    }
+}
+
+QString File::getTheOldestFileName()
+{
+    QDir files(QString(APP_DIR APP_NAME "/"));
+    QString fileName;
+    int index;
+
+    QFileInfoList fileList = files.entryInfoList(QDir::Files, QDir::Time);
+    qDebug() << "WORKING";
+    for (int i = 0; i < fileList.length(); i++) {
+        qDebug() << "A1:" << fileList.at(i).absoluteFilePath() << fileList.at(i).lastModified().toString();
+    }
+
+    if (fileList.length() < 1)
+        return "err";
+
+    qDebug() << "The oldest file: " << fileList.at(fileList.length()-1).absoluteFilePath() << fileList.at(fileList.length()-1).lastModified().toString();
+    QStringList list = fileList.at(fileList.length()-1).absoluteFilePath().split("/");
+
+    index = list.length() - 1;
+    if (index < 0)
+        return "err";
+
+    qDebug() << "OK";
+    if (list.length() > 1)
+        fileName = list.at(list.length()-1);
+    else
+        fileName = "err";
+
+    /* Remove the oldest video files. */
+/*    index = fileList.length() - 1;
+    if (index > 0) {
+        QFile::remove(fileList.at(fileList.length()-1).absoluteFilePath());
+        settingsObject->addCurrentVideoFiles(-1);
+    }
+    qDebug() << "OK2";
+    index = fileList.length() - 2;
+    if (index > 0) {
+        if (fileList.at(fileList.length()-2).absoluteFilePath().contains("part_2.mp4"))
+            QFile::remove(fileList.at(fileList.length()-2).absoluteFilePath());
+        qDebug() << "OK3";
+    }*/
+
+    return fileName;
 }
 
 /*

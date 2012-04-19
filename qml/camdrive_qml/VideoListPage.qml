@@ -1,6 +1,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
+import Settings 1.0
 import "scripts/utils.js" as UtilsScript
 
 Page {
@@ -45,6 +46,7 @@ Page {
         Thumbnails.checkIfThumbnailExists(path, true);
         videoPageList.reloadVideoList();
         DatabaseHelper.removeVideoQML(path);
+        settings.addCurrentVideoFiles(-1);
         if (DatabaseHelper.isFileNameFreeQML(path)) {
             DatabaseHelper.removeVideoFromMainQML(path);
         }
@@ -67,6 +69,10 @@ Page {
     Connections {
         target: Utils
         onVideoDeleted: deleteVideo(path);
+    }
+
+    Settings {
+        id: settings
     }
 
     tools: ToolBarLayout {
@@ -209,6 +215,10 @@ Page {
         }
 
         Behavior on y { NumberAnimation { duration: 300 } }
+    }
+
+    ScrollDecorator {
+        flickableItem: videoList
     }
 
     Label {
