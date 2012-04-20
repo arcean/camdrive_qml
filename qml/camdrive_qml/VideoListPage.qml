@@ -51,7 +51,6 @@ Page {
         if (!removingComplete) {
             Thumbnails.checkIfThumbnailExists(path, true);
             DatabaseHelper.removeVideoQML(path);
-            settings.addCurrentVideoFiles(-1);
             if (DatabaseHelper.isFileNameFreeQML(path)) {
                 DatabaseHelper.removeVideoFromMainQML(path);
             }
@@ -111,7 +110,7 @@ Page {
 
     onLoadingChanged: {
         if (loading == false)
-            updateHeaderDetails(settings.getCurrentVideoFiles());
+            updateHeaderDetails(Database.countsIds());
     }
 
     tools: ToolBarLayout {

@@ -43,13 +43,15 @@ public slots:
     bool getEnableStoringAccelInfo();
     void setMaxVideoFiles(int numberOfFiles);
     int getMaxVideoFiles();
-    void setCurrentVideoFiles(int number);
-    int getCurrentVideoFiles();
-    void addCurrentVideoFiles(int value);
+   // void setCurrentVideoFiles(int number);
+    //int getCurrentVideoFiles();
+   // void addCurrentVideoFiles(int value);
     void setMaxAllowedSpeed(int speed);
     int getMaxAllowedSpeed();
     void setVelocityUnit(bool unit);
     bool getVelocityUnit();
+    void setMaxAllowedSpeedEnabled(bool enabled);
+    bool getMaxAllowedSpeedEnabled();
 
 };
 

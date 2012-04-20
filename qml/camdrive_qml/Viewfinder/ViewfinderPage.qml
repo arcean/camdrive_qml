@@ -249,6 +249,9 @@ Page {
 
     function checkMaxAllowedSpeed(speed)
     {
+        if (!settingsObject.getMaxAllowedSpeedEnabled() || !isCameraRecording)
+            return;
+
         if (speed > maxAllowedSpeed) {
             speedWarning.showSpeedWarning();
         }

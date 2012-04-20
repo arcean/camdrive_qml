@@ -76,7 +76,7 @@ void QDeclarativeCamera::initFile()
     /* TODO: Make it configurable, currently 1 sec. */
     storeDataTimer->setInterval(1000);
 
-    file = new File(CAM_DEFAULT_FILE_NAME, settingsObject);
+    file = new File(CAM_DEFAULT_FILE_NAME, settingsObject, Db);
     videoPartNumber = 0;
     isRecordingInParts = false;
 
@@ -130,7 +130,6 @@ void QDeclarativeCamera::startRecording(bool ignoreCurrentVideoCounter)
 
     /* Increase counter, used to replace old video files. */
     if (!ignoreCurrentVideoCounter) {
-        settingsObject->addCurrentVideoFiles(1);
         file->deleteTheOldestFiles();
     }
 

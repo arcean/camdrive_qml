@@ -253,7 +253,7 @@ int Settings::getMaxVideoFiles()
 
     return value;
 }
-
+/*
 void Settings::addCurrentVideoFiles(int value)
 {
     int currentNumber = getCurrentVideoFiles();
@@ -269,8 +269,8 @@ void Settings::addCurrentVideoFiles(int value)
 
     qDebug() << "Actual current video:" << getCurrentVideoFiles();
     qDebug() << "Actual MAX video:" << getMaxVideoFiles();
-}
-
+}*/
+/*
 void Settings::setCurrentVideoFiles(int number)
 {
     QSettings settings;
@@ -284,7 +284,7 @@ int Settings::getCurrentVideoFiles()
     int value =  settings.value("store/currentNumber", 0).toInt();
 
     return value;
-}
+}*/
 
 void Settings::setMaxAllowedSpeed(int speed)
 {
@@ -296,7 +296,22 @@ void Settings::setMaxAllowedSpeed(int speed)
 int Settings::getMaxAllowedSpeed()
 {
     QSettings settings;
-    int value =  settings.value("speed/maxAllowed", 999).toInt();
+    int value =  settings.value("speed/maxAllowed", 130).toInt();
+
+    return value;
+}
+
+void Settings::setMaxAllowedSpeedEnabled(bool enabled)
+{
+    QSettings settings;
+
+    settings.setValue("speed/maxAllowedEnabled", enabled);
+}
+
+bool Settings::getMaxAllowedSpeedEnabled()
+{
+    QSettings settings;
+    bool value =  settings.value("speed/maxAllowedEnabled", false).toBool();
 
     return value;
 }

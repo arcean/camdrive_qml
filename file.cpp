@@ -1,11 +1,15 @@
 #include "file.h"
 #include <QDebug>
 
-File::File(const QString &fileName, Settings *settingsObject)
+File::File(const QString &fileName, Settings *settingsObject, Database *Db)
 {
     this->settingsObject = settingsObject;
+    this->Db = Db;
+    this->DbH = new DatabaseHelper();
 
-    int currentNumVideo = settingsObject->getCurrentVideoFiles();
+    DbH->setDatabase(Db);
+
+    int currentNumVideo = Db->countsIds();
     int maxVideo = settingsObject->getMaxVideoFiles();
 
     qDebug() << "max" << maxVideo;
@@ -31,7 +35,7 @@ void File::deleteTheOldestFiles()
 {
     QDir files(QString(APP_DIR APP_NAME "/"));
     int index;
-    int currentNumVideo = settingsObject->getCurrentVideoFiles();
+    int currentNumVideo = Db->countsIds();
     int maxVideo = settingsObject->getMaxVideoFiles();
 
     if (!(currentNumVideo >= maxVideo && maxVideo != -1)) {
@@ -52,13 +56,22 @@ void File::deleteTheOldestFiles()
     index = fileList.length() - 1;
     if (index > 0) {
         QFile::remove(fileList.at(fileList.length()-1).absoluteFilePath());
-        settingsObject->addCurrentVideoFiles(-1);
+        DbH->removeVideoQML(fileList.at(fileList.length()-1).absoluteFilePath());
+        if (DbH->isFileNameFreeQML(fileList.at(fileList.length()-1).absoluteFilePath())) {
+            DbH->removeVideoFromMainQML(fileList.at(fileList.length()-1).absoluteFilePath());
+        }
+        //settingsObject->addCurrentVideoFiles(-1);
     }
     qDebug() << " RM OK2";
     index = fileList.length() - 2;
     if (index > 0) {
-        if (fileList.at(fileList.length()-2).absoluteFilePath().contains("part_2.mp4"))
+        if (fileList.at(fileList.length()-2).absoluteFilePath().contains("part_2.mp4")) {
             QFile::remove(fileList.at(fileList.length()-2).absoluteFilePath());
+            DbH->removeVideoQML(fileList.at(fileList.length()-2).absoluteFilePath());
+            if (DbH->isFileNameFreeQML(fileList.at(fileList.length()-2).absoluteFilePath())) {
+                DbH->removeVideoFromMainQML(fileList.at(fileList.length()-2).absoluteFilePath());
+            }
+        }
         qDebug() << "RM OK3";
     }
 }
@@ -94,7 +107,7 @@ QString File::getTheOldestFileName()
     list = fileName.split("__");
 
     if (list.length() > 1)
-        fileName = list.at(0);
+        fileName = list.at(0) + "_";
     else {
         list = fileName.split("_part");
         if (list.length() > 1)

@@ -64,7 +64,7 @@ Page {
         Label {
             id: velocityUnitLabel
             anchors.left: parent.left
-            text: "Record audio:"
+            text: "Velocity unit:"
         }
 
         TumblerButton {
@@ -100,7 +100,7 @@ Page {
         onAccepted: {
             var result;
 
-            if (recordLastDialog.selectedIndex == 0) {
+            if (velocityUnitDialog.selectedIndex == 0) {
                 result = true;
                 velocityUnitButton.text = "km/h";
             }

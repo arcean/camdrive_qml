@@ -29,10 +29,19 @@ Page {
         pageStack.push(videoListPage);
     }
 
+    /* PRE-RELEASE */
+    Label {
+        anchors.centerIn: parent
+        font.pixelSize: 104
+        text: "PRE-RELEASE"
+        color: _ACTIVE_COLOR_TEXT
+        rotation: 45
+    }
+
     // Mask invisible region
     Rectangle {
         x: appWindow.inPortrait ? 160 : 90
-        y: appWindow.inPortrait ? 90 : 168
+        y: appWindow.inPortrait ? 90 : 172
         width: 160
         height: 110
         color: "white"

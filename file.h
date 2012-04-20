@@ -7,6 +7,8 @@
 #include <QDateTime>
 
 #include "settings.h"
+#include "database.h"
+#include "databasehelper.h"
 
 #define APP_NAME "camdrive"
 #define APP_DIR "/home/user/MyDocs/"
@@ -14,7 +16,7 @@
 class File
 {
 public:
-    File(const QString &fileName, Settings *settingsObject);
+    File(const QString &fileName, Settings *settingsObject, Database *Db);
     bool init();
     bool fileReady();
     void changeFile(int partNumber);
@@ -35,6 +37,8 @@ private:
     QString generatedFileName;
     int activeFileNumber;
     Settings *settingsObject;
+    Database *Db;
+    DatabaseHelper *DbH;
 };
 
 #endif // FILE_H
