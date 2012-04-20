@@ -290,7 +290,7 @@ void Settings::setMaxAllowedSpeed(int speed)
 {
     QSettings settings;
 
-    settings.setValue("speed/maxAllowed", number);
+    settings.setValue("speed/maxAllowed", speed);
 }
 
 int Settings::getMaxAllowedSpeed()
@@ -314,7 +314,7 @@ void Settings::setVelocityUnit(bool unit)
 /*
  * Get velocity unit.
  * return TRUE, if km/h
- * return FALSE, if mile/h
+ * return FALSE, if mph
  */
 bool Settings::getVelocityUnit()
 {

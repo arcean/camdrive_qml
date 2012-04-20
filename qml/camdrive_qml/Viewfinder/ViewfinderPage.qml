@@ -209,7 +209,13 @@ Page {
 
     function setSpeed(speed)
     {
-        textSpeedInfo.text = speed + " km/h"
+        var unit;
+        if (settingsObject.getVelocityUnit())
+            unit = " km/h";
+        else
+            unit = " mph";
+
+        textSpeedInfo.text = speed + unit;
     }
 
     function wakeCamera()
@@ -300,10 +306,10 @@ Page {
             var speed = Gps.getSpeed();
 
             if (settingsObject.getVelocityUnit()) {
-                speed = value * 3.6;
+                speed = speed * 3.6;
             }
             else {
-                speed = value * 2.2369;
+                speed = speed * 2.2369;
             }
 
             if (speed < 4)

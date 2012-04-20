@@ -104,8 +104,14 @@ Page {
         if (speed < 4)
             speed = 0;
 
-        speedLabel.text = "Speed: " + speed + " km\h";
-        actualSpeedLabel.text = "Actual speed: " + speed + " km\h";
+        var unit;
+        if (settingsObject.getVelocityUnit())
+            unit = " km/h";
+        else
+            unit = " mph";
+
+        speedLabel.text = "Speed: " + speed + unit;
+        actualSpeedLabel.text = "Actual speed: " + speed + unit;
     }
 
     Coordinate {

@@ -35,7 +35,7 @@ Item {
         anchors.leftMargin: 10
         width: 80
         height: 80
-        source: "images/warning.png"
+        source: "../images/warning.png"
     }
 
     Label {
@@ -61,6 +61,6 @@ Item {
 
     SoundEffect {
         id: playSound
-        source: "sounds/warning.wav"
+        source: "../sounds/warning.wav"
     }
 }
