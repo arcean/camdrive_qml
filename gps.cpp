@@ -44,10 +44,5 @@ qreal Gps::getLongitude()
 
 qreal Gps::getSpeed()
 {
-    qreal speed = lastSpeed * 3.6;
-
-    if (speed < 4)
-        return 0;
-
     return lastSpeed;
 }

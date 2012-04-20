@@ -297,8 +297,20 @@ Page {
             viewfinderPage.videoPartCounter++;
         }
         onGpsUpdated: {
-            setSpeed(Gps.getSpeed());
-            checkMaxAllowedSpeed(Gps.getSpeed());
+            var speed = Gps.getSpeed();
+
+            if (settingsObject.getVelocityUnit()) {
+                speed = value * 3.6;
+            }
+            else {
+                speed = value * 2.2369;
+            }
+
+            if (speed < 4)
+                speed = 0;
+
+            setSpeed(speed);
+            checkMaxAllowedSpeed(speed);
         }
 
     //    onCreateVideoDetailsTable: {

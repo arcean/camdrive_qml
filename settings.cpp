@@ -300,3 +300,26 @@ int Settings::getMaxAllowedSpeed()
 
     return value;
 }
+
+/*
+ * Set velocity unit.
+ */
+void Settings::setVelocityUnit(bool unit)
+{
+    QSettings settings;
+
+    settings.setValue("speed/unit", unit);
+}
+
+/*
+ * Get velocity unit.
+ * return TRUE, if km/h
+ * return FALSE, if mile/h
+ */
+bool Settings::getVelocityUnit()
+{
+    QSettings settings;
+    bool value =  settings.value("speed/unit", true).toBool();
+
+    return value;
+}

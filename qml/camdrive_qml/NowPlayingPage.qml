@@ -5,6 +5,7 @@ import QtMobility.gallery 1.1
 import QtMobility.location 1.2
 import QtMobility.systeminfo 1.2
 import GeoCoder 1.0
+import Settings 1.0
 import "scripts/utils.js" as Utils
 import "Common/"
 
@@ -91,8 +92,20 @@ Page {
     /* Sets speedLabel's text. */
     function setSpeed(value)
     {
-        speedLabel.text = "Speed: " + value + " km\h";
-        actualSpeedLabel.text = "Actual speed: " + value + " km\h";
+        var speed;
+
+        if (settingsObject.getVelocityUnit()) {
+            speed = value * 3.6;
+        }
+        else {
+            speed = value * 2.2369;
+        }
+
+        if (speed < 4)
+            speed = 0;
+
+        speedLabel.text = "Speed: " + speed + " km\h";
+        actualSpeedLabel.text = "Actual speed: " + speed + " km\h";
     }
 
     Coordinate {
@@ -182,6 +195,10 @@ Page {
     ScreenSaver {
         id: screenSaver
         screenSaverInhibited: nowPlayingPage.videoPlaying
+    }
+
+    Settings {
+        id: settingsObject
     }
 
     ToolBar {

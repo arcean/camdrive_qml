@@ -48,6 +48,8 @@ public slots:
     void addCurrentVideoFiles(int value);
     void setMaxAllowedSpeed(int speed);
     int getMaxAllowedSpeed();
+    void setVelocityUnit(bool unit);
+    bool getVelocityUnit();
 
 };
 
