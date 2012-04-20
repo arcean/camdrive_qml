@@ -19,7 +19,7 @@ PageStackWindow {
     property string _ICON_LOCATION: "/usr/share/themes/blanco/meegotouch/icons/"
     property string _ACTIVE_COLOR: "color11"
     property string _ACTIVE_COLOR_TEXT: "#8D18BE"
-    property string _APP_VERSION: "0.2.1"
+    property string _APP_VERSION: "0.2.2"
 
     platformStyle: PageStackWindowStyle {
             background: appWindow.inPortrait ? "qrc:/icons/background-portrait.png" : "qrc:/icons/background.png"
@@ -42,12 +42,6 @@ PageStackWindow {
     MessageHandler {
         id: messageHandler
     }
-
-    //Connections {
-  //      target: Utils
-//        onInformation: messageHandler.showMessage(message);
-        //onVideoDeleted: deleteVideo(path);
-//    }
 
     function showToolbar()
     {

@@ -283,7 +283,7 @@ Page {
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         text: qsTr("No videos found")
-        visible: ((videoListModel.status == DocumentGalleryModel.Finished) && (videoListModel.count == 0)) || loading
+        visible: ((videoListModel.status == DocumentGalleryModel.Finished) && (videoListModel.count == 0))
     }
 
     BusyIndicator {
