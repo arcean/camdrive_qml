@@ -32,7 +32,7 @@ Page {
     // Mask invisible region
     Rectangle {
         x: appWindow.inPortrait ? 160 : 90
-        y: appWindow.inPortrait ? 90 : 170
+        y: appWindow.inPortrait ? 90 : 168
         width: 160
         height: 110
         color: "white"
