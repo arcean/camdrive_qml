@@ -298,6 +298,7 @@ Page {
         }
         onGpsUpdated: {
             setSpeed(Gps.getSpeed());
+            checkMaxAllowedSpeed(Gps.getSpeed());
         }
 
     //    onCreateVideoDetailsTable: {
