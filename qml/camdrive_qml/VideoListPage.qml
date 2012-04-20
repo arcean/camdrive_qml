@@ -2,6 +2,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
 import Settings 1.0
+import "Common"
 import "scripts/utils.js" as UtilsScript
 
 Page {
@@ -9,6 +10,9 @@ Page {
 
     property string thumbnailSize: "large"
     property bool loading: true
+    property bool thumbnailsDone: false
+    /* Do not allow to remove video more than once. */
+    property bool removingComplete: true
 
     function showDeleteDialog(video)
     {
@@ -31,6 +35,7 @@ Page {
 
     function reloadVideoListImmediately()
     {
+        videoPageList.loading = true;
         videoListModel.reload();
     }
 
@@ -43,13 +48,31 @@ Page {
 
     function deleteVideo(path)
     {
-        Thumbnails.checkIfThumbnailExists(path, true);
-        videoPageList.reloadVideoList();
-        DatabaseHelper.removeVideoQML(path);
-        settings.addCurrentVideoFiles(-1);
-        if (DatabaseHelper.isFileNameFreeQML(path)) {
-            DatabaseHelper.removeVideoFromMainQML(path);
+        if (!removingComplete) {
+            Thumbnails.checkIfThumbnailExists(path, true);
+            DatabaseHelper.removeVideoQML(path);
+            settings.addCurrentVideoFiles(-1);
+            if (DatabaseHelper.isFileNameFreeQML(path)) {
+                DatabaseHelper.removeVideoFromMainQML(path);
+            }
+            videoPageList.reloadVideoList();
+            removingComplete = true;
         }
+    }
+
+    function updateHeaderDetails(videoNumber)
+    {
+        var text1 = "videos";
+        var text2 = "files";
+        var numFiles = videoList.count;
+
+        if (videoNumber === 1)
+            text1 = "video";
+
+        if (numFiles == 1)
+            text2 = "file";
+
+        header.detailsText = videoNumber + " " + text1 + " in " + numFiles + " " + text2;
     }
 
     Component.onCompleted: {
@@ -62,28 +85,49 @@ Page {
         target: Thumbnails
         onFinished: {
             reloadVideoListImmediately();
-            videoPageList.loading = false;
+            thumbnailsDone = true;
         }
     }
 
     Connections {
         target: Utils
-        onVideoDeleted: deleteVideo(path);
+        onInformation: messageHandler.showMessage(message);
+        onVideoDeleted: videoPageList.deleteVideo(path);
     }
 
     Settings {
         id: settings
     }
 
+    HeaderTwo {
+        id: header
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        text: "Video list"
+        detailsText: ""
+    }
+
+    onLoadingChanged: {
+        if (loading == false)
+            updateHeaderDetails(settings.getCurrentVideoFiles());
+    }
+
     tools: ToolBarLayout {
         id: toolBar
 
-    //    NowPlayingButton {}
         ToolIcon { platformIconId: "toolbar-back";
             anchors.left: parent.left
             onClicked: {
                 pageStack.pop();
                 hideToolbar();
+            }
+        }
+        ToolIcon { platformIconId: "toolbar-refresh";
+            anchors.centerIn: parent.Center
+            onClicked: {
+                reloadVideoListImmediately();
             }
         }
         ToolIcon {
@@ -97,7 +141,7 @@ Page {
         id: reloadTimer
 
         interval: 2000
-        onTriggered: videoListModel.reload()
+        onTriggered: reloadVideoListImmediately()
     }
 
     Menu {
@@ -136,14 +180,18 @@ Page {
             }
             MenuItem {
                 text: qsTr("Delete")
-                onClicked: showDeleteDialog(videoListModel.get(videoList.selectedIndex))
+                onClicked: {
+                    console.log('SELECTED:', videoList.selectedIndex)
+                    removingComplete = false;
+                    showDeleteDialog(videoListModel.get(videoList.selectedIndex))
+                }
             }
         }
     }
 
     GridView {
         id: videoList
-        anchors { top: parent.top; topMargin: 10; left: parent.left; leftMargin: 10; right: parent.right; rightMargin: 10; bottom: parent.bottom }
+        anchors { top: header.bottom; topMargin: 0; left: parent.left; leftMargin: 10; right: parent.right; rightMargin: 10; bottom: parent.bottom }
         visible: !loading
 
         property int selectedIndex
@@ -195,6 +243,10 @@ Page {
                         value: ""
                     }
                 ]
+            }
+            onStatusChanged: {
+                if (status == DocumentGalleryModel.Finished && thumbnailsDone)
+                    loading = false;
             }
         }
         delegate: VideoListDelegate {
