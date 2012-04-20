@@ -285,3 +285,18 @@ int Settings::getCurrentVideoFiles()
 
     return value;
 }
+
+void Settings::setMaxAllowedSpeed(int speed)
+{
+    QSettings settings;
+
+    settings.setValue("speed/maxAllowed", number);
+}
+
+int Settings::getMaxAllowedSpeed()
+{
+    QSettings settings;
+    int value =  settings.value("speed/maxAllowed", 999).toInt();
+
+    return value;
+}

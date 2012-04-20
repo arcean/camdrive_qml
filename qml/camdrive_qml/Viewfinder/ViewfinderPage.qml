@@ -18,6 +18,7 @@ Page {
     property bool isCameraActive: false
     property bool isCameraRecording: false
     property int speed: 0
+    property int maxAllowedSpeed: 999
     orientationLock: PageOrientation.LockLandscape
 
     Component.onCompleted: {
@@ -30,6 +31,7 @@ Page {
     }
 
     function firstTimeFunction() {
+        maxAllowedSpeed = settingsObject.getMaxAllowedSpeed();
         viewfinderPage.clearRecordingStatus();
         viewfinderPage.wakeCamera();
         screenSaver.screenSaverInhibited = true;
@@ -239,6 +241,14 @@ Page {
         //storeDataTimer.running = false;
     }
 
+    function checkMaxAllowedSpeed(speed)
+    {
+        if (speed > maxAllowedSpeed) {
+            speedWarning.showSpeedWarning();
+        }
+
+    }
+
     Scale {
         id:camMirrorScale
         origin.x:parent.width/2
@@ -272,7 +282,6 @@ Page {
             }
         }
     }
-
 
     Camera {
         id:frontCam
@@ -506,6 +515,13 @@ Page {
         opacity: 1
     }
 
+    SpeedWarning {
+        id: speedWarning
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.leftMargin: 10
+        anchors.bottomMargin: 100
+    }
 
     Dialog {
         id: stopDialog
