@@ -13,6 +13,7 @@
 #include "accelerometer.h"
 #include "gps.h"
 #include "geocoder.h"
+#include "telephony.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
@@ -33,6 +34,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     qmlRegisterType<QDeclarativeCamera>("Camera", 1, 0, "Camera");
     qmlRegisterType<Settings>("Settings", 1, 0, "Settings");
     qmlRegisterType<GeoCoder>("GeoCoder",1,0 ,"GeoCoder");
+    qmlRegisterType<Telephony, 1>("Telephony", 1, 0, "Telephony");
 
     QDeclarativeContext *context = view->rootContext();
     context->setContextProperty("Utils", &utils);
