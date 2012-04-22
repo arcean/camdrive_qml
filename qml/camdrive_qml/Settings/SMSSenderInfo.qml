@@ -2,6 +2,7 @@ import QtQuick 1.0
 import com.nokia.meego 1.0
 import com.nokia.extras 1.0
 import "../Common"
+import "../StyledComponents"
 
 Flickable {
     id: flickableContact
@@ -89,6 +90,7 @@ Flickable {
             anchors { verticalCenter: parent.verticalCenter; right: parent.right; rightMargin: 20 }
             text: "+"
             font { pixelSize: 30; bold: false }
+            platformStyle: StyledButton {}
 
             onClicked: {
                 messageText.closeSoftwareInputPanel();

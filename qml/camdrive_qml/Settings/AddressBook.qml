@@ -26,6 +26,7 @@ Page {
         id: addressBookSheet
         anchors.fill: parent
         rejectButtonText: "Cancel"
+        platformStyle: SheetButtonAccentStyle {}
 
         content: AddressBookSheetContent { id: addressBookSheetContentId }
 

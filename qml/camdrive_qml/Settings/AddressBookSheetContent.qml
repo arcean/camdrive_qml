@@ -31,7 +31,7 @@ Item  {
            horizontalCenter: parent.horizontalCenter
        }
        visible: !smssendingPage.contactsAvailable
-       color: "black"
+       color: _TEXT_COLOR
    }
 
    //! Spinner to indicate contacts are loading
@@ -77,7 +77,7 @@ Item  {
                }
 
                font: UiConstants.GroupHeaderFont
-               color: rootWindow.secondaryForeground
+               color: _TEXT_COLOR
                text: section.toUpperCase();
            }
 
@@ -175,7 +175,7 @@ Item  {
                Text {
                    id: tagName
                    anchors.centerIn: parent
-                   color: "white"
+                   color: _TEXT_COLOR
                    font { family: UiConstants.BodyTextFont.family; bold: true; pixelSize: 32 }
                    opacity: (contactPic.source == "") ? 1.0 : 0.0
                    text: (name.firstName !== "" || name.lastName  !== "")?
@@ -213,7 +213,7 @@ Item  {
                font: UiConstants.TitleFont
                wrapMode: Text.Wrap
                elide: Text.ElideRight
-               color: "black"
+               color: _TEXT_COLOR
                text: displayLabel
                maximumLineCount: 1
            }
