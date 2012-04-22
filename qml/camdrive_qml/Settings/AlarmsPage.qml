@@ -99,13 +99,53 @@ Page {
             id: maxAllowedSpeedButton
             anchors.right: parent.right
             anchors.left: parent.left
-            y: maxAllowedSpeedLabel.y + maxAllowedSpeedLabel.height + 20
+            y: maxAllowedSpeedLabel.y + maxAllowedSpeedLabel.height + 10
             style: StyledTumblerButton {}
             text: {
                 speedAlarmDialog.selectedIndex >= 0 ? speedAlarmDialog.model.get(speedAlarmDialog.selectedIndex).name : settingsObject.getMaxAllowedSpeed()
             }
             onClicked: {
                 speedAlarmDialog.open()
+            }
+        }
+
+        Separator {
+            id: separator1
+            anchors.right: parent.right
+            anchors.left: parent.left
+            y: maxAllowedSpeedButton.y + maxAllowedSpeedButton.height + 20
+        }
+
+        Label {
+            id: contactsLabel
+            anchors.left: parent.left
+            y: separator1.y + separator1.height + 20
+            text: "Family emergency contact:"
+        }
+
+        SelectContact {
+            id: contacts
+            anchors.right: parent.right
+            anchors.left: parent.left
+            y: contactsLabel.y + contactsLabel.height
+        }
+
+        Label {
+            id: emergencyLabel
+            anchors.left: parent.left
+            y: contacts.y + contacts.height + 10
+            text: "Emergency number:"
+        }
+
+        TumblerButton {
+            id: emergencyButton
+            anchors.right: parent.right
+            anchors.left: parent.left
+            y: emergencyLabel.y + emergencyLabel.height + 10
+            style: StyledTumblerButton {}
+            text: "112"
+            onClicked: {
+                //speedAlarmDialog.open()
             }
         }
     }

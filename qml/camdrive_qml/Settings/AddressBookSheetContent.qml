@@ -1,6 +1,7 @@
 import QtQuick 1.0
 import com.nokia.meego 1.0
 import QtMobility.contacts 1.1
+import "../StyledComponents"
 
 Item  {
    id: addressBookItem
@@ -30,7 +31,7 @@ Item  {
            verticalCenter: parent.verticalCenter
            horizontalCenter: parent.horizontalCenter
        }
-       visible: !smssendingPage.contactsAvailable
+       visible: !flickableContact.contactsAvailable
        color: _TEXT_COLOR
    }
 
@@ -39,8 +40,8 @@ Item  {
        id: spinner
        platformStyle: BusyIndicatorStyle { size: "large" }
        anchors.centerIn: parent
-       opacity: (smssendingPage.contactsAvailable === true ? (contactListView.count > 0? 0 : 1) : 0 )
-       running: (smssendingPage.contactsAvailable === true ? (contactListView.count > 0? false : true) : false )
+       opacity: (flickableContact.contactsAvailable === true ? (contactListView.count > 0? 0 : 1) : 0 )
+       running: (flickableContact.contactsAvailable === true ? (contactListView.count > 0? false : true) : false )
    }
 
    //! List View to display the contacts from the contactModel
@@ -224,21 +225,21 @@ Item  {
 
                onClicked: {
                    if (phonebookModel.contacts[index].phoneNumbers.length == 1) {
-                       smssendingPage.addressBookPhoneNumber =
+                       flickableContact.addressBookPhoneNumber =
                                phonebookModel.contacts[index].phoneNumber.number
 
                        if(phonebookModel.contacts[index].name.firstName !== "" || phonebookModel.contacts[index].name.lastName !== "")
-                           smssendingPage.addressBookContactName =
+                           flickableContact.addressBookContactName =
                                phonebookModel.contacts[index].name.firstName + " "
                                + phonebookModel.contacts[index].name.lastName;
                        else
-                           smssendingPage.addressBookContactName = phonebookModel.contacts[index].nickname.nickname;
+                           flickableContact.addressBookContactName = phonebookModel.contacts[index].nickname.nickname;
 
-                       smssendingPage.addressBookContactSelected = true;
+                       flickableContact.addressBookContactSelected = true;
                        pageStack.pop();
 
                        //! By default sheet doesn't open. Need to open the sheet in SMSSender.qml
-                       smssendingPage.smsSheet.open();
+                       //flickableContact.smsSheet.open();
                    } else {
                        indexValue = index;
 
@@ -263,24 +264,25 @@ Item  {
        titleText: selectedContactName
        model: phoneNumberList
        selectedIndex: 0
+       platformStyle: StyledSelectionDialog {}
 
        onAccepted: {
-           smssendingPage.addressBookPhoneNumber =
+           flickableContact.addressBookPhoneNumber =
                    singleSelectionDialog.model.get(singleSelectionDialog.selectedIndex).name
 
            if(phonebookModel.contacts[indexValue].name.firstName !== "" || phonebookModel.contacts[indexValue].name.lastName !== "")
-               smssendingPage.addressBookContactName =
+               flickableContact.addressBookContactName =
                    phonebookModel.contacts[indexValue].name.firstName + " "
                    + phonebookModel.contacts[indexValue].name.lastName;
            else
-               smssendingPage.addressBookContactName = phonebookModel.contacts[indexValue].nickname.nickname;
+               flickableContact.addressBookContactName = phonebookModel.contacts[indexValue].nickname.nickname;
 
-           smssendingPage.addressBookContactSelected = true;
+           flickableContact.addressBookContactSelected = true;
            phoneNumberList.clear();
            pageStack.pop();
 
            //! By default sheet doesn't open. Need to open the sheet in SMSSender.qml
-           smssendingPage.smsSheet.open();
+           //flickableContact.smsSheet.open();
        }
 
        onRejected: phoneNumberList.clear();

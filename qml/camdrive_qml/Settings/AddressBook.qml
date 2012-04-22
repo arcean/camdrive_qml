@@ -26,15 +26,14 @@ Page {
         id: addressBookSheet
         anchors.fill: parent
         rejectButtonText: "Cancel"
-        platformStyle: SheetButtonAccentStyle {}
 
         content: AddressBookSheetContent { id: addressBookSheetContentId }
 
         onRejected: {
-            pageStack.pop();
+            addressBookSheet.reject();
 
             //! By default sheet doesn't open. Need to open the sheet in SMSSender.qml
-            smssendingPage.smsSheet.open();
+           // smssendingPage.smsSheet.open();
         }
     }
 
