@@ -18,10 +18,12 @@ symbian:TARGET.UID3 = 0xE3CE4FB7
 # Allow network access on Symbian
 symbian:TARGET.CAPABILITY += NetworkServices
 
+QT += dbus
+
 # If your application uses the Qt Mobility libraries, uncomment the following
 # lines and add the respective components to the MOBILITY variable.
 CONFIG += mobility
-MOBILITY += multimedia sensors location
+MOBILITY += multimedia sensors location messaging contacts systeminfo
 
 # enable booster
 CONFIG += qt-boostable qdeclarative-boostable meegotouch
@@ -39,7 +41,8 @@ SOURCES += main.cpp \
     videothumbnails.cpp \
     accelerometer.cpp \
     gps.cpp \
-    geocoder.cpp
+    geocoder.cpp \
+    telephony.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -70,7 +73,8 @@ HEADERS += \
     videothumbnails.h \
     accelerometer.h \
     gps.h \
-    geocoder.h
+    geocoder.h \
+    telephony.h
 
 RESOURCES += \
     camdrive_qml.qrc
