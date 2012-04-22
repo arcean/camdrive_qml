@@ -63,7 +63,6 @@ Page {
                         ListElement { name: QT_TR_NOOP("Audio"); fileName: "AudioSettingsPage.qml" }
                         ListElement { name: QT_TR_NOOP("Alarms"); fileName: "AlarmsPage.qml" }
                         ListElement { name: QT_TR_NOOP("Other"); fileName: "OtherPage.qml" }
-                        ListElement { name: QT_TR_NOOP("DEMO++"); fileName: "SMSSender.qml" }
                     }
 
                     DrillDownDelegate {

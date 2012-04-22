@@ -30,7 +30,7 @@ Page {
         content: AddressBookSheetContent { id: addressBookSheetContentId }
 
         onRejected: {
-            addressBookSheet.reject();
+            pageStack.pop();
 
             //! By default sheet doesn't open. Need to open the sheet in SMSSender.qml
            // smssendingPage.smsSheet.open();
