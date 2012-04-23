@@ -269,6 +269,7 @@ Page {
     {
         closeMenu.enabled = false;
         viewfinderMenu.visible = false;
+        emergencyMenu.visible = false;
     }
 
     Scale {
@@ -548,6 +549,8 @@ Page {
             onClicked: {
                 console.log("Emergency call clicked")
                 emergencyButton.startAlarm();
+                emergencyMenu.visible = true;
+                closeMenu.enabled = true;
             }
         }
     }
@@ -590,6 +593,12 @@ Page {
 
     ViewfinderMenu {
         id: viewfinderMenu
+        anchors.centerIn: parent
+        visible: false
+    }
+
+    EmergencyMenu {
+        id: emergencyMenu
         anchors.centerIn: parent
         visible: false
     }
