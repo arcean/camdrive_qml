@@ -3,8 +3,8 @@ import QtQuick 1.1
 
 Item {
     id: master
-    width: 96
-    height: 96
+    width: 80
+    height: 80
 
     property int length: 700;
     property int maxCounter: 9;
@@ -14,7 +14,7 @@ Item {
         id: rect
         anchors.centerIn: parent
         state: "normal"
-        source:"qrc:/icons/emergency_call.png"
+        source: "../images/emergency.png"
 
         states: [
             State {
@@ -23,8 +23,8 @@ Item {
                     target: rect
                     x: 16
                     y: 16
-                    width: 64
-                    height: 64
+                    width: 56
+                    height: 56
                 }
             },
             State {
@@ -33,8 +33,8 @@ Item {
                     target: rect
                     x: 0
                     y: 0
-                    width: 96
-                    height: 96
+                    width: 80
+                    height: 80
                 }
             },
             State {
@@ -43,8 +43,8 @@ Item {
                     target: rect
                     x: 24
                     y: 24
-                    width: 48
-                    height: 48
+                    width: 32
+                    height: 32
                 }
             }
         ]

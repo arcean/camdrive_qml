@@ -255,7 +255,20 @@ Page {
         if (speed > maxAllowedSpeed) {
             speedWarning.showSpeedWarning();
         }
+    }
 
+    function close()
+    {
+        stopRecording();
+        unloadCamera();
+        appWindow.pageStack.pop();
+        screenSaver.screenSaverInhibited = false;
+    }
+
+    function closeMenuFunc()
+    {
+        closeMenu.enabled = false;
+        viewfinderMenu.visible = false;
     }
 
     Scale {
@@ -469,6 +482,26 @@ Page {
     }
 
     // Record/stop button
+    ButtonHighlight {
+        id: toggleRecordingButton
+        width: 80
+        height: width
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        anchors.top: upperToolbar.bottom
+        anchors.topMargin: 20
+
+        source: "../images/menu.png"
+        highlightSource: "../images/highlight80.png"
+
+        onClicked: {
+            console.log('toggled recording clicked')
+            //stopDialog.open()
+            viewfinderMenu.visible = true;
+            closeMenu.enabled = true;
+        }
+    }
+/*
     Item {
         id: toggleRecordingButton
         anchors.left: parent.left
@@ -497,10 +530,12 @@ Page {
             }
             onClicked: {
                 console.log('toggled recording clicked')
-                stopDialog.open()
+                //stopDialog.open()
+                viewfinderMenu.visible = true;
+                closeMenu.enabled = true;
             }
         }
-    }
+    }*/
 
     // Emergency button
     EmergencyButton {
@@ -543,6 +578,22 @@ Page {
         anchors.bottom: parent.bottom
         anchors.leftMargin: 10
         anchors.bottomMargin: 100
+    }
+
+    MouseArea {
+        id: closeMenu
+        anchors.fill: parent
+        enabled: false
+
+        onClicked: {
+            closeMenuFunc();
+        }
+    }
+
+    ViewfinderMenu {
+        id: viewfinderMenu
+        anchors.centerIn: parent
+        visible: false
     }
 
     Dialog {

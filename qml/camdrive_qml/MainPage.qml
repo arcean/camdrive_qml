@@ -1,6 +1,7 @@
 import QtQuick 1.1
 import com.nokia.meego 1.0
 import "scripts/utils.js" as Utils
+import "Common"
 
 Page {
     id: mainPage
@@ -30,13 +31,13 @@ Page {
     }
 
     // Mask invisible region
-    Rectangle {
+    /*  Rectangle {
         x: appWindow.inPortrait ? 160 : 90
         y: appWindow.inPortrait ? 90 : 172
         width: 160
         height: 110
         color: "white"
-    }
+    }*/
 
     Row {
         anchors.fill: parent
@@ -46,7 +47,37 @@ Page {
         enabled: !appWindow.inPortrait
         visible: !appWindow.inPortrait
 
-        Image {
+        ButtonHighlight {
+            width: 240
+            height: width
+            source: "images/rec.png"
+            highlightSource: "images/highlight240.png"
+            onClicked: {
+                showViewfinderPage();
+            }
+        }
+
+        ButtonHighlight {
+            width: 240
+            height: width
+            source: "images/settings.png"
+            highlightSource: "images/highlight240.png"
+            onClicked: {
+                showSettingsPage();
+            }
+        }
+
+        ButtonHighlight {
+            width: 240
+            height: width
+            source: "images/video.png"
+            highlightSource: "images/highlight240.png"
+            onClicked: {
+                showVideoListPage();
+            }
+        }
+
+       /* Image {
             id: startRecordingImage
             //x: 51
             //y: 100
@@ -66,47 +97,47 @@ Page {
                     showViewfinderPage();
                 }
             }
-        }
+        }*/
+/*
+        Image {
+            id: settingsImage
+            width: 240
+            height: startRecordingImage.width
+            source: "qrc:/icons/settings.png"
 
-            Image {
-                id: settingsImage
-                width: 240
-                height: startRecordingImage.width
-                source: "qrc:/icons/settings.png"
-
-                MouseArea {
-                    anchors.fill: parent
-                    onPressed: {
-                        parent.source = "qrc:/icons/settings_highlighted.png"
-                    }
-                    onReleased: {
-                        parent.source = "qrc:/icons/settings.png"
-                    }
-                    onClicked: {
-                        showSettingsPage();
-                    }
+            MouseArea {
+                anchors.fill: parent
+                onPressed: {
+                    parent.source = "qrc:/icons/settings_highlighted.png"
+                }
+                onReleased: {
+                    parent.source = "qrc:/icons/settings.png"
+                }
+                onClicked: {
+                    showSettingsPage();
                 }
             }
+        }*/
 
-            Image {
-                id: filesImage
-                width: 240
-                height: startRecordingImage.width
-                source:"qrc:/icons/files.png"
+     /*   Image {
+            id: filesImage
+            width: 240
+            height: startRecordingImage.width
+            source:"qrc:/icons/files.png"
 
-                MouseArea {
-                    anchors.fill: parent
-                    onPressed: {
-                        parent.source = "qrc:/icons/files_highlighted.png"
-                    }
-                    onReleased: {
-                        parent.source = "qrc:/icons/files.png"
-                    }
-                    onClicked: {
-                        showVideoListPage();
-                    }
+            MouseArea {
+                anchors.fill: parent
+                onPressed: {
+                    parent.source = "qrc:/icons/files_highlighted.png"
+                }
+                onReleased: {
+                    parent.source = "qrc:/icons/files.png"
+                }
+                onClicked: {
+                    showVideoListPage();
                 }
             }
+        }*/
     }
 
     Column {
@@ -117,6 +148,36 @@ Page {
         enabled: appWindow.inPortrait
         visible: appWindow.inPortrait
 
+        ButtonHighlight {
+            width: 240
+            height: width
+            source: "images/rec.png"
+            highlightSource: "images/highlight240.png"
+            onClicked: {
+                showViewfinderPage();
+            }
+        }
+
+        ButtonHighlight {
+            width: 240
+            height: width
+            source: "images/settings.png"
+            highlightSource: "images/highlight240.png"
+            onClicked: {
+                showSettingsPage();
+            }
+        }
+
+        ButtonHighlight {
+            width: 240
+            height: width
+            source: "images/video.png"
+            highlightSource: "images/highlight240.png"
+            onClicked: {
+                showVideoListPage();
+            }
+        }
+        /*
         Image {
             id: startRecordingImageP
             width: 240
@@ -137,44 +198,44 @@ Page {
             }
         }
 
-            Image {
-                id: settingsImageP
-                width: 240
-                height: startRecordingImageP.width
-                source: "qrc:/icons/settings.png"
+        Image {
+            id: settingsImageP
+            width: 240
+            height: startRecordingImageP.width
+            source: "qrc:/icons/settings.png"
 
-                MouseArea {
-                    anchors.fill: parent
-                    onPressed: {
-                        parent.source = "qrc:/icons/settings_highlighted.png"
-                    }
-                    onReleased: {
-                        parent.source = "qrc:/icons/settings.png"
-                    }
-                    onClicked: {
-                        showSettingsPage();
-                    }
+            MouseArea {
+                anchors.fill: parent
+                onPressed: {
+                    parent.source = "qrc:/icons/settings_highlighted.png"
+                }
+                onReleased: {
+                    parent.source = "qrc:/icons/settings.png"
+                }
+                onClicked: {
+                    showSettingsPage();
                 }
             }
+        }
 
-            Image {
-                id: filesImageP
-                width: 240
-                height: startRecordingImageP.width
-                source:"qrc:/icons/files.png"
+        Image {
+            id: filesImageP
+            width: 240
+            height: startRecordingImageP.width
+            source:"qrc:/icons/files.png"
 
-                MouseArea {
-                    anchors.fill: parent
-                    onPressed: {
-                        parent.source = "qrc:/icons/files_highlighted.png"
-                    }
-                    onReleased: {
-                        parent.source = "qrc:/icons/files.png"
-                    }
-                    onClicked: {
-                        showVideoListPage();
-                    }
+            MouseArea {
+                anchors.fill: parent
+                onPressed: {
+                    parent.source = "qrc:/icons/files_highlighted.png"
+                }
+                onReleased: {
+                    parent.source = "qrc:/icons/files.png"
+                }
+                onClicked: {
+                    showVideoListPage();
                 }
             }
+        }*/
     }
 }
