@@ -40,6 +40,11 @@ Page {
 
     Component.onCompleted: {
         selectMaxAllowedSpeed();
+
+        contactsSwitch.checked = settingsObject.getEmergencyContactNameEnabled();
+        contacts.enabled = contactsSwitch.checked;
+        emergencySwitch.checked = settingsObject.getEmergencyNumberEnabled();
+        emergencyButton.enabled = emergencySwitch.checked;
     }
 
     Header {
@@ -66,7 +71,7 @@ Page {
         }
         boundsBehavior: Flickable.DragOverBounds
         contentWidth: width
-        contentHeight: maxAllowedSpeedButton.y + maxAllowedSpeedButton.height - speedAlarmLabel.y
+        contentHeight: emergencyButton.y + emergencyButton.height - speedAlarmLabel.y
 
         Label {
             id: speedAlarmLabel
@@ -120,7 +125,18 @@ Page {
             id: contactsLabel
             anchors.left: parent.left
             y: separator1.y + separator1.height + 20
-            text: "Family emergency contact:"
+            text: "Family emergency contact"
+        }
+        Switch {
+            id: contactsSwitch
+            anchors.right: parent.right
+            anchors.verticalCenter: contactsLabel.verticalCenter
+
+            platformStyle: StyledSwitch {}
+            onCheckedChanged: {
+                settingsObject.setEmergencyContactNameEnabled(checked)
+                contacts.enabled = checked;
+            }
         }
 
         SelectContact {
@@ -134,7 +150,18 @@ Page {
             id: emergencyLabel
             anchors.left: parent.left
             y: contacts.y + contacts.height + 10
-            text: "Emergency number:"
+            text: "Emergency number"
+        }
+        Switch {
+            id: emergencySwitch
+            anchors.right: parent.right
+            anchors.verticalCenter: emergencyLabel.verticalCenter
+
+            platformStyle: StyledSwitch {}
+            onCheckedChanged: {
+                settingsObject.setEmergencyNumberEnabled(checked)
+                emergencyButton.enabled = checked;
+            }
         }
 
         TumblerButton {
@@ -143,15 +170,34 @@ Page {
             anchors.left: parent.left
             y: emergencyLabel.y + emergencyLabel.height + 10
             style: StyledTumblerButton {}
-            text: "112"
+            text: {
+                emergencyNumberDialog.selectedIndex >= 0 ? emergencyNumberDialog.model.get(emergencyNumberDialog.selectedIndex).name : settingsObject.getEmergencyNumber()
+            }
             onClicked: {
-                //speedAlarmDialog.open()
+                emergencyNumberDialog.open()
             }
         }
     }
 
     ScrollDecorator {
         flickableItem: flicker
+    }
+
+    SelectionDialog {
+        id: emergencyNumberDialog
+        titleText: "Max allowed speed"
+        platformStyle: StyledSelectionDialog {}
+
+        model: ListModel {
+            ListElement { name: "112"; value: 112; }
+            ListElement { name: "911"; value: 911; }
+            ListElement { name: "999"; value: 999; }
+        }
+
+        onAccepted: {
+            settingsObject.setEmergencyNumber(emergencyNumberDialog.model.get(emergencyNumberDialog.selectedIndex).name);
+            emergencyButton.text = emergencyNumberDialog.model.get(emergencyNumberDialog.selectedIndex).name;
+        }
     }
 
     SelectionDialog {

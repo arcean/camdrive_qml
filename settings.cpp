@@ -316,7 +316,7 @@ bool Settings::getMaxAllowedSpeedEnabled()
     return value;
 }
 
-/*
+/*!
  * Set velocity unit.
  */
 void Settings::setVelocityUnit(bool unit)
@@ -326,7 +326,7 @@ void Settings::setVelocityUnit(bool unit)
     settings.setValue("speed/unit", unit);
 }
 
-/*
+/*!
  * Get velocity unit.
  * return TRUE, if km/h
  * return FALSE, if mph
@@ -335,6 +335,113 @@ bool Settings::getVelocityUnit()
 {
     QSettings settings;
     bool value =  settings.value("speed/unit", true).toBool();
+
+    return value;
+}
+
+//! Telephony
+
+/*!
+ * Set emergency contact name.
+ */
+void Settings::setEmergencyContactName(const QString &name)
+{
+    QSettings settings;
+
+    settings.setValue("contacts/emergencyContact", name);
+}
+
+/*!
+ * Get emergency contact name
+ */
+QString Settings::getEmergencyContactName()
+{
+    QSettings settings;
+    QString value =  settings.value("contacts/emergencyContact", "").toString();
+
+    return value;
+}
+
+/*!
+ * Enable emergency contact name.
+ */
+void Settings::setEmergencyContactNameEnabled(bool enabled)
+{
+    QSettings settings;
+
+    settings.setValue("contacts/emergencyContactEnabled", enabled);
+}
+
+/*!
+ * Check if emergency contact name is enabled.
+ */
+bool Settings::getEmergencyContactNameEnabled()
+{
+    QSettings settings;
+    bool value =  settings.value("contacts/emergencyContactEnabled", false).toBool();
+
+    return value;
+}
+
+/*!
+ * Set emergency contact number.
+ */
+void Settings::setEmergencyContactNumber(const QString &number)
+{
+    QSettings settings;
+
+    settings.setValue("contacts/emergencyContactNumber", number);
+}
+
+/*!
+ * Get emergency contact number
+ */
+QString Settings::getEmergencyContactNumber()
+{
+    QSettings settings;
+    QString value =  settings.value("contacts/emergencyContactNumber", "").toString();
+
+    return value;
+}
+
+/*!
+ * Enable emergency contact number.
+ */
+void Settings::setEmergencyNumberEnabled(bool enabled)
+{
+    QSettings settings;
+
+    settings.setValue("contacts/emergencyNumberEnabled", enabled);
+}
+
+/*!
+ * Check if emergency contact number is enabled.
+ */
+bool Settings::getEmergencyNumberEnabled()
+{
+    QSettings settings;
+    bool value =  settings.value("contacts/emergencyNumberEnabled", false).toBool();
+
+    return value;
+}
+
+/*!
+ * Set emergency number.
+ */
+void Settings::setEmergencyNumber(const QString &number)
+{
+    QSettings settings;
+
+    settings.setValue("contacts/emergencyNumber", number);
+}
+
+/*!
+ * Get emergency number
+ */
+QString Settings::getEmergencyNumber()
+{
+    QSettings settings;
+    QString value =  settings.value("contacts/emergencyNumber", "112").toString();
 
     return value;
 }

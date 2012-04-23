@@ -2,6 +2,7 @@ import QtQuick 1.0
 import com.nokia.meego 1.0
 import com.nokia.extras 1.0
 import Telephony 1.0
+import Settings 1.0
 import "../Common"
 import "../StyledComponents"
 
@@ -12,6 +13,24 @@ Item {
     property bool addressBookContactSelected: false
     property bool contactsAvailable: false
     height: contactsRect.height
+
+    Settings {
+        id: settingsObject
+    }
+
+    onAddressBookPhoneNumberChanged: {
+        settingsObject.setEmergencyContactNumber(addressBookPhoneNumber);
+    }
+
+    onAddressBookContactNameChanged: {
+        settingsObject.setEmergencyContactName(addressBookContactName);
+    }
+
+    Component.onCompleted: {
+        //! Load settings
+        addressBookContactName = settingsObject.getEmergencyContactName();
+        addressBookPhoneNumber = settingsObject.getEmergencyContactNumber();
+    }
 
     function openFile(file)
     {
@@ -83,12 +102,11 @@ Item {
         font { family: UiConstants.BodyTextFont.family; weight: Font.Light; pixelSize: 28 }
         horizontalAlignment: TextInput.AlignLeft
         color: _TEXT_COLOR
-        focus: true
         inputMethodHints: Qt.ImhDialableCharactersOnly
 
         onActiveFocusChanged: {
-            if (contactsInput.focus) {
-                //focusedElement = "number";
+            if (!contactsInput.focus) {
+                contactsInput.closeSoftwareInputPanel();
             }
         }
 
