@@ -291,16 +291,14 @@ Page {
         onActiveChanged: {
             if(platformWindow.active) {
                 if(viewfinderPage.isCameraActive)
-                    frontCam.start()
+                    frontCam.start();
             }
             else {
                 if(viewfinderPage.isCameraRecording) {
-                    //stopRecording()
-                    //clearRecordingStatus()
+                    stopRecording();
+                    clearRecordingStatus();
                 }
-                else {
-                    frontCam.stop()
-                }
+                frontCam.stop();
             }
         }
     }
