@@ -30,15 +30,6 @@ Page {
         pageStack.push(videoListPage);
     }
 
-    // Mask invisible region
-    /*  Rectangle {
-        x: appWindow.inPortrait ? 160 : 90
-        y: appWindow.inPortrait ? 90 : 172
-        width: 160
-        height: 110
-        color: "white"
-    }*/
-
     Row {
         anchors.fill: parent
         anchors.topMargin: 120 //(480 - 240) / 2
@@ -76,68 +67,6 @@ Page {
                 showVideoListPage();
             }
         }
-
-       /* Image {
-            id: startRecordingImage
-            //x: 51
-            //y: 100
-            width: 240
-            height: 240
-            source: "qrc:/icons/start_recording.png"
-
-            MouseArea {
-                anchors.fill: parent
-                onPressed: {
-                    parent.source = "qrc:/icons/start_recording_highlighted.png"
-                }
-                onReleased: {
-                    parent.source = "qrc:/icons/start_recording.png"
-                }
-                onClicked: {
-                    showViewfinderPage();
-                }
-            }
-        }*/
-/*
-        Image {
-            id: settingsImage
-            width: 240
-            height: startRecordingImage.width
-            source: "qrc:/icons/settings.png"
-
-            MouseArea {
-                anchors.fill: parent
-                onPressed: {
-                    parent.source = "qrc:/icons/settings_highlighted.png"
-                }
-                onReleased: {
-                    parent.source = "qrc:/icons/settings.png"
-                }
-                onClicked: {
-                    showSettingsPage();
-                }
-            }
-        }*/
-
-     /*   Image {
-            id: filesImage
-            width: 240
-            height: startRecordingImage.width
-            source:"qrc:/icons/files.png"
-
-            MouseArea {
-                anchors.fill: parent
-                onPressed: {
-                    parent.source = "qrc:/icons/files_highlighted.png"
-                }
-                onReleased: {
-                    parent.source = "qrc:/icons/files.png"
-                }
-                onClicked: {
-                    showVideoListPage();
-                }
-            }
-        }*/
     }
 
     Column {
@@ -177,65 +106,5 @@ Page {
                 showVideoListPage();
             }
         }
-        /*
-        Image {
-            id: startRecordingImageP
-            width: 240
-            height: 240
-            source: "qrc:/icons/start_recording.png"
-
-            MouseArea {
-                anchors.fill: parent
-                onPressed: {
-                    parent.source = "qrc:/icons/start_recording_highlighted.png"
-                }
-                onReleased: {
-                    parent.source = "qrc:/icons/start_recording.png"
-                }
-                onClicked: {
-                    showViewfinderPage();
-                }
-            }
-        }
-
-        Image {
-            id: settingsImageP
-            width: 240
-            height: startRecordingImageP.width
-            source: "qrc:/icons/settings.png"
-
-            MouseArea {
-                anchors.fill: parent
-                onPressed: {
-                    parent.source = "qrc:/icons/settings_highlighted.png"
-                }
-                onReleased: {
-                    parent.source = "qrc:/icons/settings.png"
-                }
-                onClicked: {
-                    showSettingsPage();
-                }
-            }
-        }
-
-        Image {
-            id: filesImageP
-            width: 240
-            height: startRecordingImageP.width
-            source:"qrc:/icons/files.png"
-
-            MouseArea {
-                anchors.fill: parent
-                onPressed: {
-                    parent.source = "qrc:/icons/files_highlighted.png"
-                }
-                onReleased: {
-                    parent.source = "qrc:/icons/files.png"
-                }
-                onClicked: {
-                    showVideoListPage();
-                }
-            }
-        }*/
     }
 }

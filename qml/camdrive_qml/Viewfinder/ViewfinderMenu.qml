@@ -1,11 +1,19 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
+import "../scripts/utils.js" as Utils
 import "../Common"
 
 Item {
     id: master
     width: 600
     height: 136
+
+    function showMapsPage()
+    {
+        var mapsPage = Utils.createObject(Qt.resolvedUrl("Map.qml"), appWindow.pageStack);
+        showToolbar();
+        pageStack.push(mapsPage);
+    }
 
     Rectangle {
         id: rect1
@@ -65,7 +73,8 @@ Item {
         source: "../images/map.png"
         highlightSource: "../images/highlight120.png"
         onClicked: {
-            viewfinderPage.close();
+            viewfinderPage.pauseRecording();
+            showMapsPage();
         }
     }
 

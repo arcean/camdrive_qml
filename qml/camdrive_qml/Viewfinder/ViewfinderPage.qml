@@ -272,6 +272,23 @@ Page {
         emergencyMenu.visible = false;
     }
 
+    function pauseRecording()
+    {
+        if(viewfinderPage.isCameraRecording) {
+            stopRecording();
+            clearRecordingStatus();
+        }
+        frontCam.stop();
+        Gps.stop();
+    }
+
+    function resumeRecording()
+    {
+        if(viewfinderPage.isCameraActive)
+            frontCam.start();
+        Gps.start();
+    }
+
     Scale {
         id:camMirrorScale
         origin.x:parent.width/2
@@ -291,15 +308,10 @@ Page {
 
         onActiveChanged: {
             if(platformWindow.active) {
-                if(viewfinderPage.isCameraActive)
-                    frontCam.start();
+                resumeRecording();
             }
             else {
-                if(viewfinderPage.isCameraRecording) {
-                    stopRecording();
-                    clearRecordingStatus();
-                }
-                frontCam.stop();
+                pauseRecording();
             }
         }
     }

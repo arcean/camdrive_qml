@@ -7,6 +7,7 @@ Item {
     id: master
     width: 660
     height: 4 + title.height + 4 + backButton.height + 4 + backLabel.height + 24
+    property bool collision: false
 
     Rectangle {
         id: rect1
@@ -32,7 +33,7 @@ Item {
     Label {
         id: title
         anchors { top: rect2.top; horizontalCenter: rect2.horizontalCenter; topMargin: 4; }
-        text: "Emergency menu"
+        text: collision ? "Collision detected!" : "Emergency menu"
         font.pixelSize: _LARGE_FONT_SIZE
         color: "red"
         font.bold: true
