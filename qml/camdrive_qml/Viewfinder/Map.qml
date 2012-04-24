@@ -107,7 +107,7 @@ Page {
             size { width: parent.width; height: parent.height }
             center: positionSource.position.coordinate
             mapType: Map.StreetMap
-            zoomLevel: maximumZoomLevel - 1
+            zoomLevel: maximumZoomLevel - 3
 
             //! Icon to display the tapped position
             MapImage {
