@@ -194,13 +194,11 @@ Page {
         active: true
 
         onPositionChanged: {
-            if (!mapPlacer.visible) {
-                locationPage.latitude = position.coordinate.latitude
-                locationPage.longitude = position.coordinate.longitude
-                reverseGeoCode.coordToAddress(position.coordinate.latitude,
-                                              position.coordinate.longitude)
-                updateGeoInfo()
-            }
+            locationPage.latitude = position.coordinate.latitude
+            locationPage.longitude = position.coordinate.longitude
+            reverseGeoCode.coordToAddress(position.coordinate.latitude,
+                                          position.coordinate.longitude)
+            updateGeoInfo()
         }
     }
 

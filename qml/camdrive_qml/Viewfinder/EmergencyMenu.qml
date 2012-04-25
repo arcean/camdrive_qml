@@ -70,7 +70,7 @@ Item {
         source: "../images/sms.png"
         highlightSource: "../images/highlight120.png"
         onClicked: {
-
+            smsDialog.open();
         }
     }
 
@@ -103,6 +103,19 @@ Item {
         color: _TEXT_COLOR
     }
 
+    QueryDialog {
+        id: smsDialog
+        icon: "../images/sms.png"
+        titleText: "Send SMS"
+        message: "Are you sure that you want to send SMS to your friend?"
+
+        acceptButtonText: "Send"
+        rejectButtonText: "Reject"
+
+        onAccepted: {
+
+        }
+    }
 
     QueryDialog {
         id: emergencyCallDialog
@@ -113,5 +126,8 @@ Item {
         acceptButtonText: "Call"
         rejectButtonText: "Reject"
 
+        onAccepted: {
+
+        }
     }
 }

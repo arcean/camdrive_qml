@@ -17,6 +17,7 @@ Page {
     property int videoPartCounter: 0
     property bool isCameraActive: false
     property bool isCameraRecording: false
+    property bool isCameraPaused: false
     property int speed: 0
     property int maxAllowedSpeed: 999
     orientationLock: PageOrientation.LockLandscape
@@ -280,6 +281,7 @@ Page {
         }
         frontCam.stop();
         Gps.stop();
+        viewfinderPage.isCameraPaused = true;
     }
 
     function resumeRecording()
@@ -287,6 +289,7 @@ Page {
         if(viewfinderPage.isCameraActive)
             frontCam.start();
         Gps.start();
+        viewfinderPage.isCameraPaused = false;
     }
 
     Scale {
@@ -600,6 +603,8 @@ Page {
 
         onClicked: {
             closeMenuFunc();
+            if (viewfinderPage.isCameraPaused)
+                resumeRecording();
         }
     }
 
