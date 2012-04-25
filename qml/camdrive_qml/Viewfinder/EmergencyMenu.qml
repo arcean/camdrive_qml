@@ -91,16 +91,27 @@ Item {
         source: "../images/call-emergency.png"
         highlightSource: "../images/highlight120.png"
         onClicked: {
-
+            emergencyCallDialog.open();
         }
     }
 
     Label {
         id: emergencyCallLabel
         anchors { top: emergencyCallButton.bottom; topMargin: 4; horizontalCenter: emergencyCallButton.horizontalCenter; }
-        text: "Call emergency service"
+        text: "Call emergency number"
         font.pixelSize: _SMALL_FONT_SIZE
         color: _TEXT_COLOR
     }
 
+
+    QueryDialog {
+        id: emergencyCallDialog
+        icon: "../images/call-emergency.png"
+        titleText: "Call emergency number"
+        message: "Are you sure that you want to call the emergency number?"
+
+        acceptButtonText: "Call"
+        rejectButtonText: "Reject"
+
+    }
 }
