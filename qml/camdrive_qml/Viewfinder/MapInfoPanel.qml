@@ -38,7 +38,7 @@ Item {
         id: infoRect
 
         height: parent.height; width: parent.width
-        source: "image://theme/meegotouch-applicationpage-background"
+        source: "image://theme/meegotouch-applicationpage-background-inverted"
         state: "close"
         anchors.top: parent.top
         opacity: 0.6
@@ -50,7 +50,7 @@ Item {
             anchors { top: parent.top; topMargin: 16; left: parent.left; leftMargin: 16 }
             text: "Street: "
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
             opacity: 0
         }
 
@@ -64,7 +64,7 @@ Item {
             }
 
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
             opacity: 0
             text: street
         }
@@ -75,14 +75,14 @@ Item {
             anchors { top: parent.top; topMargin: 16; left: parent.left; leftMargin: 16 }
             text: "Coordinate: "
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
         }
 
         Label {
             id: lattextLabel
             anchors { left: latlabel.right; top: parent.top; topMargin: 16; leftMargin: 10 }
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
             text: latitude + (latitude !== "" ? ", " : "")
         }
 
@@ -96,7 +96,7 @@ Item {
             }
 
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
             text: longitude
         }
 
@@ -106,7 +106,7 @@ Item {
             anchors { top: longtextLabel.bottom; topMargin: 5; left: parent.left; leftMargin: 16 }
             text: "Last update time: "
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
         }
 
         Label {
@@ -120,7 +120,7 @@ Item {
 
             text: updateTime
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
         }
 
         //! Displaying positioning method
@@ -129,7 +129,7 @@ Item {
             anchors { left: parent.left; top: timestampLabel.bottom; topMargin:5; leftMargin: 16 }
             text: "Positioning Method: "
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
         }
 
         Label {
@@ -143,7 +143,7 @@ Item {
 
             text: positioningMethod
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
         }
 
         //! Displaying street name
@@ -152,7 +152,7 @@ Item {
             anchors { top: posmethodlabel.bottom; topMargin: 5; left: parent.left; leftMargin: 16 }
             text: "Street: "
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
         }
 
         Label {
@@ -165,7 +165,7 @@ Item {
             }
 
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
             text: street
         }
 
@@ -181,7 +181,7 @@ Item {
 
             text: "Postalcode: "
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
         }
 
         Label {
@@ -194,7 +194,7 @@ Item {
             }
 
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
             text: postal
         }
 
@@ -204,7 +204,7 @@ Item {
             anchors { left: parent.left; top: postCodeLabel.bottom; topMargin: 5; leftMargin: 16 }
             text: "City: "
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
         }
 
         Label {
@@ -217,7 +217,7 @@ Item {
             }
 
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
             text: city
         }
 
@@ -227,7 +227,7 @@ Item {
             anchors { left: parent.left; top: citynameLabel.bottom; topMargin: 5; leftMargin: 16 }
             text: "Country: "
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
         }
 
         Label {
@@ -240,7 +240,7 @@ Item {
             }
 
             font.pixelSize: _STANDARD_FONT_SIZE
-            color: "black"
+            color: _TEXT_COLOR
             text: country
         }
 
@@ -605,12 +605,12 @@ Item {
             bottomMargin: -12
         }
 
-        source: "image://theme/meegotouch-editor-expand-button-background"
+        source: "image://theme/meegotouch-editor-expand-button-inverted-background"
                 + (expandButtonArea.pressed ? "-pressed" : "")
 
         Image {
             id: triangleImg
-            source: "image://theme/icon-s-common-collapse"
+            source: "../images/icon-s-common-expand.png"
             anchors {
                 horizontalCenter: parent.horizontalCenter
                 verticalCenter: parent.verticalCenter
@@ -625,7 +625,7 @@ Item {
                     name: "open"
                     PropertyChanges {
                         target: triangleImg
-                        source:"image://theme/icon-s-common-collapse"
+                        source: "../images/icon-s-common-collapse.png"
                     }
                 },
 
@@ -633,7 +633,7 @@ Item {
                     name: "close"
                     PropertyChanges {
                         target: triangleImg
-                        source:"image://theme/icon-s-common-expand"
+                        source: "../images/icon-s-common-expand.png"
                     }
                 }
             ]

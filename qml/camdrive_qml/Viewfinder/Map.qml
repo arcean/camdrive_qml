@@ -109,21 +109,6 @@ Page {
             mapType: Map.StreetMap
             zoomLevel: maximumZoomLevel - 3
 
-            //! Icon to display the tapped position
-            MapImage {
-                id: mapPlacer
-                source: _ICON_LOCATION + "icon-m-common-location-selected.png"
-                visible: false
-
-                /*!
-                 * We want that bottom middle edge of icon points to the location,
-                 * so using offset parameter to change the on-screen position from coordinate.
-                 * Values are calculated based on icon size, in our case icon is 48x48.
-                 */
-                offset.x: -24
-                offset.y: -48
-            }
-
             MapCircle {
                 id: positionMarker
                 center: positionSource.position.coordinate
@@ -194,17 +179,6 @@ Page {
             onDoubleClicked: {
                 map.center = map.toCoordinate(Qt.point(__lastX,__lastY))
                 if (map.zoomLevel < map.maximumZoomLevel ) map.zoomLevel += 1
-            }
-
-            onPressAndHold: {
-                informationPanel.spinnerRunning = true
-                mapPlacer.coordinate = map.toCoordinate(Qt.point(__lastX,__lastY))
-                mapPlacer.visible = true
-                locationPage.latitude = mapPlacer.coordinate.latitude
-                locationPage.longitude = mapPlacer.coordinate.longitude
-                reverseGeoCode.coordToAddress(mapPlacer.coordinate.latitude,
-                                              mapPlacer.coordinate.longitude)
-                updateGeoInfo()
             }
         }
     }

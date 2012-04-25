@@ -28,9 +28,9 @@ MOBILITY += multimedia sensors location messaging contacts systeminfo
 # enable booster
 CONFIG += qt-boostable qdeclarative-boostable meegotouch
 
-LIBS += -lthumbnailer
-
 INCLUDEPATH += /usr/include/qmsystem2/
+
+LIBS += -lthumbnailer
 LIBS += -lqmsystem2
 
 # The .cpp file which was generated for your project. Feel free to hack it.
