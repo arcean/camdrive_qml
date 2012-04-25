@@ -566,6 +566,7 @@ Page {
                 emergencyButton.startAlarm();
                 emergencyMenu.visible = true;
                 closeMenu.enabled = true;
+                viewfinderPage.pauseRecording();
             }
         }
     }
