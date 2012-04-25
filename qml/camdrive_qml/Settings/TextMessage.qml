@@ -1,6 +1,8 @@
 import QtQuick 1.0
 import com.nokia.meego 1.0
+import Settings 1.0
 import "../Common"
+import "../StyledComponents"
 
 Page {
     id: textMessagePage
@@ -11,10 +13,19 @@ Page {
         ToolIcon { platformIconId: "toolbar-back";
             anchors.left: parent.left
             onClicked: {
+                settingsObject.setContactTextMessage(messageText.text);
                 messageText.closeSoftwareInputPanel();
                 pageStack.pop();
             }
         }
+    }
+
+    Component.onCompleted: {
+        messageText.text = settingsObject.getContactTextMessage();
+    }
+
+    Settings {
+        id: settingsObject
     }
 
     Header {
@@ -44,26 +55,16 @@ Page {
         Rectangle {
             id: messageBox
             anchors.fill: parent
+            color: theme.inverted ? "black" : "white"
 
             //! TextEdit for SMS message
-            TextEdit {
+            TextArea {
                 id: messageText
-                anchors { fill: parent; leftMargin: 10; topMargin: 10}
+                anchors { fill: parent; }
                 font { family: UiConstants.BodyTextFont.family; weight: Font.Light; pixelSize: 26 }
-                cursorVisible: false
                 wrapMode: TextEdit.Wrap
-
-                //! Explicit basic PlaceHolder Implemenatation
-                Text {
-                    id: messageTextPlaceholder
-                    anchors.fill: parent.fill
-                    font { family: UiConstants.BodyTextFont.family; weight: Font.Light; pixelSize: 26 }
-                    color: "#b2b2b4"
-                    visible: messageText.cursorPosition === 0 && !messageText.text &&
-                             messageTextPlaceholder.text && !messageText.inputMethodComposing
-                    opacity: 0.65
-                    text: qsTr("Write your message here\nExample:\nHi!\nI have a car accident.\n$CITY $STREET,\n$LATITUDE $LONGITUDE");
-                }
+                platformStyle: StyledTextArea {}
+                placeholderText: qsTr("Write your message here\nExample:\nHi! I had a car accident.\n#CITY #STREET,\n#LATITUDE #LONGITUDE");
             }
         } //!  end of messageBox Rectangle
 

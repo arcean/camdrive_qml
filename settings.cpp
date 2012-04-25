@@ -436,12 +436,33 @@ void Settings::setEmergencyNumber(const QString &number)
 }
 
 /*!
- * Get emergency number
+ * Get emergency number.
  */
 QString Settings::getEmergencyNumber()
 {
     QSettings settings;
     QString value =  settings.value("contacts/emergencyNumber", "112").toString();
+
+    return value;
+}
+
+/*!
+ * Set text message.
+ */
+void Settings::setContactTextMessage(const QString &message)
+{
+    QSettings settings;
+
+    settings.setValue("contacts/contactTextMessage", message);
+}
+
+/*!
+ * Get text message.
+ */
+QString Settings::getContactTextMessage()
+{
+    QSettings settings;
+    QString value =  settings.value("contacts/contactTextMessage", "").toString();
 
     return value;
 }

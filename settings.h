@@ -63,6 +63,8 @@ public slots:
     bool getEmergencyNumberEnabled();
     void setEmergencyNumber(const QString &number);
     QString getEmergencyNumber();
+    void setContactTextMessage(const QString &message);
+    QString getContactTextMessage();
 
 };
 
