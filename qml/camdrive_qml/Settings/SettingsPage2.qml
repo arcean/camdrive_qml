@@ -73,8 +73,6 @@ Page {
                         onClicked: appWindow.pageStack.push(Qt.resolvedUrl(fileName))
                     }
                 }
-
-
         }
     }
 

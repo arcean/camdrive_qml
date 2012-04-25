@@ -146,10 +146,33 @@ Page {
             y: contactsLabel.y + contactsLabel.height
         }
 
+        Column {
+            id: messageContact
+            anchors { left: parent.left; right: parent.right }
+            y: contacts.y + contacts.height
+            height: 80
+
+            Repeater {
+                id: repeater
+                model: ListModel {
+                    id: settingsModel
+
+                    ListElement { name: QT_TR_NOOP("Set text message"); fileName: "TextMessage.qml" }
+                }
+
+                DrillDownDelegate {
+                    id: delegate
+                    width: messageContact.width
+                    title: name
+                    onClicked: appWindow.pageStack.push(Qt.resolvedUrl(fileName))
+                }
+            }
+        }
+
         Label {
             id: emergencyLabel
             anchors.left: parent.left
-            y: contacts.y + contacts.height + 10
+            y: messageContact.y + messageContact.height + 20
             text: "Emergency number"
         }
         Switch {

@@ -271,6 +271,8 @@ Page {
         closeMenu.enabled = false;
         viewfinderMenu.visible = false;
         emergencyMenu.visible = false;
+        if (viewfinderPage.isCameraPaused)
+            resumeRecording();
     }
 
     function pauseRecording()
@@ -604,8 +606,6 @@ Page {
 
         onClicked: {
             closeMenuFunc();
-            if (viewfinderPage.isCameraPaused)
-                resumeRecording();
         }
     }
 
