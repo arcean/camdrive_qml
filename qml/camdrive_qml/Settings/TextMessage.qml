@@ -13,7 +13,12 @@ Page {
         ToolIcon { platformIconId: "toolbar-back";
             anchors.left: parent.left
             onClicked: {
-                settingsObject.setContactTextMessage(messageText.text);
+                var message = messageText.text;
+
+                if (message == "")
+                    message = "Hi! I had a car accident.\n#CITY #STREET,\n#LATITUDE #LONGITUDE";
+
+                settingsObject.setContactTextMessage(message);
                 messageText.closeSoftwareInputPanel();
                 pageStack.pop();
             }

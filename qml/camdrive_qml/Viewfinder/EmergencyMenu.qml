@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 import Settings 1.0
 import Telephony 1.0
+import QtMobility.systeminfo 1.2
 import "../Common"
 
 Item {
@@ -10,6 +11,10 @@ Item {
     width: 660
     height: 4 + title.height + 4 + backButton.height + 4 + backLabel.height + 24
     property bool collision: false
+
+    property bool qMessageServieInstance: false
+    //! Variable to check for sim status.
+    property alias simPresent: deviceInfo.simStatus
 
     Rectangle {
         id: rect1
@@ -113,6 +118,10 @@ Item {
         id: telephony
     }
 
+    DeviceInfo {
+        id: deviceInfo
+    }
+
     QueryDialog {
         id: smsDialog
         icon: "../images/sms.png"
@@ -123,7 +132,10 @@ Item {
         rejectButtonText: "Reject"
 
         onAccepted: {
-
+            if (settingsObject.getEmergencyContactNameEnabled())
+                sendButtonClicked();
+            else
+                messageHandler.showMessage(qsTr("Feature disabled. Please check Settings."));
         }
     }
 
@@ -143,4 +155,87 @@ Item {
                 messageHandler.showMessage(qsTr("Feature disabled. Please check Settings."));
         }
     }
+
+    //! Function for Telephony module
+
+    //! Function to validate if the phone number contains any strings
+    function phoneNumberValidator(phoneNumber)
+    {
+        // check for invalid charaters in phone number
+        if ((/[a-zA-Z#*]/.test(phoneNumber) === true))
+            return false;
+
+        //! Check for valid usage of + in phone number
+        if (/[+]/.test(phoneNumber) === true) {
+            //! Check if + is only preceeding the number
+            if (phoneNumber[0] === "+")
+                phoneNumber = phoneNumber.replace("+","0")
+
+            // Check for any unwated + in phone number
+            if (/[+]/.test(phoneNumber) === true)
+                return false;
+        }
+
+        //! Phone number is valid
+        return true;
+    }
+
+    //! Function sendSms, which internally calls QT member function.
+    function sendSMS(number)
+    {
+        //! Initialize message service if sim is present.
+        if (simPresent) {
+            //! Initialize message service if not already active.
+            if (qMessageServieInstance === false) {
+                telephony.initialiseMessageService();
+                qMessageServieInstance = true;
+            }
+        //! Send SMS message.
+            var ret = telephony.sendSMS(number, "dd\nprobe");
+
+            if (ret)
+                messageHandler.showMessage(qsTr("Message was sent successfully"));
+            else
+                messageHandler.showMessage(qsTr("Message was not sent"));
+
+        } else {
+            //! If no SIM then display a error message.
+            messageHandler.showMessage(qsTr("No Active Sim"));
+        }
+    }
+
+    function sendButtonClicked()
+    {
+        var phoneNumber = settingsObject.getEmergencyContactNumber();
+        var message = settingsObject.getContactTextMessage();
+        var contactName = settingsObject.getEmergencyContactName();
+
+        if (phoneNumber.length === 0 && contactName.length > 0) {
+            //! Phone number typed directly in SelectContact Item.
+            phoneNumber = contactName;
+        }
+
+        //! Check if Flight mode is on
+        if (telephony.deviceMode === "Flight mode") {
+            messageHandler.showMessage(qsTr("No mobile network available"));
+        }
+        //! Check for valid contact and message text present.
+        else if (phoneNumber.length === 0) {
+            //! checking if phone number is defined.
+            messageHandler.showMessage(qsTr("No phone number defined"));
+        } else if (message.length === 0) {
+            //! checking for either message text is defined.
+            messageHandler.showMessage(qsTr("No message defined"));
+        }
+        //! Validate manually entered phone number to check if any invalid characters are present
+        //! using phoneNumberValidator.
+        else if (phoneNumber === ""
+                 && phoneNumberValidator(phoneNumber) === false) {
+            messageHandler.showMessage(qsTr("Invalid phone number"));
+        } else {
+            //! Send SMS based on the phone number of the selected contact.
+            sendSMS(phoneNumber);
+        }
+    }
+
 }
