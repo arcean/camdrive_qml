@@ -16,6 +16,8 @@ class Database : public QObject
 public:
     explicit Database(QObject *parent = 0);
 
+    int getVideoInfoSpecialCode(const QString &videoName, int videoId);
+
 signals:
 
 public slots:
@@ -34,7 +36,6 @@ public slots:
     float getVideoInfoAccelX(const QString &videoName, int videoId);
     float getVideoInfoAccelY(const QString &videoName, int videoId);
     float getVideoInfoAccelZ(const QString &videoName, int videoId);
-    int getVideoInfoSpecialCode(const QString &videoName, int videoId);
     int getVideoInfoSpeed(const QString &videoName, int videoId);
     int getVideoStoredEach(const QString &videoName);
     bool removeVideoFromMain(const QString &videoName);

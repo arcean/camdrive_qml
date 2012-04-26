@@ -49,14 +49,16 @@ Page {
         videoInfoIterator = 1;
         var latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator);
         var longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator);
+        var specialCode = DatabaseHelper.getVideoInfoSpecialCodeQML(videoPlayer.source, videoInfoIterator);
 
         setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, videoInfoIterator));
         setLatitude(latitude);
         setLongitude(longitude);
+        setCollision(specialCode);
         reverseGeoCode.coordToAddress(latitude, longitude);
 
         videoInfoIterator++;
-        videoInfoTimer.restart();
+//        videoInfoTimer.start();
     }
 
     function startPlayback() {
@@ -152,6 +154,40 @@ Page {
 
         ourCoord.latitude = value;
         latitudeLabel.text = "Latitude: " + value.toFixed(2) + loc;
+    }
+
+    function setCollision(alarmFlag)
+    {
+        var text;
+        var flagText;
+
+        if (alarmFlag > 0 && alarmFlag < 10)
+            text = "Collision side: ";
+        else if (alarmFlag > 10)
+            text = "Probable collision side: ";
+
+        if (alarmFlag > 9)
+            alarmFlag -= 10;
+
+        if (alarmFlag === 1)
+            flagText = "front";
+        else if (alarmFlag === 2)
+            flagText = "left";
+        else if (alarmFlag === 3)
+            flagText = "right";
+        else if (alarmFlag === 4)
+            flagText = "rear";
+        else {
+            flagText = "";
+            console.log('Warning: unsupported alarmFlag.');
+        }
+
+        if (flagText.length > 0) {
+            collisionLabel.text = text + flagText;
+            collisionLabel.visible = true;
+        }
+        else
+            collisionLabel.visible = false;
     }
 
     Keys.onPressed: {
@@ -358,9 +394,11 @@ Page {
             if (!videoPlayer.setToPaused) {
                 var latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator);
                 var longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator);
+                var specialCode = DatabaseHelper.getVideoInfoSpecialCodeQML(videoPlayer.source, videoInfoIterator);
                 setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, videoInfoIterator));
                 setLatitude(latitude);
                 setLongitude(longitude);
+                setCollision(specialCode);
                 reverseGeoCode.coordToAddress(latitude, longitude);
                 videoInfoIterator++;
             }
@@ -393,6 +431,17 @@ Page {
         paused: ((platformWindow.viewMode == WindowState.Thumbnail) && ((videoPlayer.playing)) || ((appWindow.pageStack.currentPage != videoPlaybackPage) && (videoPlayer.playing)) || (videoPlayer.setToPaused))
         onError: {
         }
+
+        onPlayingChanged: {
+            if (videoPlayer.playing)
+                videoInfoTimer.start();
+        }
+
+        onSetToPausedChanged: {
+            if (!videoPlayer.setToPaused)
+                videoInfoTimer.start();
+        }
+
         onStatusChanged: {
             if (videoPlayer.status == Video.EndOfMedia) {
                 //video.metaData.playCount++;
@@ -618,6 +667,13 @@ Page {
                             id: latitudeLabel
                             color: _TEXT_COLOR
                             text: "Latitude: n/a"
+                        }
+
+                        Label {
+                            id: collisionLabel
+                            visible: false
+                            color: _ACTIVE_COLOR_TEXT
+                            text: ""
                         }
                     }
                 }

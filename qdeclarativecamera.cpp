@@ -16,7 +16,7 @@ QDeclarativeCamera::QDeclarativeCamera(QDeclarativeItem *parent) :
     gps = new Gps();
 
     connect (gps, SIGNAL(updated()), this, SLOT(gpsUpdatedSlot()));
-    connect (accelerometer, SIGNAL(alarm(int)), this, SLOT(connectAccelerometerSlot(int)));
+    connect (accelerometer, SIGNAL(alarm(int,int)), this, SLOT(connectAccelerometerSlot(int,int)));
 
     toggleCamera();
     gps->start();
@@ -37,9 +37,10 @@ QDeclarativeCamera::~QDeclarativeCamera()
  */
 }
 
-void QDeclarativeCamera::connectAccelerometerSlot(int alarmLevel)
+void QDeclarativeCamera::connectAccelerometerSlot(int alarmLevel, int collisionSide)
 {
-    emit alarm(alarmLevel);
+    this->alarmFlag = collisionSide;
+    emit alarm(alarmLevel, collisionSide);
 }
 
 void QDeclarativeCamera::gpsUpdatedSlot()
@@ -132,6 +133,8 @@ void QDeclarativeCamera::startRecording(bool ignoreCurrentVideoCounter)
 
     Db->openDatabase();
     Db->createTables();
+    //! Reset collision side flag.
+    alarmFlag = 0;
     accelerometer->start();
 
     /* Increase counter, used to replace old video files. */
@@ -346,9 +349,9 @@ void QDeclarativeCamera::storeData()
     QString videoName = "";
     getCurrentVideoName(videoName);
 
-    /* Take care of specialCode, currently '0'. */
+    /* Take care of specialCode, currently alarmFlag. */
     Db->addNewVideoInfo(videoName, gps->getLatitude(), gps->getLongitude(), gps->getSpeed(),
-                        accelerometer->getX(), accelerometer->getY(), accelerometer->getZ(), 0);
+                        accelerometer->getX(), accelerometer->getY(), accelerometer->getZ(), this->alarmFlag);
 }
 
 /* Create entry for new video file. */

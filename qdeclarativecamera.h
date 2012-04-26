@@ -37,7 +37,7 @@ signals:
     void videoPartNumberChanged(int videoPartNumber);
     void createVideoDetailsTable(const QString &name);
     void gpsUpdated();
-    void alarm(int alarmLevel);
+    void alarm(int alarmLevel, int collisionSide);
 
 public slots:
     void viewfinderSizeChanged(const QSizeF& size);
@@ -65,7 +65,7 @@ protected slots:
 private slots:
     void storeData();
     void gpsUpdatedSlot();
-    void connectAccelerometerSlot(int alarmLevel);
+    void connectAccelerometerSlot(int alarmLevel, int collisionSide);
 
 private:
     void getCurrentVideoName(QString& videoName);
@@ -90,6 +90,7 @@ private:
     Database *Db;
     Accelerometer *accelerometer;
     Gps *gps;
+    int alarmFlag;
 };
 
 #endif // QDeclarativeCamera_H

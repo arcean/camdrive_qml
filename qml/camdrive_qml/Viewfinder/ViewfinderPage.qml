@@ -344,7 +344,7 @@ Page {
         //! Accelerometer alarm signal
         onAlarm: {
             //! Check if it's not an emergency alarm
-            if (alarmLevel === 1) {
+            if (alarmLevel > 1) {
                 openEmergencyMenu();
                 emergencyButton.startAlarm();
             }

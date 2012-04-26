@@ -12,6 +12,12 @@
 #define MIN_G_TRESHOLD 9.6
 #define MAX_G_TRESHOLD 10.5
 
+//! Collision name, alarmLevel
+#define COLL_FRONT 1
+#define COLL_LEFT 2
+#define COLL_RIGHT 3
+#define COLL_REAR 4
+
 QTM_USE_NAMESPACE
 
 class Accelerometer : public QObject
@@ -22,7 +28,7 @@ public:
 
 signals:
     void newReading();
-    void alarm(int alarmLevel);
+    void alarm(int alarmLevel, int collisionSide);
 
 public slots:
     void start();
@@ -44,9 +50,11 @@ private:
     int phase1_checkG(bool checkMinTreshold);
     bool check22G(qreal value);
     int phase1_check22G();
+    void setCollisionSide();
 
     QAccelerometer *accelerometer;
     int min_treshold;
+    int alarmFlag;
 
 };
 

@@ -45,19 +45,34 @@ void Accelerometer::parseReading()
     if (result_phase1G > 0) {
         //TODO: Alarm
         qDebug() << "result_phase1G triggered:" << "ALARM";
-        emit alarm(0);
+        setCollisionSide();
+        //! It's PROBABLY ALARM, let's add 10 to alarmFlag
+        if (alarmFlag < 10)
+            alarmFlag += 10;
+        qDebug() << "ALARMflag:" << alarmFlag;
+
+        emit alarm(0, alarmFlag);
     }
     // Check if there's one G, and the other > min_treshold -> ALARM
     else if (result_phase2G > 0 && result_phase2MinTreshold > 1 && result_phase22G == 0) {
         //TODO: Alarm
         qDebug() << "result_phase2G and result_phase2MinTreshold triggered:" << "ALARM";
-        emit alarm(0);
+        setCollisionSide();
+        //! It's PROBABLY ALARM, let's add 10 to alarmFlag
+        if (alarmFlag < 10)
+            alarmFlag += 10;
+        qDebug() << "ALARMflag:" << alarmFlag;
+
+        emit alarm(0, alarmFlag);
     }
     // If there's one > 22G (max hw value) -> EMERGENCY_ALARM
     else if (result_phase22G > 0){
         //TODO: Alarm, Emergency alarm
         qDebug() << "Emergency 22G ALARM";
-        emit alarm(1);
+        setCollisionSide();
+        qDebug() << "ALARMflag:" << alarmFlag;
+
+        emit alarm(1, alarmFlag);
     }
     else {
         //Do nothing
@@ -66,18 +81,41 @@ void Accelerometer::parseReading()
 
 }
 
+void Accelerometer::setCollisionSide()
+{
+    qreal y = accelerometer->reading()->y();
+    qreal z = accelerometer->reading()->z();
+
+    if (abs(y) > abs(z)) {
+        //! Side collision
+
+        //! Left side
+        if (y > 0)
+            alarmFlag = COLL_LEFT;
+        //! Right side
+        else if (y < 0)
+            alarmFlag = COLL_RIGHT;
+    }
+    else if (abs(y) < abs(z)) {
+
+        //! Front
+        if (y > 0)
+            alarmFlag = COLL_FRONT;
+        //! Rear
+        else if (y < 0)
+            alarmFlag = COLL_REAR;
+    }
+}
+
 int Accelerometer::phase1_check22G()
 {
-    qreal x = accelerometer->reading()->x();
-    //qreal y = accelerometer->reading()->y();
+    qreal y = accelerometer->reading()->y();
     qreal z = accelerometer->reading()->z();
 
     int counter = 0;
 
-    if (check22G(x))
+    if (check22G(y))
         counter++;
-    //if (check22G(y))
-    //    counter++;
     if (check22G(z))
         counter++;
 
@@ -86,16 +124,13 @@ int Accelerometer::phase1_check22G()
 
 int Accelerometer::phase1_checkMinTreshold()
 {
-    qreal x = accelerometer->reading()->x();
-    //qreal y = accelerometer->reading()->y();
+    qreal y = accelerometer->reading()->y();
     qreal z = accelerometer->reading()->z();
 
     int counter = 0;
 
-    if (checkMinTreshold(x))
+    if (checkMinTreshold(y))
         counter++;
-  //  if (checkMinTreshold(y))
-   //     counter++;
     if (checkMinTreshold(z))
         counter++;
 
@@ -104,17 +139,11 @@ int Accelerometer::phase1_checkMinTreshold()
 
 int Accelerometer::phase1_checkG(bool checkMinTreshold)
 {
-    qreal x = accelerometer->reading()->x();
     qreal y = accelerometer->reading()->y();
     qreal z = accelerometer->reading()->z();
     int counter = 0;
 
     if (checkMinTreshold) {
-        if (x >= 0)
-            x -= min_treshold;
-        else
-            x += min_treshold;
-
         if (y >= 0)
             y -= min_treshold;
         else
@@ -126,10 +155,8 @@ int Accelerometer::phase1_checkG(bool checkMinTreshold)
             z += min_treshold;
     }
 
-    if (isGTreshold(x))
+    if (isGTreshold(y))
         counter++;
-  //  if (isGTreshold(y))
-  //      counter++;
     if (isGTreshold(z))
         counter++;
 
@@ -216,6 +243,7 @@ float Accelerometer::getZ()
 
 void Accelerometer::start()
 {
+    alarmFlag = 0;
     accelerometer->start();
 }
 
