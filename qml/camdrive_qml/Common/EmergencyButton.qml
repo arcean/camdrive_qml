@@ -5,9 +5,10 @@ Item {
     id: master
     width: 80
     height: 80
+    visible: false
 
     property int length: 700;
-    property int maxCounter: 9;
+    property int maxCounter: 15;
     property int counter: 0;
 
     Image {
@@ -58,6 +59,7 @@ Item {
                 if (master.counter >= master.maxCounter) {
                     master.counter = 0;
                     rect.state = "normal";
+                    master.visible = false;
                     return;
                 }
 
@@ -80,6 +82,7 @@ Item {
     }
 
     function startAlarm() {
+        master.visible = true;
         animationTimer.start();
         rect.state = "activated";
     }

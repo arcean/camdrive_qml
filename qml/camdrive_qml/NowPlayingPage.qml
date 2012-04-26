@@ -123,12 +123,12 @@ Page {
     /* Sets longitudeLabel's text and position on the map. */
     function setLongitude(value)
     {
-        if (value == 0)
+        if (value === 0)
             return;
 
         var loc;
 
-        if (value > 0)
+        if (value >= 0)
             loc = " E";
         else
             loc = " W";
@@ -140,12 +140,12 @@ Page {
     /* Sets latitudeLabel's text and position on the map. */
     function setLatitude(value)
     {
-        if (value == 0)
+        if (value === 0)
             return;
 
         var loc;
 
-        if (value > 0)
+        if (value >= 0)
             loc = " N";
         else
             loc = " S";

@@ -16,6 +16,7 @@ QDeclarativeCamera::QDeclarativeCamera(QDeclarativeItem *parent) :
     gps = new Gps();
 
     connect (gps, SIGNAL(updated()), this, SLOT(gpsUpdatedSlot()));
+    connect (accelerometer, SIGNAL(alarm(int)), this, SLOT(connectAccelerometerSlot(int)));
 
     toggleCamera();
     gps->start();
@@ -34,6 +35,11 @@ QDeclarativeCamera::~QDeclarativeCamera()
         //delete camera_;
     }
  */
+}
+
+void QDeclarativeCamera::connectAccelerometerSlot(int alarmLevel)
+{
+    emit alarm(alarmLevel);
 }
 
 void QDeclarativeCamera::gpsUpdatedSlot()

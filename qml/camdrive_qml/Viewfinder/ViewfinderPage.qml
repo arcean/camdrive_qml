@@ -34,8 +34,9 @@ Page {
     function firstTimeFunction() {
         maxAllowedSpeed = settingsObject.getMaxAllowedSpeed();
         viewfinderPage.clearRecordingStatus();
-        viewfinderPage.wakeCamera();
         screenSaver.screenSaverInhibited = true;
+        viewfinderPage.wakeCamera();
+        Gps.start();
     }
 
     Compass {
@@ -52,7 +53,7 @@ Page {
 
     RotationSensor {
         id: rotation
-        active: true
+        active: false
 
         onReadingChanged: {
             compassUI.rotationX = reading.x;
@@ -63,7 +64,7 @@ Page {
 
     OrientationSensor {
         id: orientation
-        active: true
+        active: false
 
         onReadingChanged: {
             compassUI.isFaceUp = (reading.orientation === OrientationReading.FaceUp);
@@ -174,21 +175,7 @@ Page {
         else
             textCompass.text = "E"
     }
-/*
-    PositionSource {
-        id: positionSource
-        updateInterval: 1000
-        active: true
-        onPositionChanged: {
-            speed = positionSource.position.speed * 3.6;
 
-            if (speed < 4)
-                speed = 0;
-
-            setSpeed(speed);
-        }
-    }
-*/
     function updateCounter(duration)
     {
         var add = duration;
@@ -216,7 +203,7 @@ Page {
         else
             unit = " mph";
 
-        textSpeedInfo.text = speed + unit;
+        textSpeedInfo.text = Math.ceil(speed) + unit;
     }
 
     function wakeCamera()
@@ -237,15 +224,14 @@ Page {
     {
         viewfinderPage.isCameraRecording = true;
         frontCam.startRecording(false);
-        //storeDataTimer.running = true;
     }
 
     function stopRecording()
     {
         viewfinderPage.isCameraRecording = false;
         frontCam.stopRecording();
+        Gps.stop();
         viewfinderPage.videoPartCounter = 0;
-        //storeDataTimer.running = false;
     }
 
     function checkMaxAllowedSpeed(speed)
@@ -282,7 +268,6 @@ Page {
             clearRecordingStatus();
         }
         frontCam.stop();
-        Gps.stop();
         viewfinderPage.isCameraPaused = true;
     }
 
@@ -290,8 +275,14 @@ Page {
     {
         if(viewfinderPage.isCameraActive)
             frontCam.start();
-        Gps.start();
         viewfinderPage.isCameraPaused = false;
+    }
+
+    function openEmergencyMenu()
+    {
+        emergencyMenu.visible = true;
+        closeMenu.enabled = true;
+        viewfinderPage.pauseRecording();
     }
 
     Scale {
@@ -349,6 +340,16 @@ Page {
 
             setSpeed(speed);
             checkMaxAllowedSpeed(speed);
+        }
+        //! Accelerometer alarm signal
+        onAlarm: {
+            //! Check if it's not an emergency alarm
+            if (alarmLevel === 1) {
+                openEmergencyMenu();
+                emergencyButton.startAlarm();
+            }
+            else
+                emergencyButton.startAlarm();
         }
 
     //    onCreateVideoDetailsTable: {
@@ -478,6 +479,8 @@ Page {
         MouseArea {
             anchors.fill: parent
             onClicked: {
+                rotation.active = !rotation.active;
+                orientation.active = !orientation.active;
                 compassUI.enabled = !compassUI.enabled;
                 compassUI.visible = !compassUI.visible;
             }
@@ -564,19 +567,8 @@ Page {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                console.log("Emergency call clicked")
-                emergencyButton.startAlarm();
-                emergencyMenu.visible = true;
-                closeMenu.enabled = true;
-                viewfinderPage.pauseRecording();
+                openEmergencyMenu();
             }
-        }
-    }
-
-    Connections {
-        target: AccelDevice
-        onAlarm: {
-            emergencyButton.startAlarm();
         }
     }
 

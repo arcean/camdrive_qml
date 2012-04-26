@@ -37,6 +37,7 @@ signals:
     void videoPartNumberChanged(int videoPartNumber);
     void createVideoDetailsTable(const QString &name);
     void gpsUpdated();
+    void alarm(int alarmLevel);
 
 public slots:
     void viewfinderSizeChanged(const QSizeF& size);
@@ -64,6 +65,7 @@ protected slots:
 private slots:
     void storeData();
     void gpsUpdatedSlot();
+    void connectAccelerometerSlot(int alarmLevel);
 
 private:
     void getCurrentVideoName(QString& videoName);

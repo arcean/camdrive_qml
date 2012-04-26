@@ -41,7 +41,7 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     context->setContextProperty("DatabaseHelper", &databaseHelper);
     context->setContextProperty("Database", &database);
     context->setContextProperty("Thumbnails", &thumbnails);
-    context->setContextProperty("AccelDevice", &accelerometer);
+   // context->setContextProperty("AccelDevice", &accelerometer);
     context->setContextProperty("Gps", &gps);
 
     view->setSource(QUrl::fromLocalFile("/opt/camdrive_qml/qml/camdrive_qml/main.qml"));

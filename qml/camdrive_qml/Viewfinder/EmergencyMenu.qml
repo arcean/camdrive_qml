@@ -3,6 +3,7 @@ import QtQuick 1.1
 import com.nokia.meego 1.0
 import Settings 1.0
 import Telephony 1.0
+import GeoCoder 1.0
 import QtMobility.systeminfo 1.2
 import "../Common"
 
@@ -118,6 +119,13 @@ Item {
         id: telephony
     }
 
+    GeoCoder {
+        id:reverseGeoCode
+
+        //! When reverse geocoding info received, update street address in information panel
+        onReverseGeocodeInfoRetrieved: sendInvoked(streetadd, cityname)
+    }
+
     DeviceInfo {
         id: deviceInfo
     }
@@ -133,7 +141,7 @@ Item {
 
         onAccepted: {
             if (settingsObject.getEmergencyContactNameEnabled())
-                sendButtonClicked();
+                reverseGeoCode.coordToAddress(Gps.getLatitude(), Gps.getLongitude());
             else
                 messageHandler.showMessage(qsTr("Feature disabled. Please check Settings."));
         }
@@ -180,8 +188,7 @@ Item {
         return true;
     }
 
-    //! Function sendSms, which internally calls QT member function.
-    function sendSMS(number)
+    function sendSMS(number, message)
     {
         //! Initialize message service if sim is present.
         if (simPresent) {
@@ -191,7 +198,7 @@ Item {
                 qMessageServieInstance = true;
             }
         //! Send SMS message.
-            var ret = telephony.sendSMS(number, "dd\nprobe");
+            var ret = telephony.sendSMS(number, message);
 
             if (ret)
                 messageHandler.showMessage(qsTr("Message was sent successfully"));
@@ -204,11 +211,14 @@ Item {
         }
     }
 
-    function sendButtonClicked()
+    function sendInvoked(streetadd, cityname)
     {
         var phoneNumber = settingsObject.getEmergencyContactNumber();
         var message = settingsObject.getContactTextMessage();
         var contactName = settingsObject.getEmergencyContactName();
+
+        //! Parse message and prepare to send
+        message = Utils.replaceIdsInTextMessage(message, cityname, streetadd, Gps.getLatitude(), Gps.getLongitude());
 
         if (phoneNumber.length === 0 && contactName.length > 0) {
             //! Phone number typed directly in SelectContact Item.
@@ -234,7 +244,7 @@ Item {
             messageHandler.showMessage(qsTr("Invalid phone number"));
         } else {
             //! Send SMS based on the phone number of the selected contact.
-            sendSMS(phoneNumber);
+            sendSMS(phoneNumber, message);
         }
     }
 

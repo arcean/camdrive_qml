@@ -16,7 +16,7 @@ Page {
                 var message = messageText.text;
 
                 if (message == "")
-                    message = "Hi! I had a car accident.\n#CITY #STREET,\n#LATITUDE #LONGITUDE";
+                    message = "Hi! I had a car accident.\n#CITY, #STREET,\nMy coordinates:\n#LATITUDE #LONGITUDE";
 
                 settingsObject.setContactTextMessage(message);
                 messageText.closeSoftwareInputPanel();
@@ -69,7 +69,7 @@ Page {
                 font { family: UiConstants.BodyTextFont.family; weight: Font.Light; pixelSize: 26 }
                 wrapMode: TextEdit.Wrap
                 platformStyle: StyledTextArea {}
-                placeholderText: qsTr("Write your message here\nExample:\nHi! I had a car accident.\n#CITY #STREET,\n#LATITUDE #LONGITUDE");
+                placeholderText: qsTr("Write your message here\nExample:\nHi! I had a car accident.\n#CITY, #STREET,\nMy coordinates:\n#LATITUDE #LONGITUDE");
             }
         } //!  end of messageBox Rectangle
 

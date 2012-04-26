@@ -62,8 +62,8 @@ Page {
      * It is called every time when a position update has been received from the location source.
      */
     function updateGeoInfo() {
-        informationPanel.latitude = locationPage.latitude
-        informationPanel.longitude = locationPage.longitude
+        informationPanel.latitude = Utils.convertLatitudeToGui(locationPage.latitude);
+        informationPanel.longitude = Utils.convertLongitudeToGui(locationPage.longitude);
         informationPanel.updateTime =
                 Qt.formatDateTime(positionSource.position.timestamp, "yyyy-MM-dd hh:mm:ss")
         informationPanel.positioningMethod =

@@ -9,9 +9,12 @@ class Utils : public QObject {
 
 public:
     explicit Utils(QObject *parent = 0);
+    Q_INVOKABLE QString replaceIdsInTextMessage(QString message, QString city, QString street, double latitude, double longitude);
+    Q_INVOKABLE void deleteVideo(const QString &path);
+    Q_INVOKABLE QString convertLatitudeToGui(double latitude);
+    Q_INVOKABLE QString convertLongitudeToGui(double longitude);
 
 public slots:
-    void deleteVideo(const QString &path);
 
 signals:
     void information(const QString &message);

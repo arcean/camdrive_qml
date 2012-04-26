@@ -68,7 +68,7 @@ Item {
                 id: durationText
                 anchors.centerIn: durationLabel
                 font.pixelSize: 14
-                color: resumePosition === 0 ? "white" : Settings.activeColor
+                color: _TEXT_COLOR
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 smooth: true
@@ -79,7 +79,7 @@ Item {
 
     Marquee {
         anchors { bottom: parent.bottom; left: parent.left; right: parent.right; margins: 10 }
-        text: fileName.slice(0, fileName.lastIndexOf("."))
+        text: Qt.formatDateTime(lastModified)
         enableScrolling: useMarqueeText
     }
 

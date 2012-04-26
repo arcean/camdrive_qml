@@ -462,7 +462,7 @@ void Settings::setContactTextMessage(const QString &message)
 QString Settings::getContactTextMessage()
 {
     QSettings settings;
-    QString value =  settings.value("contacts/contactTextMessage", "Hi! I had a car accident.\n#CITY #STREET,\n#LATITUDE #LONGITUDE").toString();
+    QString value =  settings.value("contacts/contactTextMessage", "Hi! I had a car accident.\n#CITY, #STREET,\nMy coordinates:\n#LATITUDE #LONGITUDE").toString();
 
     return value;
 }
