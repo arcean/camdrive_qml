@@ -1,6 +1,8 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
 import QtQuick 1.1
 import com.nokia.meego 1.0
+import Settings 1.0
+import Telephony 1.0
 import "../Common"
 
 Item {
@@ -103,6 +105,14 @@ Item {
         color: _TEXT_COLOR
     }
 
+    Settings {
+        id: settingsObject
+    }
+
+    Telephony {
+        id: telephony
+    }
+
     QueryDialog {
         id: smsDialog
         icon: "../images/sms.png"
@@ -127,7 +137,10 @@ Item {
         rejectButtonText: "Reject"
 
         onAccepted: {
-
+            if (settingsObject.getEmergencyNumberEnabled())
+                telephony.call(settingsObject.getEmergencyNumber());
+            else
+                messageHandler.showMessage(qsTr("Feature disabled. Please check Settings."));
         }
     }
 }
