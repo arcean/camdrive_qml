@@ -71,6 +71,17 @@ int Database::countsIds()
     return result;
 }
 
+int Database::countsVideoIds(const QString &videoName)
+{
+    QSqlQuery query;
+
+    query.exec(QString("SELECT COUNT(videoId) FROM '%1'").arg(videoName));
+    query.next();
+    int result = query.value(0).toInt();
+
+    return result;
+}
+
 int Database::getNumberOfVideoParts(const QString &videoName)
 {
     QSqlQuery query;

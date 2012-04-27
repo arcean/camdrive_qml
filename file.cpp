@@ -56,6 +56,10 @@ void File::deleteTheOldestFiles()
     index = fileList.length() - 1;
     if (index > 0) {
         QFile::remove(fileList.at(fileList.length()-1).absoluteFilePath());
+        QString textFile = fileList.at(fileList.length()-1).absoluteFilePath();
+        textFile.chop(4);
+        textFile.append(".srt");
+        QFile::remove(textFile);
         DbH->removeVideoQML(fileList.at(fileList.length()-1).absoluteFilePath());
         if (DbH->isFileNameFreeQML(fileList.at(fileList.length()-1).absoluteFilePath())) {
             DbH->removeVideoFromMainQML(fileList.at(fileList.length()-1).absoluteFilePath());
@@ -67,6 +71,10 @@ void File::deleteTheOldestFiles()
     if (index > 0) {
         if (fileList.at(fileList.length()-2).absoluteFilePath().contains("part_2.mp4")) {
             QFile::remove(fileList.at(fileList.length()-2).absoluteFilePath());
+            QString textFile = fileList.at(fileList.length()-2).absoluteFilePath();
+            textFile.chop(4);
+            textFile.append(".srt");
+            QFile::remove(textFile);
             DbH->removeVideoQML(fileList.at(fileList.length()-2).absoluteFilePath());
             if (DbH->isFileNameFreeQML(fileList.at(fileList.length()-2).absoluteFilePath())) {
                 DbH->removeVideoFromMainQML(fileList.at(fileList.length()-2).absoluteFilePath());

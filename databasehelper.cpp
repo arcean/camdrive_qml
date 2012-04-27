@@ -1,4 +1,6 @@
+#include <QFile>
 #include "databasehelper.h"
+#include "file.h"
 
 DatabaseHelper::DatabaseHelper(QObject *parent) :
     QObject(parent) {
@@ -161,4 +163,134 @@ bool DatabaseHelper::isFileNameFreeQML(const QString &fileName)
     }
 
     return false;
+}
+
+/*!
+ * Convert x to 0x, where x >= 0 and x < 10.
+ */
+QString DatabaseHelper::getNumber00(int value)
+{
+    QString result = QString::number(value);
+
+    if (value >= 0 && value < 10)
+        result = "0" + result;
+
+    return result;
+}
+
+/*!
+ * Create subtitles for selected video.
+ * (SRT format).
+ */
+void DatabaseHelper::createSubtitles(const QString &videoName, bool velocityUnit)
+{
+    QString pass = removePrefixPath(videoName);
+    QString data = removePostfix(videoName);
+    data = removePrefixPath(data);
+
+    //! Number of subtitles to be created
+    int numOfSub = Db->countsVideoIds(data);
+    int storeVideoEach = getVideoStoredEachQML(pass);
+    QFile file(QString(APP_DIR APP_NAME "/") + data + ".srt");
+    int sec, min, hour;
+    int speed, alarmFlag;
+    float latitude, longitude;
+    QString latitudeStr, longitudeStr;
+    QString unit, flagText, alarmFlagtext;
+
+    sec = min = hour = 0;
+
+    if (velocityUnit)
+        unit = "km/h";
+    else
+        unit = "mph";
+
+    qDebug() << "Number of subtitles to be created" << numOfSub;
+    qDebug() << "srt filename:" << APP_DIR APP_NAME + data + ".srt";
+    qDebug() << "videoo stored each" << storeVideoEach << "second(s)";
+
+    if (numOfSub < 1)
+        return;
+
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&file);
+
+    for (int i = 1; i <= numOfSub; i++) {
+        //! Subtitle number
+        out << QString::number(i) + "\n";
+
+        //! Start time and end time
+        out << getNumber00(hour) << ":" << getNumber00(min) << ":" << getNumber00(sec) << ",000 --> ";
+        sec += storeVideoEach;
+        if ((sec % 60 > 0) && (sec / 60 > 0)) {
+            min++;
+            sec = sec % 60;
+        }
+        if ((min % 60 > 0) && (min / 60 > 0)) {
+            hour++;
+            min = min % 60;
+        }
+
+        out << getNumber00(hour) << ":" << getNumber00(min) << ":" << getNumber00(sec) << ",000" << "\n";
+
+        //! Speed
+        speed = getVideoInfoSpeedQML(pass, i);
+        if (velocityUnit) {
+            speed = speed * 3.6;
+        }
+        else {
+            speed = speed * 2.2369;
+        }
+
+        if (speed < 4)
+            speed = 0;
+
+        //! Collision
+        alarmFlag = getVideoInfoSpecialCodeQML(pass, i);
+        if (alarmFlag > 0 && alarmFlag < 10)
+            alarmFlagtext = "Collision side: ";
+        else if (alarmFlag > 10)
+            alarmFlagtext = "Probable collision side: ";
+
+        if (alarmFlag > 9)
+            alarmFlag -= 10;
+
+        if (alarmFlag == 1)
+            flagText = "front";
+        else if (alarmFlag == 2)
+            flagText = "left";
+        else if (alarmFlag == 3)
+            flagText = "right";
+        else if (alarmFlag == 4)
+            flagText = "rear";
+        else {
+            flagText = "";
+        }
+
+        if (flagText.length() > 0) {
+            alarmFlagtext = alarmFlagtext + flagText;
+        }
+        else
+            alarmFlagtext = "";
+
+        out << "Speed: " << speed << " " << unit << "  " << alarmFlagtext << "\n";
+
+        latitude = getVideoInfoLatitudeQML(pass, i);
+        longitude = getVideoInfoLongitudeQML(pass, i);
+
+        if (latitude >= 0)
+            latitudeStr = "N";
+        else
+            latitudeStr = "S";
+
+        if (longitude >= 0)
+            longitudeStr = "E";
+        else
+            longitudeStr = "W";
+
+        out << latitude << " " << latitudeStr << "," << longitude << " " << longitudeStr << "\n";
+        out << "\n";
+    }
+    file.close();
+    emit subtitlesCreated();
 }

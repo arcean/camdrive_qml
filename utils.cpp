@@ -7,7 +7,15 @@ Utils::Utils(QObject *parent) :
 void Utils::deleteVideo(const QString &path)
 {
     QString message;
+    QString textFile = path;
+
+    textFile.chop(4);
+    textFile.append(".srt");
+
     if (QFile::remove(path)) {
+        //! Remove subtitles
+        QFile::remove(textFile);
+
         message = tr("Video deleted successfully");
         emit videoDeleted(path);
     }

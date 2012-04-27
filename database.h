@@ -17,6 +17,7 @@ public:
     explicit Database(QObject *parent = 0);
 
     int getVideoInfoSpecialCode(const QString &videoName, int videoId);
+    int countsVideoIds(const QString &videoName);
 
 signals:
 

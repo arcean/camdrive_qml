@@ -74,6 +74,11 @@ Page {
         header.detailsText = videoNumber + " " + text1 + " in " + numFiles + " " + text2;
     }
 
+    function createSubtitlesClicked(filePath)
+    {
+        DatabaseHelper.createSubtitles(filePath, settings.getVelocityUnit());
+    }
+
     Component.onCompleted: {
         appWindow.showToolbar();
         prepareVideoDetailsPage();
@@ -92,6 +97,11 @@ Page {
         target: Utils
         onInformation: messageHandler.showMessage(message);
         onVideoDeleted: videoPageList.deleteVideo(path);
+    }
+
+    Connections {
+        target: DatabaseHelper
+        onSubtitlesCreated: messageHandler.showMessage(qsTr("Subtitles created"));
     }
 
     Settings {
@@ -176,6 +186,10 @@ Page {
             MenuItem {
                 text: qsTr("View details")
                 onClicked: showVideoDetails(videoListModel.get(videoList.selectedIndex).itemId)
+            }
+            MenuItem {
+                text: qsTr("Create subtitles")
+                onClicked: createSubtitlesClicked(videoListModel.get(videoList.selectedIndex).filePath)
             }
             MenuItem {
                 text: qsTr("Delete")

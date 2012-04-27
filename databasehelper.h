@@ -14,6 +14,9 @@ class DatabaseHelper : public QObject {
 public:
     explicit DatabaseHelper(QObject *parent = 0);
 
+    //! Subtitles
+    Q_INVOKABLE void createSubtitles(const QString &videoName, bool velocityUnit);
+
 public slots:
     void setDatabase(Database *db);
     int getVideoStoredEachQML(const QString &videoName);
@@ -28,11 +31,16 @@ public slots:
     void removeVideoFromMainQML(const QString &videoName);
     bool isFileNameFreeQML(const QString &fileName);
 
+signals:
+    void subtitlesCreated();
+
 private:
     QString removePrefix(const QString &url);
     QString removePostfix(const QString &videoName);
     QString removePostfixAndMore(const QString &videoName);
     QString removePrefixPath(const QString &videoName);
+    //! Subtitles
+    QString getNumber00(int value);
 
     Database *Db;
 };
