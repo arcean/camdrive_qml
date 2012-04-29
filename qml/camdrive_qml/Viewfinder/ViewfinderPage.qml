@@ -520,6 +520,27 @@ Page {
             closeMenu.enabled = true;
         }
     }
+
+    // Record/stop button
+    ButtonHighlight {
+        id: toggleNightModeButton
+        width: 80
+        height: width
+        anchors.left: parent.left
+        anchors.leftMargin: 20
+        anchors.bottom: bottomToolbar.top
+        anchors.bottomMargin: 20
+        property bool nightMode: false
+
+        source: nightMode ? "../images/day.png" : "../images/night.png"
+        highlightSource: "../images/highlight80.png"
+
+        onClicked: {
+            nightMode = !nightMode;
+            frontCam.enableNightMode(nightMode);
+        }
+    }
+
 /*
     Item {
         id: toggleRecordingButton

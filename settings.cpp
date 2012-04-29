@@ -466,3 +466,24 @@ QString Settings::getContactTextMessage()
 
     return value;
 }
+
+/*!
+ * Show camera night mode button on the viewfinder.
+ */
+void Settings::setShowNightModeButton(bool show)
+{
+    QSettings settings;
+
+    settings.setValue("viewfinder/nightModeButton", show);
+}
+
+/*!
+ * Check if we have to show camera night mode button on the viewfinder.
+ */
+bool Settings::getShowNightModeButton()
+{
+    QSettings settings;
+    bool value =  settings.value("viewfinder/nightModeButton", false).toBool();
+
+    return value;
+}

@@ -65,6 +65,9 @@ public slots:
     QString getEmergencyNumber();
     void setContactTextMessage(const QString &message);
     QString getContactTextMessage();
+    //! Viewfinder settings
+    void setShowNightModeButton(bool show);
+    bool getShowNightModeButton();
 
 };
 
