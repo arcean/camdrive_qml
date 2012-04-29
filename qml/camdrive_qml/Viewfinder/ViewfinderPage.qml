@@ -480,8 +480,8 @@ Page {
     // Speed o meter
     Text {
         id: textSpeedInfo
-        anchors.left: upperToolbar.left
-        anchors.leftMargin: 10
+        anchors.right: upperToolbar.right
+        anchors.rightMargin: 10
         anchors.top: upperToolbar.top
         anchors.topMargin: 8
         text: "114 km/h"
@@ -493,8 +493,8 @@ Page {
     // Compass
     Text {
         id: textCompass
-        anchors.right: upperToolbar.right
-        anchors.rightMargin: 10
+        anchors.left: upperToolbar.left
+        anchors.leftMargin: 10
         anchors.top: upperToolbar.top
         anchors.topMargin: 8
         text: "NW"
