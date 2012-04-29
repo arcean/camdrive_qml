@@ -5,6 +5,7 @@ import QtMobility.sensors 1.2
 import QtMobility.location 1.2
 import QtMobility.systeminfo 1.2
 import Settings 1.0
+import GeoCoder 1.0
 import "../Compass"
 import "../StyledComponents"
 import "../"
@@ -33,8 +34,11 @@ Page {
 
     function firstTimeFunction() {
         maxAllowedSpeed = settingsObject.getMaxAllowedSpeed();
+        //! Clear night mode button settings
         toggleNightModeButton.visible = settingsObject.getShowNightModeButton();
         toggleNightModeButton.source = "../images/night.png"
+        //! Clear street name label
+        streetNameLabel.text = "";
         viewfinderPage.clearRecordingStatus();
         screenSaver.screenSaverInhibited = true;
         viewfinderPage.wakeCamera();
@@ -342,6 +346,10 @@ Page {
 
             setSpeed(speed);
             checkMaxAllowedSpeed(speed);
+
+            //! Get reversed geocode, for street name
+            reverseGeoCode.coordToAddress(Gps.getLatitude(),
+                                          Gps.getLongitude());
         }
         //! Accelerometer alarm signal
         onAlarm: {
@@ -365,6 +373,15 @@ Page {
        // }
     }
 
+    GeoCoder {
+        id:reverseGeoCode
+
+        //! When reverse geocoding info received, update street address in information panel
+        onReverseGeocodeInfoRetrieved: {
+            streetNameLabel.text = streetadd;
+        }
+    }
+
     Rectangle {
         id: upperToolbar
         anchors.left: parent.left
@@ -383,6 +400,13 @@ Page {
         height: 50
         color: "black"
         opacity: 0.4
+    }
+
+    Label {
+        id: streetNameLabel
+        anchors.verticalCenter: bottomToolbar.verticalCenter
+        anchors.horizontalCenter: bottomToolbar.horizontalCenter
+        color: "white"
     }
 
     Column {
