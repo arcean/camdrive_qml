@@ -33,6 +33,8 @@ Page {
 
     function firstTimeFunction() {
         maxAllowedSpeed = settingsObject.getMaxAllowedSpeed();
+        toggleNightModeButton.visible = settingsObject.getShowNightModeButton();
+        toggleNightModeButton.source = "../images/night.png"
         viewfinderPage.clearRecordingStatus();
         screenSaver.screenSaverInhibited = true;
         viewfinderPage.wakeCamera();
@@ -530,6 +532,7 @@ Page {
         anchors.leftMargin: 20
         anchors.bottom: bottomToolbar.top
         anchors.bottomMargin: 20
+        visible: settingsObject.getShowNightModeButton()
         property bool nightMode: false
 
         source: nightMode ? "../images/day.png" : "../images/night.png"
@@ -537,6 +540,8 @@ Page {
 
         onClicked: {
             nightMode = !nightMode;
+            pauseRecording();
+            resumeRecording();
             frontCam.enableNightMode(nightMode);
         }
     }
