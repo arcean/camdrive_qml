@@ -40,6 +40,7 @@ public slots:
     int getVideoInfoSpeed(const QString &videoName, int videoId);
     int getVideoStoredEach(const QString &videoName);
     bool removeVideoFromMain(const QString &videoName);
+    int getSpecialCodeSum(const QString &videoName);
 
 private:
     void createAppCatalog();

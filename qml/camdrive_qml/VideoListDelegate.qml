@@ -5,6 +5,7 @@ Item {
     id: delegate
 
     property bool useMarqueeText
+    property bool isCollision: DatabaseHelper.getSpecialCodeSumQML(filePath) > 0
     signal clicked
     signal pressAndHold
 
@@ -77,9 +78,28 @@ Item {
         }
     }
 
+    Image {
+        id: collisionImage
+        anchors {
+            bottom: isCollision ? parent.bottom : undefined
+            left: isCollision ? parent.left : undefined
+            margins: isCollision ? 10 : 0
+        }
+        width: 32
+        height: 32
+        visible: isCollision
+        source: isCollision ? "images/warning32.png" : ""
+    }
+
     Marquee {
-        anchors { bottom: parent.bottom; left: parent.left; right: parent.right; margins: 10 }
+        anchors {
+            bottom: parent.bottom
+            left: !isCollision ? parent.left : collisionImage.right
+            right: parent.right;
+            margins: 10
+        }
         text: Qt.formatDateTime(lastModified)
+        textColor: isCollision ? _ACTIVE_COLOR_TEXT : _TEXT_COLOR
         enableScrolling: useMarqueeText
     }
 

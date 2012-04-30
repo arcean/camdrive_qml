@@ -75,6 +75,14 @@ float DatabaseHelper::getVideoInfoAccelZQML(const QString &videoName, int videoI
     return Db->getVideoInfoAccelZ(data, videoId);
 }
 
+int DatabaseHelper::getSpecialCodeSumQML(const QString &videoName)
+{
+    QString data = removePostfix(videoName);
+    data = removePrefixPath(data);
+    qDebug() << "PRINT: " << data;
+    return Db->getSpecialCodeSum(data);
+}
+
 void DatabaseHelper::removeVideoQML(const QString &videoName)
 {
     QString data = removePostfix(videoName);
