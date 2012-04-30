@@ -5,9 +5,9 @@
 #include <QtSensors/QAccelerometer>
 #include <QtSensors/QAccelerometerReading>
 
-#define MIN_TRESHOLD 4.5
-#define MID_TRESHOLD 5.5
-#define MAX_TRESHOLD 6
+#define MIN_TRESHOLD 5
+#define MID_TRESHOLD 6
+#define MAX_TRESHOLD 7.5
 
 #define MIN_G_TRESHOLD 9.6
 #define MAX_G_TRESHOLD 10.5
