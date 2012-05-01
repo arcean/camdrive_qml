@@ -251,8 +251,3 @@ void Accelerometer::stop()
 {
     accelerometer->stop();
 }
-
-void Accelerometer::setTreshold(int tresholdLevel)
-{
-    min_treshold = tresholdLevel;
-}

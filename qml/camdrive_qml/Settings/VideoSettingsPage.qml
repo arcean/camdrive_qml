@@ -22,22 +22,34 @@ Page {
 
     function selectVideoQuality()
     {
-        if(settingsObject.getVideoQuality() == 0)
+        if(settingsObject.getVideoQuality() == 0) {
             videoQualityButtonRow.checkedButton = videoLow
-        else if(settingsObject.getVideoQuality() == 2)
+            videoQualityButtonColumn.checkedButton = videoLowColumn
+        }
+        else if(settingsObject.getVideoQuality() == 2) {
             videoQualityButtonRow.checkedButton = videoHigh
-        else
+            videoQualityButtonColumn.checkedButton = videoHighColumn
+        }
+        else {
             videoQualityButtonRow.checkedButton = videoNormal
+            videoQualityButtonColumn.checkedButton = videoNormalColumn
+        }
     }
 
     function selectVideoResolution()
     {
-        if(settingsObject.getVideoResolution() == 0)
+        if(settingsObject.getVideoResolution() == 0) {
             videoResolutionButtonRow.checkedButton = videoVGA
-        else if(settingsObject.getVideoResolution() == 2)
+            videoResolutionButtonColumn.checkedButton = videoVGAColumn
+        }
+        else if(settingsObject.getVideoResolution() == 2) {
             videoResolutionButtonRow.checkedButton = videoHD
-        else
+            videoResolutionButtonColumn.checkedButton = videoHDColumn
+        }
+        else {
             videoResolutionButtonRow.checkedButton = videoDVD
+            videoResolutionButtonColumn.checkedButton = videoDVDColumn
+        }
     }
 
     Component.onCompleted: {
@@ -70,7 +82,8 @@ Page {
         }
         boundsBehavior: Flickable.DragOverBounds
         contentWidth: width
-        contentHeight: videoQualityButtonRow.y + videoQualityButtonRow.height - videoResolutionLabel.y
+        contentHeight: _IN_PORTRAIT ? videoQualityButtonColumn.y + videoQualityButtonColumn.height - videoResolutionLabel.y :
+                                      videoQualityButtonRow.y + videoQualityButtonRow.height - videoResolutionLabel.y
 
         Label {
             id: videoResolutionLabel
@@ -78,15 +91,40 @@ Page {
             text: "Video resolution:"
         }
 
-        ButtonRow {
-            id: videoResolutionButtonRow
+        ButtonColumn {
+            id: videoResolutionButtonColumn
             anchors.left: parent.left
             anchors.right: parent.right
-
             y: videoResolutionLabel.y + 40
 
             checkedButton: videoDVD
             platformStyle: StyledButton {}
+            visible: _IN_PORTRAIT
+
+            Button { text: "VGA"
+                id: videoVGAColumn
+                onClicked: settingsObject.setVideoResolution(0)
+            }
+            Button { text: "DVD"
+                id: videoDVDColumn
+                onClicked: settingsObject.setVideoResolution(1)
+            }
+            Button { text: "HD"
+                id: videoHDColumn
+                onClicked: settingsObject.setVideoResolution(2)
+            }
+        }
+
+        ButtonRow {
+            id: videoResolutionButtonRow
+            anchors.left: parent.left
+            anchors.right: parent.right
+            y: videoResolutionLabel.y + 40
+
+            checkedButton: videoDVD
+            platformStyle: StyledButton {}
+            visible: !_IN_PORTRAIT
+
             Button { text: "VGA"
                 id: videoVGA
                 onClicked: settingsObject.setVideoResolution(0)
@@ -104,19 +142,45 @@ Page {
         Label {
             id: videoQualityLabel
             anchors.left: parent.left
-            y: videoResolutionButtonRow.y + videoResolutionButtonRow.height + 20
+            y: _IN_PORTRAIT ? videoResolutionButtonColumn.y + videoResolutionButtonColumn.height + 20 :
+                                videoResolutionButtonRow.y + videoResolutionButtonRow.height + 20
             text: "Video quality:"
+        }
+
+        ButtonColumn {
+            id: videoQualityButtonColumn
+            anchors.left: parent.left
+            anchors.right: parent.right
+            y: videoQualityLabel.y + 40
+
+            checkedButton: videoNormal
+            platformStyle: StyledButton {}
+            visible: _IN_PORTRAIT
+
+            Button { text: "Low"
+                id: videoLowColumn
+                onClicked: settingsObject.setVideoQuality(0)
+            }
+            Button { text: "Normal"
+                id: videoNormalColumn
+                onClicked: settingsObject.setVideoQuality(1)
+            }
+            Button { text: "High"
+                id: videoHighColumn
+                onClicked: settingsObject.setVideoQuality(2)
+            }
         }
 
         ButtonRow {
             id: videoQualityButtonRow
             anchors.left: parent.left
             anchors.right: parent.right
-
             y: videoQualityLabel.y + 40
 
             checkedButton: videoNormal
             platformStyle: StyledButton {}
+            visible: !_IN_PORTRAIT
+
             Button { text: "Low"
                 id: videoLow
                 onClicked: settingsObject.setVideoQuality(0)
