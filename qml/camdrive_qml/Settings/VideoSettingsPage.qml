@@ -85,17 +85,28 @@ Page {
         contentHeight: _IN_PORTRAIT ? videoQualityButtonColumn.y + videoQualityButtonColumn.height - videoResolutionLabel.y :
                                       videoQualityButtonRow.y + videoQualityButtonRow.height - videoResolutionLabel.y
 
+        Separator {
+            anchors.left: parent.left
+            anchors.right: videoResolutionLabel.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: videoResolutionLabel.verticalCenter
+        }
+
         Label {
             id: videoResolutionLabel
-            anchors.left: parent.left
-            text: "Video resolution:"
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.rightMargin: 10
+            text: "Resolution"
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
         }
 
         ButtonColumn {
             id: videoResolutionButtonColumn
             anchors.left: parent.left
             anchors.right: parent.right
-            y: videoResolutionLabel.y + 40
+            y: videoResolutionLabel.y + videoResolutionLabel.height + 10
 
             checkedButton: videoDVD
             platformStyle: StyledButton {}
@@ -119,7 +130,7 @@ Page {
             id: videoResolutionButtonRow
             anchors.left: parent.left
             anchors.right: parent.right
-            y: videoResolutionLabel.y + 40
+            y: videoResolutionLabel.y + videoResolutionLabel.height + 10
 
             checkedButton: videoDVD
             platformStyle: StyledButton {}
@@ -139,19 +150,29 @@ Page {
             }
         }
 
+        Separator {
+            anchors.left: parent.left
+            anchors.right: videoQualityLabel.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: videoQualityLabel.verticalCenter
+        }
+
         Label {
             id: videoQualityLabel
-            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.rightMargin: 10
             y: _IN_PORTRAIT ? videoResolutionButtonColumn.y + videoResolutionButtonColumn.height + 20 :
                                 videoResolutionButtonRow.y + videoResolutionButtonRow.height + 20
-            text: "Video quality:"
+            text: "Quality"
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
         }
 
         ButtonColumn {
             id: videoQualityButtonColumn
             anchors.left: parent.left
             anchors.right: parent.right
-            y: videoQualityLabel.y + 40
+            y: videoQualityLabel.y + videoQualityLabel.height + 10
 
             checkedButton: videoNormal
             platformStyle: StyledButton {}
@@ -175,7 +196,7 @@ Page {
             id: videoQualityButtonRow
             anchors.left: parent.left
             anchors.right: parent.right
-            y: videoQualityLabel.y + 40
+            y: videoQualityLabel.y + videoQualityLabel.height + 10
 
             checkedButton: videoNormal
             platformStyle: StyledButton {}
