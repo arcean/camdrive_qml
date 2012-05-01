@@ -21,30 +21,9 @@ Page {
         id: settingsObject
     }
 
-    function selectMaxAllowedSpeed()
-    {
-        if(!settingsObject.getMaxAllowedSpeedEnabled()) {
-            maxAllowedSpeedLabel.enabled = false;
-            maxAllowedSpeedButton.enabled = false;
-            speedAlarmSwitch.checked = false;
-            maxAllowedSpeedButton.text = settingsObject.getMaxAllowedSpeed();
-        }
-        else {
-            maxAllowedSpeedLabel.enabled = true;
-            maxAllowedSpeedButton.enabled = true;
-            speedAlarmSwitch.checked = true;
-            maxAllowedSpeedButton.text = settingsObject.getMaxAllowedSpeed();
-        }
-
-    }
-
     Component.onCompleted: {
-        selectMaxAllowedSpeed();
-
         contactsSwitch.checked = settingsObject.getEmergencyContactNameEnabled();
         contacts.enabled = contactsSwitch.checked;
-        emergencySwitch.checked = settingsObject.getEmergencyNumberEnabled();
-        emergencyButton.enabled = emergencySwitch.checked;
     }
 
     Header {
@@ -71,60 +50,66 @@ Page {
         }
         boundsBehavior: Flickable.DragOverBounds
         contentWidth: width
-        contentHeight: emergencyButton.y + emergencyButton.height - speedAlarmLabel.y
+        contentHeight: emergencyButton.y + emergencyButton.height - separator1Label.y
 
-        Label {
-            id: speedAlarmLabel
+        Separator {
             anchors.left: parent.left
-            text: "Enable speed alarm:"
-        }
-
-        Switch {
-            id: speedAlarmSwitch
-            anchors.right: parent.right
-            anchors.verticalCenter: speedAlarmLabel.verticalCenter
-
-            platformStyle: StyledSwitch {}
-            onCheckedChanged: {
-                maxAllowedSpeedLabel.enabled = checked;
-                maxAllowedSpeedButton.enabled = checked;
-                speedAlarmSwitch.checked = checked;
-                settingsObject.setMaxAllowedSpeedEnabled(checked)
-            }
+            anchors.right: separator1Label.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: separator1Label.verticalCenter
         }
 
         Label {
-            id: maxAllowedSpeedLabel
-            anchors.left: parent.left
-            y: speedAlarmLabel.y + speedAlarmLabel.height + 20
-            text: "Max allowed speed:"
+            id: separator1Label
+            anchors.top: parent.top
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
+            text: "Speed alarm"
         }
 
-        TumblerButton {
-            id: maxAllowedSpeedButton
-            anchors.right: parent.right
-            anchors.left: parent.left
-            y: maxAllowedSpeedLabel.y + maxAllowedSpeedLabel.height + 10
-            style: StyledTumblerButton {}
-            text: {
-                speedAlarmDialog.selectedIndex >= 0 ? speedAlarmDialog.model.get(speedAlarmDialog.selectedIndex).name : settingsObject.getMaxAllowedSpeed()
+        SelectionItem {
+            id: maxAllowedSpeed
+            y: separator1Label.y + separator1Label.height + 10
+            title: qsTr("Max allowed speed")
+            model: ListModel {
+                ListElement { name: QT_TR_NOOP("Disabled"); value: -1; }
+                ListElement { name: QT_TR_NOOP("50"); value: 50; }
+                ListElement { name: QT_TR_NOOP("60"); value: 60; }
+                ListElement { name: QT_TR_NOOP("70"); value: 70; }
+                ListElement { name: QT_TR_NOOP("80"); value: 80; }
+                ListElement { name: QT_TR_NOOP("90"); value: 90; }
+                ListElement { name: QT_TR_NOOP("100"); value: 100; }
+                ListElement { name: QT_TR_NOOP("110"); value: 110; }
+                ListElement { name: QT_TR_NOOP("120"); value: 120; }
+                ListElement { name: QT_TR_NOOP("130"); value: 130; }
+                ListElement { name: QT_TR_NOOP("140"); value: 140; }
             }
-            onClicked: {
-                speedAlarmDialog.open()
-            }
+            initialValue: settingsObject.getMaxAllowedSpeed()
+            onValueChosen: settingsObject.setMaxAllowedSpeed(value)
         }
 
         Separator {
-            id: separator1
-            anchors.right: parent.right
             anchors.left: parent.left
-            y: maxAllowedSpeedButton.y + maxAllowedSpeedButton.height + 20
+            anchors.right: separator2Label.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: separator2Label.verticalCenter
+        }
+        Label {
+            id: separator2Label
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            y: maxAllowedSpeed.y + maxAllowedSpeed.height + 20
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
+            text: "Emergency contact"
         }
 
         Label {
             id: contactsLabel
             anchors.left: parent.left
-            y: separator1.y + separator1.height + 20
+            y: separator2Label.y + separator2Label.height + 20
             text: "Family emergency contact"
         }
         Switch {
@@ -169,81 +154,38 @@ Page {
             }
         }
 
-        Label {
-            id: emergencyLabel
+        Separator {
             anchors.left: parent.left
+            anchors.right: separator3Label.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: separator3Label.verticalCenter
+        }
+        Label {
+            id: separator3Label
+            anchors.right: parent.right
+            anchors.rightMargin: 10
             y: messageContact.y + messageContact.height + 20
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
             text: "Emergency number"
         }
-        Switch {
-            id: emergencySwitch
-            anchors.right: parent.right
-            anchors.verticalCenter: emergencyLabel.verticalCenter
 
-            platformStyle: StyledSwitch {}
-            onCheckedChanged: {
-                settingsObject.setEmergencyNumberEnabled(checked)
-                emergencyButton.enabled = checked;
-            }
-        }
-
-        TumblerButton {
+        SelectionItem {
             id: emergencyButton
-            anchors.right: parent.right
-            anchors.left: parent.left
-            y: emergencyLabel.y + emergencyLabel.height + 10
-            style: StyledTumblerButton {}
-            text: {
-                emergencyNumberDialog.selectedIndex >= 0 ? emergencyNumberDialog.model.get(emergencyNumberDialog.selectedIndex).name : settingsObject.getEmergencyNumber()
+            y: separator3Label.y + separator3Label.height + 10
+            title: qsTr("Emergency number")
+            model: ListModel {
+                ListElement { name: QT_TR_NOOP("Disabled"); value: -1; }
+                ListElement { name: QT_TR_NOOP("112"); value: 112; }
+                ListElement { name: QT_TR_NOOP("911"); value: 911; }
+                ListElement { name: QT_TR_NOOP("999"); value: 999; }
             }
-            onClicked: {
-                emergencyNumberDialog.open()
-            }
+            initialValue: settingsObject.getEmergencyNumber()
+            onValueChosen: settingsObject.setEmergencyNumber(value)
         }
     }
 
     ScrollDecorator {
         flickableItem: flicker
-    }
-
-    SelectionDialog {
-        id: emergencyNumberDialog
-        titleText: "Max allowed speed"
-        platformStyle: StyledSelectionDialog {}
-
-        model: ListModel {
-            ListElement { name: "112"; value: 112; }
-            ListElement { name: "911"; value: 911; }
-            ListElement { name: "999"; value: 999; }
-        }
-
-        onAccepted: {
-            settingsObject.setEmergencyNumber(emergencyNumberDialog.model.get(emergencyNumberDialog.selectedIndex).name);
-            emergencyButton.text = emergencyNumberDialog.model.get(emergencyNumberDialog.selectedIndex).name;
-        }
-    }
-
-    SelectionDialog {
-        id: speedAlarmDialog
-        titleText: "Max allowed speed"
-        platformStyle: StyledSelectionDialog {}
-
-        model: ListModel {
-            ListElement { name: "50"; value: 50; }
-            ListElement { name: "60"; value: 60; }
-            ListElement { name: "80"; value: 80; }
-            ListElement { name: "90"; value: 90; }
-            ListElement { name: "100"; value: 100; }
-            ListElement { name: "110"; value: 110; }
-            ListElement { name: "120"; value: 120; }
-            ListElement { name: "130"; value: 130; }
-            ListElement { name: "140"; value: 140; }
-            ListElement { name: "150"; value: 150; }
-        }
-
-        onAccepted: {
-            settingsObject.setMaxAllowedSpeed(speedAlarmDialog.model.get(speedAlarmDialog.selectedIndex).value);
-            maxAllowedSpeedButton.text = speedAlarmDialog.model.get(speedAlarmDialog.selectedIndex).name;
-        }
     }
 }

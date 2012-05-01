@@ -157,7 +157,7 @@ Item {
         rejectButtonText: "Reject"
 
         onAccepted: {
-            if (settingsObject.getEmergencyNumberEnabled())
+            if (settingsObject.getEmergencyNumber() != -1)
                 telephony.call(settingsObject.getEmergencyNumber());
             else
                 messageHandler.showMessage(qsTr("Feature disabled. Please check Settings."));

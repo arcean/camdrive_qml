@@ -50,8 +50,6 @@ public slots:
     int getMaxAllowedSpeed();
     void setVelocityUnit(bool unit);
     bool getVelocityUnit();
-    void setMaxAllowedSpeedEnabled(bool enabled);
-    bool getMaxAllowedSpeedEnabled();
     //! Telephony
     void setEmergencyContactName(const QString &name);
     QString getEmergencyContactName();
@@ -59,8 +57,6 @@ public slots:
     bool getEmergencyContactNameEnabled();
     void setEmergencyContactNumber(const QString &number);
     QString getEmergencyContactNumber();
-    void setEmergencyNumberEnabled(bool enabled);
-    bool getEmergencyNumberEnabled();
     void setEmergencyNumber(const QString &number);
     QString getEmergencyNumber();
     void setContactTextMessage(const QString &message);

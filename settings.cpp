@@ -253,38 +253,6 @@ int Settings::getMaxVideoFiles()
 
     return value;
 }
-/*
-void Settings::addCurrentVideoFiles(int value)
-{
-    int currentNumber = getCurrentVideoFiles();
-    int max = getMaxVideoFiles();
-
-    if (max == -1)
-        max = 100;
-
-    if (currentNumber < max && value > 0)
-        setCurrentVideoFiles(getCurrentVideoFiles() + value);
-    else if (currentNumber > 0 && value <= 0)
-        setCurrentVideoFiles(getCurrentVideoFiles() + value);
-
-    qDebug() << "Actual current video:" << getCurrentVideoFiles();
-    qDebug() << "Actual MAX video:" << getMaxVideoFiles();
-}*/
-/*
-void Settings::setCurrentVideoFiles(int number)
-{
-    QSettings settings;
-
-    settings.setValue("store/currentNumber", number);
-}
-
-int Settings::getCurrentVideoFiles()
-{
-    QSettings settings;
-    int value =  settings.value("store/currentNumber", 0).toInt();
-
-    return value;
-}*/
 
 void Settings::setMaxAllowedSpeed(int speed)
 {
@@ -297,21 +265,6 @@ int Settings::getMaxAllowedSpeed()
 {
     QSettings settings;
     int value =  settings.value("speed/maxAllowed", 130).toInt();
-
-    return value;
-}
-
-void Settings::setMaxAllowedSpeedEnabled(bool enabled)
-{
-    QSettings settings;
-
-    settings.setValue("speed/maxAllowedEnabled", enabled);
-}
-
-bool Settings::getMaxAllowedSpeedEnabled()
-{
-    QSettings settings;
-    bool value =  settings.value("speed/maxAllowedEnabled", false).toBool();
 
     return value;
 }
@@ -405,27 +358,6 @@ QString Settings::getEmergencyContactNumber()
 }
 
 /*!
- * Enable emergency contact number.
- */
-void Settings::setEmergencyNumberEnabled(bool enabled)
-{
-    QSettings settings;
-
-    settings.setValue("contacts/emergencyNumberEnabled", enabled);
-}
-
-/*!
- * Check if emergency contact number is enabled.
- */
-bool Settings::getEmergencyNumberEnabled()
-{
-    QSettings settings;
-    bool value =  settings.value("contacts/emergencyNumberEnabled", false).toBool();
-
-    return value;
-}
-
-/*!
  * Set emergency number.
  */
 void Settings::setEmergencyNumber(const QString &number)
@@ -442,7 +374,7 @@ QString Settings::getEmergencyNumber()
 {
     QSettings settings;
     QString value =  settings.value("contacts/emergencyNumber", "112").toString();
-
+    qDebug() << "RET VALUE" << value;
     return value;
 }
 

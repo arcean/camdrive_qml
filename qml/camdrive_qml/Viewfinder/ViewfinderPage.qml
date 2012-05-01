@@ -242,7 +242,7 @@ Page {
 
     function checkMaxAllowedSpeed(speed)
     {
-        if (!settingsObject.getMaxAllowedSpeedEnabled() || !isCameraRecording)
+        if (settingsObject.getMaxAllowedSpeed() === -1 || !isCameraRecording)
             return;
 
         if (speed > maxAllowedSpeed) {
