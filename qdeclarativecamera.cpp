@@ -73,7 +73,7 @@ void QDeclarativeCamera::initFile()
     timer = new QTimer(this);
     //Default time interval - 10m = 10 * 60 * 1000,
     //It should be configurable, and loaded on app startup
-    int time = settingsObject->getStoreLastInMinutes();
+    int time = settingsObject->getStoreLast();
     time = (time * 60 * 1000);
     //int time = 1 * 60 * 1000;
     timer->setInterval(time);
@@ -159,7 +159,7 @@ void QDeclarativeCamera::startRecording(bool ignoreCurrentVideoCounter)
 
     storeDataTimer->start();
     mediaRecorder_->record();
-    if(!settingsObject->getEnableContinousRecording())
+    if(settingsObject->getStoreLast() != 0)
         timer->start();
 }
 

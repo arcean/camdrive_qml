@@ -21,17 +21,8 @@ Page {
         id: settingsObject
     }
 
-    function enableContinousRecording(checked)
-    {
-        storeLastButton.enabled = !checked
-        storeLastLabel.enabled = !checked
-        settingsObject.setEnableContinousRecording(checked)
-    }
-
     Component.onCompleted: {
         theme.inverted = true;
-        storeLastButton.text = settingsObject.getStoreLastToText();
-        recordingOptionsSwitch.checked = settingsObject.getEnableContinousRecording();
     }
 
     Header {
@@ -58,71 +49,42 @@ Page {
         }
         boundsBehavior: Flickable.DragOverBounds
         contentWidth: width
-        contentHeight: storeLastButton.y + storeLastButton.height - continousRecordingLabel.y
+        contentHeight: storeLastButton.y + storeLastButton.height - separator1Label.y
 
-        Label {
-            id: continousRecordingLabel
+        Separator {
             anchors.left: parent.left
-            text: "Enable continous recording"
+            anchors.right: separator1Label.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: separator1Label.verticalCenter
         }
-
-        Switch {
-            id: recordingOptionsSwitch
+        Label {
+            id: separator1Label
             anchors.right: parent.right
-            anchors.verticalCenter: continousRecordingLabel.verticalCenter
-            checked: false
-            platformStyle: StyledSwitch {}
-            onCheckedChanged: {
-                enableContinousRecording(checked)
-            }
+            anchors.rightMargin: 10
+            anchors.top: parent.top
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
+            text: "Video length"
         }
 
-        Label {
-            id:storeLastLabel
-            anchors.left: parent.left
-            y: continousRecordingLabel.y + continousRecordingLabel.height + 20
-            color: recordingOptionsSwitch.checked ? "gray" : "white"
-            text: "Store last:"
-        }
-
-
-        TumblerButton {
+        SelectionItem {
             id: storeLastButton
-            anchors.right: parent.right
-            anchors.left: parent.left
-            y: storeLastLabel.y + storeLastLabel.height + 20
-            style: StyledTumblerButton {}
-            text: {
-                recordLastDialog.selectedIndex >= 0 ? recordLastDialog.model.get(recordLastDialog.selectedIndex).name : "5 minutes"
+            y: separator1Label.y + separator1Label.height + 10
+            title: qsTr("Store last")
+            model: ListModel {
+                ListElement { name: QT_TR_NOOP("Unlimited length"); value: 0; }
+                ListElement { name: QT_TR_NOOP("3 minutes"); value: 3; }
+                ListElement { name: QT_TR_NOOP("5 minutes"); value: 5; }
+                ListElement { name: QT_TR_NOOP("10 minutes"); value: 10; }
+                ListElement { name: QT_TR_NOOP("20 minutes"); value: 20; }
+                ListElement { name: QT_TR_NOOP("30 minutes"); value: 30; }
             }
-            onClicked: {
-                recordLastDialog.open()
-            }
+            initialValue: settingsObject.getStoreLast()
+            onValueChosen: settingsObject.setStoreLast(value)
         }
     }
 
     ScrollDecorator {
         flickableItem: flicker
-    }
-
-    SelectionDialog {
-        id: recordLastDialog
-        titleText: "Store last"
-        selectedIndex: settingsObject.getStoreLast()
-        platformStyle: StyledSelectionDialog {}
-
-        model: ListModel {
-            ListElement { name: "3 minutes " }
-            ListElement { name: "5 minutes " }
-            ListElement { name: "10 minutes " }
-            ListElement { name: "20 minutes " }
-            ListElement { name: "30 minutes " }
-        }
-
-        onAccepted: {
-            settingsObject.setStoreLast(recordLastDialog.selectedIndex)
-            storeLastButton.text = settingsObject.getStoreLastToText()
-            //setTextStoreLastInfoLabel()
-        }
     }
 }

@@ -23,12 +23,8 @@ public:
     bool getEnableStoringSpeedInfo();
 
 public slots:
-    void setEnableContinousRecording(bool enable);
-    bool getEnableContinousRecording();
     void setStoreLast(int selectedIndex);
     int getStoreLast();
-    QString getStoreLastToText();
-    int getStoreLastInMinutes();
     void setVideoResolution(int resolution);
     int getVideoResolution();
     void setVideoQuality(int quality);
@@ -43,9 +39,6 @@ public slots:
     bool getEnableStoringAccelInfo();
     void setMaxVideoFiles(int numberOfFiles);
     int getMaxVideoFiles();
-   // void setCurrentVideoFiles(int number);
-    //int getCurrentVideoFiles();
-   // void addCurrentVideoFiles(int value);
     void setMaxAllowedSpeed(int speed);
     int getMaxAllowedSpeed();
     void setVelocityUnit(bool unit);

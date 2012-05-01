@@ -520,7 +520,7 @@ Page {
         anchors.rightMargin: 10
         anchors.top: bottomToolbar.top
         anchors.topMargin: 8
-        text: "0:00/" + settingsObject.getStoreLastInMinutes() + ":00"
+        text: "0:00/" + settingsObject.getStoreLast() + ":00"
         color: "white"
         font.bold: true
         font.pointSize: 18

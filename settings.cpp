@@ -10,21 +10,6 @@ Settings::~Settings()
 
 }
 
-void Settings::setEnableContinousRecording(bool enable)
-{
-    QSettings settings;
-
-    settings.setValue("recording/continous", enable);
-}
-
-bool Settings::getEnableContinousRecording()
-{
-    QSettings settings;
-    bool value =  settings.value("recording/continous", false).toBool();
-
-    return value;
-}
-
 void Settings::setStoreLast(int selectedIndex)
 {
     // Let's ignore -1 index
@@ -39,78 +24,9 @@ void Settings::setStoreLast(int selectedIndex)
 int Settings::getStoreLast()
 {
     QSettings settings;
-    int value =  settings.value("recording/store_last", 1).toInt();
+    int value =  settings.value("recording/store_last", 3).toInt();
 
     return value;
-}
-
-QString Settings::getStoreLastToText()
-{
-    QSettings settings;
-    int value = settings.value("recording/store_last", 1).toInt();
-    int valueToText;
-    QString text;
-
-    switch (value)
-    {
-    case 0:
-        valueToText = CD_STORE_LAST_0;
-        break;
-    case 1:
-        valueToText = CD_STORE_LAST_1;
-        break;
-    case 2:
-        valueToText = CD_STORE_LAST_2;
-        break;
-    case 3:
-        valueToText = CD_STORE_LAST_3;
-        break;
-    case 4:
-        valueToText = CD_STORE_LAST_4;
-        break;
-    default:
-        valueToText = CD_STORE_LAST_2;
-        break;
-    }
-
-    /* Since 0.0.2 it's abandoned. */
-    //if(valueToText == 1)
-    //    text = QString::number(valueToText) + " minute";
-    // else
-    text = QString::number(valueToText) + " minutes";
-
-    return text;
-}
-
-int Settings::getStoreLastInMinutes()
-{
-    QSettings settings;
-    int value = settings.value("recording/store_last", 1).toInt();
-    int valueToPass;
-
-    switch (value)
-    {
-    case 0:
-        valueToPass = CD_STORE_LAST_0;
-        break;
-    case 1:
-        valueToPass = CD_STORE_LAST_1;
-        break;
-    case 2:
-        valueToPass = CD_STORE_LAST_2;
-        break;
-    case 3:
-        valueToPass = CD_STORE_LAST_3;
-        break;
-    case 4:
-        valueToPass = CD_STORE_LAST_4;
-        break;
-    default:
-        valueToPass = CD_STORE_LAST_2;
-        break;
-    }
-
-    return valueToPass;
 }
 
 void Settings::setVideoResolution(int resolution)
