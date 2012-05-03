@@ -161,8 +161,8 @@ Page {
             id: videoQualityLabel
             anchors.right: parent.right
             anchors.rightMargin: 10
-            y: _IN_PORTRAIT ? videoResolutionButtonColumn.y + videoResolutionButtonColumn.height + 20 :
-                                videoResolutionButtonRow.y + videoResolutionButtonRow.height + 20
+            y: _IN_PORTRAIT ? videoResolutionButtonColumn.y + videoResolutionButtonColumn.height + 10 :
+                                videoResolutionButtonRow.y + videoResolutionButtonRow.height + 10
             text: "Quality"
             font.pixelSize: _SMALL_FONT_SIZE
             color: _DISABLED_COLOR_TEXT

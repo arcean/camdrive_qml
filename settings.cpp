@@ -165,7 +165,7 @@ void Settings::setMaxVideoFiles(int numberOfFiles)
 int Settings::getMaxVideoFiles()
 {
     QSettings settings;
-    int value =  settings.value("store/numberOfFiles", -1).toInt();
+    int value =  settings.value("store/numberOfFiles", 0).toInt();
 
     return value;
 }

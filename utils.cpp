@@ -25,6 +25,34 @@ void Utils::deleteVideo(const QString &path)
     emit information(message);
 }
 
+void Utils::deleteDatabase()
+{
+    QString message;
+    bool ret = QFile::remove("/home/user/.camdrive/videos.db.sqlite");
+
+    if (ret)
+        message = "Database cleared successfully";
+    else
+        message = "Database could not be cleared";
+
+    emit information(message);
+}
+
+void Utils::deleteVideos()
+{
+    QString message = "Videos deleted successfully";
+    QDir dir("/home/user/MyDocs/camdrive");
+
+    QFileInfoList files = dir.entryInfoList(QDir::NoDotAndDotDot | QDir::Files);
+
+    for(int file = 0; file < files.count(); file++)
+    {
+        dir.remove(files.at(file).fileName());
+    }
+
+    emit information(message);
+}
+
 QString Utils::convertLatitudeToGui(double latitude)
 {
     QString latitudeStr;

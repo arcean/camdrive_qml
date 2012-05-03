@@ -49,7 +49,7 @@ Page {
         }
         boundsBehavior: Flickable.DragOverBounds
         contentWidth: width
-        contentHeight: storeLastButton.y + storeLastButton.height - separator1Label.y
+        contentHeight: otherColumn.y + otherColumn.height - separator1Label.y
 
         Separator {
             anchors.left: parent.left
@@ -70,7 +70,7 @@ Page {
         SelectionItem {
             id: storeLastButton
             y: separator1Label.y + separator1Label.height + 10
-            title: qsTr("Store last")
+            title: qsTr("Save the last")
             model: ListModel {
                 ListElement { name: QT_TR_NOOP("Unlimited length"); value: 0; }
                 ListElement { name: QT_TR_NOOP("3 minutes"); value: 3; }
@@ -81,6 +81,78 @@ Page {
             }
             initialValue: settingsObject.getStoreLast()
             onValueChosen: settingsObject.setStoreLast(value)
+        }
+
+        Separator {
+            anchors.left: parent.left
+            anchors.right: separator2Label.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: separator2Label.verticalCenter
+        }
+        Label {
+            id: separator2Label
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            anchors.top: storeLastButton.bottom
+            anchors.topMargin: 10
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
+            text: "Video storing"
+        }
+
+        SelectionItem {
+            id: videoStoreButton
+            y: separator2Label.y + separator2Label.height + 10
+            title: qsTr("Keep only the last")
+            model: ListModel {
+                ListElement { name: QT_TR_NOOP("Unlimited number of videos"); value: 0; }
+                ListElement { name: QT_TR_NOOP("2 videos"); value: 2; }
+                ListElement { name: QT_TR_NOOP("5 videos"); value: 5; }
+                ListElement { name: QT_TR_NOOP("10 videos"); value: 10; }
+                ListElement { name: QT_TR_NOOP("20 videos"); value: 20; }
+            }
+            initialValue: settingsObject.getMaxVideoFiles()
+            onValueChosen: settingsObject.setMaxVideoFiles(value)
+        }
+
+        Separator {
+            anchors.left: parent.left
+            anchors.right: separator3Label.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: separator3Label.verticalCenter
+        }
+        Label {
+            id: separator3Label
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            anchors.top: videoStoreButton.bottom
+            anchors.topMargin: 10
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
+            text: "Other"
+        }
+
+        Column {
+            id: otherColumn
+            anchors { left: parent.left; right: parent.right; top: separator3Label.bottom; topMargin: 10; }
+            height: 160
+
+            Repeater {
+                id: repeater
+                model: ListModel {
+                    id: otherColumnModel
+
+                    ListElement { name: QT_TR_NOOP("Video"); fileName: "VideoSettingsPage.qml" }
+                    ListElement { name: QT_TR_NOOP("Audio"); fileName: "AudioSettingsPage.qml" }
+                }
+
+                DrillDownDelegate {
+                    id: delegate
+                    width: otherColumn.width
+                    title: name
+                    onClicked: appWindow.pageStack.push(Qt.resolvedUrl(fileName))
+                }
+            }
         }
     }
 

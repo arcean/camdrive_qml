@@ -2,6 +2,7 @@ import QtQuick 1.0
 import com.nokia.meego 1.0
 import QtMobility.contacts 1.1
 import "../StyledComponents"
+import "../Common"
 
 Item  {
    id: addressBookItem
@@ -137,17 +138,14 @@ Item  {
            width: parent.width
            height: 80
 
-           BorderImage {
+           ListHighlight {
                id: background
-
                anchors {
                    fill: parent
                    leftMargin: -addressbookpage.anchors.leftMargin
                    rightMargin: -addressbookpage.anchors.rightMargin
                }
-
                visible: mouseArea.pressed
-               source: "image://theme/meegotouch-list-inverted-background-pressed-center"
            }
 
            Image {

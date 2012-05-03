@@ -109,10 +109,10 @@ Page {
             id: qualityLabel
             anchors.right: parent.right
             anchors.rightMargin: 10
-            y: audioSwitchLabel.y + audioSwitchLabel.height + 20
+            y: audioSwitchLabel.y + audioSwitchLabel.height + 10
             font.pixelSize: _SMALL_FONT_SIZE
             color: _DISABLED_COLOR_TEXT
-            text: "Audio quality"
+            text: "Quality"
         }
 
         Separator {

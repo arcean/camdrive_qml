@@ -60,10 +60,11 @@ Page {
 
                         ListElement { name: QT_TR_NOOP("Viewfinder"); fileName: "ViewfinderSettings.qml" }
                         ListElement { name: QT_TR_NOOP("Recording"); fileName: "RecordingSettingsPage.qml" }
-                        ListElement { name: QT_TR_NOOP("Video"); fileName: "VideoSettingsPage.qml" }
-                        ListElement { name: QT_TR_NOOP("Audio"); fileName: "AudioSettingsPage.qml" }
+                        //ListElement { name: QT_TR_NOOP("Video"); fileName: "VideoSettingsPage.qml" }
+                        //ListElement { name: QT_TR_NOOP("Audio"); fileName: "AudioSettingsPage.qml" }
                         ListElement { name: QT_TR_NOOP("Alarms"); fileName: "AlarmsPage.qml" }
                         ListElement { name: QT_TR_NOOP("Other"); fileName: "OtherPage.qml" }
+                        ListElement { name: QT_TR_NOOP("Advanced"); fileName: "AdvancedSettings.qml" }
                     }
 
                     DrillDownDelegate {

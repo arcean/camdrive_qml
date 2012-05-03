@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QFile>
+#include <QDir>
 
 class Utils : public QObject {
     Q_OBJECT
@@ -13,6 +14,8 @@ public:
     Q_INVOKABLE void deleteVideo(const QString &path);
     Q_INVOKABLE QString convertLatitudeToGui(double latitude);
     Q_INVOKABLE QString convertLongitudeToGui(double longitude);
+    Q_INVOKABLE void deleteDatabase();
+    Q_INVOKABLE void deleteVideos();
 
 public slots:
 

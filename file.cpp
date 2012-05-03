@@ -17,7 +17,7 @@ File::File(const QString &fileName, Settings *settingsObject, Database *Db)
 
     init();
 
-    if (currentNumVideo >= maxVideo && maxVideo != -1) {
+    if (currentNumVideo >= maxVideo && maxVideo != 0) {
         qDebug() << "currentNumVideo >= maxVideo";
         generatedFileName = getTheOldestFileName();
         qDebug() << "generatedFileName: " << generatedFileName;
@@ -38,7 +38,7 @@ void File::deleteTheOldestFiles()
     int currentNumVideo = Db->countsIds();
     int maxVideo = settingsObject->getMaxVideoFiles();
 
-    if (!(currentNumVideo >= maxVideo && maxVideo != -1)) {
+    if (!(currentNumVideo >= maxVideo && maxVideo != 0)) {
         return;
     }
 

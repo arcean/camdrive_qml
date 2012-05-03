@@ -100,7 +100,7 @@ Page {
             id: separator2Label
             anchors.right: parent.right
             anchors.rightMargin: 10
-            y: maxAllowedSpeed.y + maxAllowedSpeed.height + 20
+            y: maxAllowedSpeed.y + maxAllowedSpeed.height + 10
             font.pixelSize: _SMALL_FONT_SIZE
             color: _DISABLED_COLOR_TEXT
             text: "Emergency contact"
@@ -109,7 +109,7 @@ Page {
         Label {
             id: contactsLabel
             anchors.left: parent.left
-            y: separator2Label.y + separator2Label.height + 20
+            y: separator2Label.y + separator2Label.height + 10
             text: "Family emergency contact"
         }
         Switch {
@@ -164,7 +164,7 @@ Page {
             id: separator3Label
             anchors.right: parent.right
             anchors.rightMargin: 10
-            y: messageContact.y + messageContact.height + 20
+            y: messageContact.y + messageContact.height + 10
             font.pixelSize: _SMALL_FONT_SIZE
             color: _DISABLED_COLOR_TEXT
             text: "Emergency number"

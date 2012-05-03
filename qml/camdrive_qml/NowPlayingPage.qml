@@ -603,7 +603,8 @@ Page {
                         font.pixelSize: 32
                         color: _ACTIVE_COLOR_TEXT
                         wrapMode: Text.WordWrap
-                        text: video.available ? video.metaData.fileName.slice(0, video.metaData.fileName.lastIndexOf(".")) : ""
+                        text: Qt.formatDateTime(video.metaData.lastModified)
+                        //text: video.available ? video.metaData.fileName.slice(0, video.metaData.fileName.lastIndexOf(".")) : ""
                     }
 
                     Column {
@@ -622,7 +623,7 @@ Page {
 
                         Label {
                             color: _TEXT_COLOR
-                            text: video.available ? "Created" + ": " + Qt.formatDateTime(video.metaData.lastModified) : ""
+                            text: video.available ? "File name" + ": " + video.metaData.fileName.slice(0, video.metaData.fileName.lastIndexOf(".")) : ""
                         }
                     }
 
