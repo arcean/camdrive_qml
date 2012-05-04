@@ -443,25 +443,25 @@ Page {
     Image {
         id: statusIcon
         anchors.left: bottomToolbar.left
-        anchors.leftMargin: 5
+        anchors.leftMargin: 10
         anchors.top: bottomToolbar.top
         anchors.verticalCenter: bottomToolbar.verticalCenter
         width: 48
         height: 48
         opacity: 0
-        source:"qrc:/icons/recording_active.png"
+        source: "../images/led_recording.png"
     }
 
     Image {
         id: statusIconInactive
         anchors.left: bottomToolbar.left
-        anchors.leftMargin: 5
+        anchors.leftMargin: 10
         anchors.top: bottomToolbar.top
         anchors.verticalCenter: bottomToolbar.verticalCenter
         width: 48
         height: 48
         opacity: 1
-        source:"qrc:/icons/recording_inactive.png"
+        source: "../images/led_recording1.png"
     }
 
     Text {

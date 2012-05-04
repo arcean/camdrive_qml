@@ -1,7 +1,7 @@
-camdrive (0.0.2) unstable; urgency=low
-  * <Add change description here>
+camdrive (0.5.1) unstable; urgency=low
+  * First public release.
 
- -- Tomasz Pieniążek <Tomek@unknown>  Fri, 20 Jan 2012 21:13:54 +0100
+ -- Tomasz Pieniążek <t.pieniazek@gazeta.pl>  Fri, 04 May 2012 11:35:54 +0200
 
 camdrive (0.0.1) unstable; urgency=low
 
