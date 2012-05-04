@@ -82,6 +82,18 @@ void File::deleteTheOldestFiles()
         }
         qDebug() << "RM OK3";
     }
+
+    currentNumVideo = Db->countsIds();
+    maxVideo = settingsObject->getMaxVideoFiles();
+
+    qDebug() << "currNumVideo" << currentNumVideo;
+    qDebug() << "maxVideo" << maxVideo;
+
+    if ((currentNumVideo >= maxVideo && maxVideo != 0)) {
+        qDebug() << "Continuing";
+        deleteTheOldestFiles();
+    }
+    qDebug() << "Done";
 }
 
 QString File::getTheOldestFileName()

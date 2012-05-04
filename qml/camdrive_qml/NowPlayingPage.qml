@@ -632,7 +632,7 @@ Page {
                             left: parent.left
                             right: parent.right
                             leftMargin: 10
-                            rightMargin: 10
+                            rightMargin: 20
                         }
                     }
 
