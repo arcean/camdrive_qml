@@ -127,7 +127,7 @@ Page {
     SelectionDialog {
         id: sortSelectionDialog
         titleText: "Sort by"
-        selectedIndex: videoListModel.sortProperties[0]
+        //selectedIndex: videoListModel.sortProperties[0]
         platformStyle: StyledSelectionDialog {}
 
         model: ListModel {

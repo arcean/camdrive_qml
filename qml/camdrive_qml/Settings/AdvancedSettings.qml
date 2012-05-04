@@ -77,6 +77,7 @@ Page {
             anchors.right: parent.right
             anchors.top: separator1Label.bottom
             anchors.margins: 10
+            platformStyle: StyledButton {}
 
             text: "Clear database"
             onClicked: clearDatabaseDialog.open();
@@ -105,6 +106,7 @@ Page {
             anchors.right: parent.right
             anchors.top: separator2Label.bottom
             anchors.margins: 10
+            platformStyle: StyledButton {}
 
             text: "Delete all video files"
             onClicked: deleteVideosDialog.open();

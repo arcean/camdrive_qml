@@ -444,7 +444,6 @@ Page {
         id: statusIcon
         anchors.left: bottomToolbar.left
         anchors.leftMargin: 10
-        anchors.top: bottomToolbar.top
         anchors.verticalCenter: bottomToolbar.verticalCenter
         width: 48
         height: 48
@@ -456,7 +455,6 @@ Page {
         id: statusIconInactive
         anchors.left: bottomToolbar.left
         anchors.leftMargin: 10
-        anchors.top: bottomToolbar.top
         anchors.verticalCenter: bottomToolbar.verticalCenter
         width: 48
         height: 48
@@ -468,8 +466,7 @@ Page {
         id: textStatusInfo
         anchors.left: statusIcon.right
         anchors.leftMargin: 5
-        anchors.top: bottomToolbar.top
-        anchors.topMargin: 8
+        anchors.verticalCenter: bottomToolbar.verticalCenter
         text: "Waiting..."
         color: "white"
         font.bold: true
@@ -482,8 +479,7 @@ Page {
         id: textSpeedInfo
         anchors.right: upperToolbar.right
         anchors.rightMargin: 10
-        anchors.top: upperToolbar.top
-        anchors.topMargin: 8
+        anchors.verticalCenter: upperToolbar.verticalCenter
         text: "114 km/h"
         color: "white"
         font.bold: true
@@ -495,8 +491,7 @@ Page {
         id: textCompass
         anchors.left: upperToolbar.left
         anchors.leftMargin: 10
-        anchors.top: upperToolbar.top
-        anchors.topMargin: 8
+        anchors.verticalCenter: upperToolbar.verticalCenter
         text: "NW"
         color: "white"
         font.bold: true
@@ -518,8 +513,7 @@ Page {
         id: textCounter
         anchors.right: bottomToolbar.right
         anchors.rightMargin: 10
-        anchors.top: bottomToolbar.top
-        anchors.topMargin: 8
+        anchors.verticalCenter: bottomToolbar.verticalCenter
         text: "0:00/" + settingsObject.getStoreLast() + ":00"
         color: "white"
         font.bold: true
@@ -662,68 +656,4 @@ Page {
         anchors.centerIn: parent
         visible: false
     }
-
-    Dialog {
-        id: stopDialog
-        title: Item {
-            id: titleField
-            height: stopDialog.platformStyle.titleBarHeight
-            width: parent.width
-            Image {
-                id: supplement
-                source: "qrc:/icons/dialogStop.png"
-                height: parent.height - 10
-                width: 75
-                fillMode: Image.PreserveAspectFit
-                anchors.leftMargin: 5
-                anchors.rightMargin: 5
-            }
-            Label {
-                id: titleLabel
-                anchors.left: supplement.right
-                anchors.verticalCenter: titleField.verticalCenter
-                font.capitalization: Font.MixedCase
-                color: "white"
-                text: "Exit"
-            }
-            Image {
-                 id: closeButton
-                 anchors.verticalCenter: titleField.verticalCenter
-                 anchors.right: titleField.right
-                 source: "image://theme/icon-m-common-dialog-close"
-                 MouseArea {
-                    id: closeButtonArea
-                    anchors.fill: parent
-                    onClicked:  { stopDialog.reject(); }
-                 }
-             }
-         }
-         content: Item {
-             id: name
-             height: childrenRect.height
-             Text {
-                  id: text
-                  font.pixelSize: 22
-                  color: "white"
-                  text: "Do you want to stop recording and exit?\n"
-             }
-         }
-         buttons: ButtonRow {
-             platformStyle: StyledButton {}
-             anchors.horizontalCenter: parent.horizontalCenter
-             Button {id: b1; text: "Yes"; onClicked: {
-                     stopDialog.accept();
-                     stopRecording();
-                     unloadCamera();
-                     appWindow.pageStack.pop();
-                     screenSaver.screenSaverInhibited = false;
-                 }
-             }
-             Button {id: b2; text: "No"; onClicked: {
-                     stopDialog.reject()
-                 }
-             }
-         }
-    }
-
 }
