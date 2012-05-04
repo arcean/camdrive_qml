@@ -3,6 +3,7 @@ import com.nokia.meego 1.0
 import QtMobility.gallery 1.1
 import Settings 1.0
 import "Common"
+import "StyledComponents"
 import "scripts/utils.js" as UtilsScript
 
 Page {
@@ -116,6 +117,27 @@ Page {
 
         text: "Video list"
         detailsText: ""
+        clickable: true
+
+        onClicked: {
+            sortSelectionDialog.open();
+        }
+    }
+
+    SelectionDialog {
+        id: sortSelectionDialog
+        titleText: "Sort by"
+        selectedIndex: videoListModel.sortProperties[0]
+        platformStyle: StyledSelectionDialog {}
+
+        model: ListModel {
+            ListElement { name: "Date (asc)"; value: "+lastModified" }
+            ListElement { name: "Date (desc)"; value: "-lastModified" }
+            ListElement { name: "Title (asc)"; value: "+title" }
+            ListElement { name: "Title (desc)"; value: "-title" }
+        }
+
+        onAccepted: videoList.changeSortOrder(sortSelectionDialog.model.get(sortSelectionDialog.selectedIndex).value)
     }
 
     onLoadingChanged: {
@@ -156,17 +178,6 @@ Page {
     Menu {
         id: menu
         MenuLayout {
-            MenuSelectItem {
-                title: "Sort by"
-                model: ListModel {
-                    ListElement { name: "Date (asc)"; value: "+lastModified" }
-                    ListElement { name: "Date (desc)"; value: "-lastModified" }
-                    ListElement { name: "Title (asc)"; value: "+title" }
-                    ListElement { name: "Title (desc)"; value: "-title" }
-                }
-                initialValue: videoListModel.sortProperties[0]
-                onValueChosen: videoList.changeSortOrder(value)
-            }
             MenuSelectItem {
                 title: "Thumbnail size"
                 model: ListModel {

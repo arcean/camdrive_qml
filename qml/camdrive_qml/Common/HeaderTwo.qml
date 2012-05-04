@@ -6,9 +6,13 @@ Image {
     id: header
     property string text: ""
     property string detailsText: ""
+    property bool clickable: false
+    signal clicked()
     z: 1
     height: 72
-    source: "image://theme/" + _ACTIVE_COLOR + "-meegotouch-view-header-fixed"
+    source: (mouseArea.pressed && clickable) ? "image://theme/" + _ACTIVE_COLOR + "-meegotouch-view-header-fixed-pressed" :
+                                               "image://theme/" + _ACTIVE_COLOR + "-meegotouch-view-header-fixed"
+
     Label {
         id: titleLabel
         anchors {
@@ -34,5 +38,22 @@ Image {
         color: _TEXT_COLOR
         font.pixelSize: _SMALL_FONT_SIZE
         font.bold: false
+    }
+
+    Image {
+        anchors { right: parent.right; rightMargin: 20; verticalCenter: parent.verticalCenter }
+        source: (theme.inverted) ? _ICON_LOCATION + "icon-m-textinput-combobox-arrow.png" : _ICON_LOCATION + "icon-m-common-combobox-arrow.png"
+        sourceSize.width: width
+        sourceSize.height: height
+        visible: header.clickable
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: parent
+
+        onClicked: {
+            header.clicked();
+        }
     }
 }
