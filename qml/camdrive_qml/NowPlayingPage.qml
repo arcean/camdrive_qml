@@ -57,6 +57,16 @@ Page {
         setCollision(specialCode);
         reverseGeoCode.coordToAddress(latitude, longitude);
 
+        //! Show begin and end positions
+        beginCoord.latitude = latitude;
+        beginCoord.longitude = longitude;
+        endCoord.latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, Database.countsIds(videoPlayer.source));
+        endCoord.longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, Database.countsIds(videoPlayer.source));
+        console.log('latitude', latitude)
+        console.log('longitude', longitude)
+        beginPos.visible = true;
+        endPos.visible = true;
+
         videoInfoIterator++;
 //        videoInfoTimer.start();
     }
@@ -496,6 +506,18 @@ Page {
         }
     }
 
+    Coordinate {
+        id: beginCoord
+        latitude: 56.62
+        longitude: 16.16
+    }
+
+    Coordinate {
+        id: endCoord
+        latitude: 56.62
+        longitude: 16.16
+    }
+
     //! Model containing system information pages
     VisualItemModel {
         id: itemModel
@@ -512,6 +534,36 @@ Page {
                 zoomLevel: maximumZoomLevel - 4
                 center: ourCoord
                 visible: nowPlayingPage.height > nowPlayingPage.width
+
+                MapImage {
+                    id: beginPos
+                    source: _ICON_LOCATION + "icon-m-common-location-inverse.png"
+                    coordinate: beginCoord
+                    visible: false
+
+                    /*!
+                     * We want that bottom middle edge of icon points to the location, so using offset parameter
+                     * to change the on-screen position from coordinate. Values are calculated based on icon size,
+                     * in our case icon is 48x48.
+                     */
+                    offset.x: -24
+                    offset.y: -48
+                }
+
+                MapImage {
+                    id: endPos
+                    source: _ICON_LOCATION + "icon-m-common-location.png"
+                    coordinate: endCoord
+                    visible: false
+
+                    /*!
+                     * We want that bottom middle edge of icon points to the location, so using offset parameter
+                     * to change the on-screen position from coordinate. Values are calculated based on icon size,
+                     * in our case icon is 48x48.
+                     */
+                    offset.x: -24
+                    offset.y: -48
+                }
 
                 MapImage {
                     id: mapPlacer
