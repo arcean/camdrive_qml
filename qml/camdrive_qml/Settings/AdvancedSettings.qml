@@ -53,7 +53,7 @@ Page {
         }
         boundsBehavior: Flickable.DragOverBounds
         contentWidth: width
-        contentHeight: velocityUnitButton.y + velocityUnitButton.height - velocityUnitLabel.y
+        contentHeight: deleteVideosButton.y + deleteVideosButton.height - separator1Label.y
 
         Separator {
             anchors.left: parent.left

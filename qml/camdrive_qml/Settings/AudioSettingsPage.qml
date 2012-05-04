@@ -100,7 +100,7 @@ Page {
             platformStyle: StyledSwitch {}
             onCheckedChanged: {
                 audioQualityButtonRow.enabled = checked
-                audioQualityLabel.enabled = checked
+                //audioQualityLabel.enabled = checked
                 settingsObject.setEnableAudio(checked)
             }
         }
