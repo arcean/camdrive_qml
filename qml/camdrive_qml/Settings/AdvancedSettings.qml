@@ -116,7 +116,7 @@ Page {
 
     QueryDialog {
         id: deleteVideosDialog
-        icon: "../images/sms.png"
+        icon: "../images/dialog-question.png"
         titleText: "Delete all video files"
         message: "Are you sure that you want to delete all video files?"
 
@@ -130,7 +130,7 @@ Page {
 
     QueryDialog {
         id: clearDatabaseDialog
-        icon: "../images/sms.png"
+        icon: "../images/dialog-question.png"
         titleText: "Clear database"
         message: "Are you sure that you want to clear the video database?"
 
