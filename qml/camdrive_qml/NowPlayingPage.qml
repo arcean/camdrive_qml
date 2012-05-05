@@ -83,6 +83,7 @@ Page {
                 gsensorChart.addPoint(DatabaseHelper.getVideoInfoAccelYQML(videoPlayer.source, i), 2);
                 gsensorChart.addPoint(DatabaseHelper.getVideoInfoAccelZQML(videoPlayer.source, i), 3);
             }
+            gsensorChart.ready = true;
         }
 
         videoInfoIterator++;
@@ -573,7 +574,7 @@ Page {
 
                 MapImage {
                     id: beginPos
-                    source: _ICON_LOCATION + "icon-m-common-location-inverse.png"
+                    source: _ICON_LOCATION + "icon-m-common-location-selected.png"
                     coordinate: beginCoord
                     visible: false
 
@@ -601,19 +602,12 @@ Page {
                     offset.y: -48
                 }
 
-                MapImage {
+                MapCircle {
                     id: mapPlacer
-                    source: _ICON_LOCATION + "icon-m-common-location-selected.png"
-                    coordinate: ourCoord
-                    visible: false
-
-                    /*!
-                     * We want that bottom middle edge of icon points to the location, so using offset parameter
-                     * to change the on-screen position from coordinate. Values are calculated based on icon size,
-                     * in our case icon is 48x48.
-                     */
-                    offset.x: -24
-                    offset.y: -48
+                    center: ourCoord
+                    radius: 3
+                    color: "green"
+                    border { width: 10; color: "green" }
                 }
 
                 //! Panning and pinch implementation on the maps
