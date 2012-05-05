@@ -249,7 +249,7 @@ int Database::getVideoStoredEach(const QString &videoName)
 
 /*!
  * Get the sum of the special code values.
- * If it's larger than 10, then it's a 'collision' video.select sum(specialCode) from camdrive_file_part_1
+ * If it's larger than 10, then it's a 'collision' video.
  */
 int Database::getSpecialCodeSum(const QString &videoName)
 {
