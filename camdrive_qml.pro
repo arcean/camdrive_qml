@@ -45,7 +45,9 @@ SOURCES += main.cpp \
     accelerometer.cpp \
     gps.cpp \
     geocoder.cpp \
-    telephony.cpp
+    telephony.cpp \
+    chart.cpp \
+    line.cpp
 
 # Please do not modify the following two lines. Required for deployment.
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
@@ -77,7 +79,9 @@ HEADERS += \
     accelerometer.h \
     gps.h \
     geocoder.h \
-    telephony.h
+    telephony.h \
+    chart.h \
+    line.h
 
 RESOURCES += \
     camdrive_qml.qrc
