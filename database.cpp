@@ -188,7 +188,7 @@ float Database::getVideoInfoAccelX(const QString &videoName, int videoId)
     query.exec(QString("SELECT accelX FROM '%1' WHERE videoId=%2").arg(videoName).arg(videoId));
     query.next();
     float result = query.value(0).toFloat();
-
+    qDebug() << "RET RESULT AccelX" << result;
     return result;
 }
 

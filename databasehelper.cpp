@@ -83,6 +83,14 @@ int DatabaseHelper::getSpecialCodeSumQML(const QString &videoName)
     return Db->getSpecialCodeSum(data);
 }
 
+int DatabaseHelper::countVideoInfo(const QString &videoName)
+{
+    QString data = removePostfix(videoName);
+    data = removePrefix(data);
+    qDebug() << "PRINT: " << data << "countVideoInfo";
+    return Db->countsVideoIds(data);
+}
+
 void DatabaseHelper::removeVideoQML(const QString &videoName)
 {
     QString data = removePostfix(videoName);

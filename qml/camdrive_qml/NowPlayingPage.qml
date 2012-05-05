@@ -6,6 +6,8 @@ import QtMobility.location 1.2
 import QtMobility.systeminfo 1.2
 import GeoCoder 1.0
 import Settings 1.0
+import Line 1.0
+import Chart 1.0
 import "scripts/utils.js" as Utils
 import "Common/"
 
@@ -50,22 +52,38 @@ Page {
         var latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator);
         var longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator);
         var specialCode = DatabaseHelper.getVideoInfoSpecialCodeQML(videoPlayer.source, videoInfoIterator);
+        var accelX = DatabaseHelper.getVideoInfoAccelXQML(videoPlayer.source, videoInfoIterator);
+        var accelY = DatabaseHelper.getVideoInfoAccelYQML(videoPlayer.source, videoInfoIterator);
+        var accelZ = DatabaseHelper.getVideoInfoAccelZQML(videoPlayer.source, videoInfoIterator);
 
         setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, videoInfoIterator));
         setLatitude(latitude);
         setLongitude(longitude);
         setCollision(specialCode);
+        setAccelReadings(accelX, accelY, accelZ);
         reverseGeoCode.coordToAddress(latitude, longitude);
+
+        var num = DatabaseHelper.countVideoInfo(videoPlayer.source);
 
         //! Show begin and end positions
         beginCoord.latitude = latitude;
         beginCoord.longitude = longitude;
-        endCoord.latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, Database.countsIds(videoPlayer.source));
-        endCoord.longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, Database.countsIds(videoPlayer.source));
+        endCoord.latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, num);
+        endCoord.longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, num);
         console.log('latitude', latitude)
         console.log('longitude', longitude)
         beginPos.visible = true;
         endPos.visible = true;
+
+        //! Add accel reading to chart
+        if (!gsensorChart.ready) {
+            for (var i = 1; i <= num; i++) {
+                console.log("DHETA", DatabaseHelper.getVideoInfoAccelXQML(videoPlayer.source, i))
+                gsensorChart.addPoint(DatabaseHelper.getVideoInfoAccelXQML(videoPlayer.source, i), 1);
+                gsensorChart.addPoint(DatabaseHelper.getVideoInfoAccelYQML(videoPlayer.source, i), 2);
+                gsensorChart.addPoint(DatabaseHelper.getVideoInfoAccelZQML(videoPlayer.source, i), 3);
+            }
+        }
 
         videoInfoIterator++;
 //        videoInfoTimer.start();
@@ -99,6 +117,17 @@ Page {
         console.log('stopPlayback stop 2')
         videoInfoTimer.stop();
         appWindow.pageStack.pop();
+    }
+
+    //! Update accel readings for g-sensor view
+    function setAccelReadings(accelX, accelY, accelZ)
+    {
+        if (accelX === 0 && accelY === 0 && accelZ === 0)
+            return;
+
+        gsensorXline.value = Math.abs(accelX);
+        gsensorYline.value = Math.abs(accelY);
+        gsensorZline.value = Math.abs(accelZ);
     }
 
     /* Sets speedLabel's text. */
@@ -405,10 +434,14 @@ Page {
                 var latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator);
                 var longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator);
                 var specialCode = DatabaseHelper.getVideoInfoSpecialCodeQML(videoPlayer.source, videoInfoIterator);
+                var accelX = DatabaseHelper.getVideoInfoAccelXQML(videoPlayer.source, videoInfoIterator);
+                var accelY = DatabaseHelper.getVideoInfoAccelYQML(videoPlayer.source, videoInfoIterator);
+                var accelZ = DatabaseHelper.getVideoInfoAccelZQML(videoPlayer.source, videoInfoIterator);
                 setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, videoInfoIterator));
                 setLatitude(latitude);
                 setLongitude(longitude);
                 setCollision(specialCode);
+                setAccelReadings(accelX, accelY, accelZ);
                 reverseGeoCode.coordToAddress(latitude, longitude);
                 videoInfoIterator++;
             }
@@ -463,6 +496,9 @@ Page {
                 videoPlaying = false;
                 // /* Play the video again. */
                 //startPlayback();
+            }
+            if (videoPlayer.status == Video.Loaded && videoPlayer.playing) {
+                videoInfoTimer.start();
             }
         }
 
@@ -627,17 +663,10 @@ Page {
         Item {
             width: nowPlayingPage.width; height: pageHeight
 
-            Rectangle {
-                id: details
-                anchors.fill: parent
-                color: "green"
-                opacity: 0
-                visible: nowPlayingPage.height > nowPlayingPage.width
-            }
             Flickable {
                 id: flicker
 
-                anchors.fill: details
+                anchors.fill: parent
                 contentWidth: width
                 contentHeight: column.height + 20
                 visible: nowPlayingPage.height > nowPlayingPage.width
@@ -731,9 +760,130 @@ Page {
                     }
                 }
             }
+        }
+
+        //! Page displaying accelerometer readings
+        Item {
+            width: nowPlayingPage.width; height: pageHeight
+
+            Flickable {
+                id: flicker2
+
+                anchors.fill: parent
+                anchors.rightMargin: 10
+                contentWidth: width
+                contentHeight: gsensorChart.y + gsensorChart.height - separator1Label.y
+                visible: nowPlayingPage.height > nowPlayingPage.width
+
+                Separator {
+                    anchors.left: parent.left
+                    anchors.right: separator1Label.left
+                    anchors.rightMargin: 20
+                    anchors.verticalCenter: separator1Label.verticalCenter
+                }
+                Label {
+                    id: separator1Label
+                    anchors.top: parent.top
+                    anchors.right: parent.right
+                    anchors.rightMargin: 10
+                    font.pixelSize: _SMALL_FONT_SIZE
+                    color: _DISABLED_COLOR_TEXT
+                    text: "G-sensor"
+                }
+
+                Label {
+                    id: gsensorX
+                    anchors.left: parent.left
+                    anchors.top: separator1Label.bottom
+                    anchors.topMargin: 10
+                    color: _TEXT_COLOR
+                    text: "X axis"
+                }
+                Line {
+                    id: gsensorXline
+                    height: gsensorX.height
+                    anchors.right: parent.right
+                    anchors.left: gsensorX.right
+                    anchors.leftMargin: 40
+                    anchors.verticalCenter: gsensorX.verticalCenter
+
+                    type: 1
+                    value: 5
+                }
+
+                Label {
+                    id: gsensorY
+                    anchors.left: parent.left
+                    anchors.top: gsensorX.bottom
+                    anchors.topMargin: 10
+                    color: _TEXT_COLOR
+                    text: "Y axis"
+                }
+                Line {
+                    id: gsensorYline
+                    height: gsensorY.height
+                    anchors.right: parent.right
+                    anchors.left: gsensorY.right
+                    anchors.leftMargin: 40
+                    anchors.verticalCenter: gsensorY.verticalCenter
+
+                    type: 2
+                    value: 5
+                }
+
+                Label {
+                    id: gsensorZ
+                    anchors.left: parent.left
+                    anchors.top: gsensorY.bottom
+                    anchors.topMargin: 10
+                    color: _TEXT_COLOR
+                    text: "Z axis"
+                }
+                Line {
+                    id: gsensorZline
+                    height: gsensorZ.height
+                    anchors.right: parent.right
+                    anchors.left: gsensorZ.right
+                    anchors.leftMargin: 40
+                    anchors.verticalCenter: gsensorZ.verticalCenter
+
+                    type: 3
+                    value: 5
+                }
+
+                Separator {
+                    anchors.left: parent.left
+                    anchors.right: separator2Label.left
+                    anchors.rightMargin: 20
+                    anchors.verticalCenter: separator2Label.verticalCenter
+                }
+                Label {
+                    id: separator2Label
+                    anchors.top: gsensorZ.bottom
+                    anchors.topMargin: 10
+                    anchors.right: parent.right
+                    anchors.rightMargin: 10
+                    font.pixelSize: _SMALL_FONT_SIZE
+                    color: _DISABLED_COLOR_TEXT
+                    text: "Chart"
+                }
+
+                Chart {
+                    id: gsensorChart
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.top: separator2Label.bottom
+                    anchors.topMargin: 10
+
+                    property bool ready: false
+
+                    height: 200
+                    smooth: true
+                }
+            }
 
             ScrollDecorator {
-                flickableItem: flicker
+                flickableItem: flicker2
             }
         }
     }

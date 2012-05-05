@@ -5,44 +5,6 @@ Chart::Chart(QDeclarativeItem *parent) :
 {
     //! Important, otherwise the paint method is never called
     setFlag(QGraphicsItem::ItemHasNoContents, false);
-    pointsX.append(2);
-    pointsX.append(5);
-    pointsX.append(8.5);
-    pointsX.append(11);
-    pointsX.append(14.5);
-    pointsX.append(19);
-    pointsX.append(15.3223);
-    pointsX.append(12.1212);
-    pointsX.append(-2.32);
-    pointsX.append(0);
-    pointsX.append(0.43);
-    pointsX.append(-12.54);
-
-    pointsY.append(12);
-    pointsY.append(14);
-    pointsY.append(12.5);
-    pointsY.append(15);
-    pointsY.append(17);
-    pointsY.append(11);
-    pointsY.append(-16);
-    pointsY.append(-16.54);
-    pointsY.append(-17.32);
-    pointsY.append(-14.32);
-    pointsY.append(-5.43);
-    pointsY.append(-4.3221);
-
-    pointsZ.append(-4);
-    pointsZ.append(-5);
-    pointsZ.append(-6);
-    pointsZ.append(-7);
-    pointsZ.append(-8);
-    pointsZ.append(-7.6);
-    pointsZ.append(-7.4);
-    pointsZ.append(-6.4);
-    pointsZ.append(-6.1);
-    pointsZ.append(-5.4332);
-    pointsZ.append(-7.322);
-    pointsZ.append(-2.0970);
 }
 
 void Chart::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

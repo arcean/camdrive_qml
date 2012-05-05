@@ -14,6 +14,8 @@
 #include "gps.h"
 #include "geocoder.h"
 #include "telephony.h"
+#include "line.h"
+#include "chart.h"
 
 Q_DECL_EXPORT int main(int argc, char *argv[])
 {
@@ -35,6 +37,8 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     qmlRegisterType<Settings>("Settings", 1, 0, "Settings");
     qmlRegisterType<GeoCoder>("GeoCoder",1,0 ,"GeoCoder");
     qmlRegisterType<Telephony, 1>("Telephony", 1, 0, "Telephony");
+    qmlRegisterType<Chart>("Chart", 1, 0, "Chart");
+    qmlRegisterType<Line>("Line", 1, 0, "Line");
 
     QDeclarativeContext *context = view->rootContext();
     context->setContextProperty("Utils", &utils);

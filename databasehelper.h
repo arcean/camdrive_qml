@@ -17,6 +17,8 @@ public:
     //! Subtitles
     Q_INVOKABLE void createSubtitles(const QString &videoName, bool velocityUnit);
 
+    Q_INVOKABLE int countVideoInfo(const QString &videoName);
+
 public slots:
     void setDatabase(Database *db);
 
