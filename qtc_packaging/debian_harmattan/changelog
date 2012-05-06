@@ -1,3 +1,8 @@
+camdrive (0.6.3) unstable; urgency=low
+  * Second public release.
+
+ -- Tomasz Pieniążek <t.pieniazek@gazeta.pl>  Sun, 06 May 2012 15:33:11 +0200
+
 camdrive (0.5.1) unstable; urgency=low
   * First public release.
 
