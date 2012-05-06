@@ -821,7 +821,7 @@ Page {
                     height: gsensorY.height
                     anchors.right: parent.right
                     anchors.left: gsensorY.right
-                    anchors.leftMargin: 40
+                    anchors.leftMargin: 42
                     anchors.verticalCenter: gsensorY.verticalCenter
 
                     type: 2
@@ -843,7 +843,7 @@ Page {
                     height: gsensorZ.height
                     anchors.right: parent.right
                     anchors.left: gsensorZ.right
-                    anchors.leftMargin: 40
+                    anchors.leftMargin: 41
                     anchors.verticalCenter: gsensorZ.verticalCenter
 
                     type: 3
