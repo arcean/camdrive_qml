@@ -41,10 +41,10 @@ void Accelerometer::readingChanged()
         maxX = accelerometer->reading()->x();
     }
     if (abs(accelerometer->reading()->y()) > abs(maxY)) {
-        maxX = accelerometer->reading()->y();
+        maxY = accelerometer->reading()->y();
     }
     if (abs(accelerometer->reading()->z()) > abs(maxZ)) {
-        maxX = accelerometer->reading()->z();
+        maxZ = accelerometer->reading()->z();
     }
 
     emit newReading();
