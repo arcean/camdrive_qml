@@ -24,6 +24,8 @@ private:
     QList<double> pointsZ;
     //! Number of a column to hightlight
     int currentHightlight;
+    int divideCounter;
+
 };
 
 QML_DECLARE_TYPE(Chart)

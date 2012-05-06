@@ -243,7 +243,7 @@ void QDeclarativeCamera::toggleCamera()
         encoderSettings.setResolution(848, 480);
 
     mediaRecorder_->setEncodingSettings(audioSettings, encoderSettings);
-    mediaRecorder_->setMuted(settingsObject->getEnableAudio());
+    mediaRecorder_->setMuted(!settingsObject->getEnableAudio());
 
     initFile();
 }
