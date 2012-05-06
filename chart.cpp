@@ -5,6 +5,8 @@ Chart::Chart(QDeclarativeItem *parent) :
 {
     //! Important, otherwise the paint method is never called
     setFlag(QGraphicsItem::ItemHasNoContents, false);
+
+    currentHightlight = 1;
 }
 
 void Chart::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -15,6 +17,7 @@ void Chart::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     QPen penZ(QColor("#B6005B"), 2);
     QPen backgroundColumns(QColor("#0F2D00"), 2);
     QPen horizontalLinePen(QColor("#0F2D00"), 2);
+    QPen hightlightColumn(QColor("blue"), 2);
 
     if(smooth() == true) {
         painter->setRenderHint(QPainter::Antialiasing, true);
@@ -29,10 +32,13 @@ void Chart::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     painter->setPen(backgroundColumns);
 
     painter->drawRect(0, 0, width, this->height());
-    painter->fillRect(0, 0, width, this->height(), QColor("#000400"));
+    //painter->fillRect(0, 0, width, this->height(), QColor("#000400"));
 
     for (int i = 0; i <= number; i++)
         painter->drawLine(i * spacer, 0, i * spacer, this->height());
+
+    painter->setPen(hightlightColumn);
+    painter->drawLine((this->currentHightlight-1) * spacer, 0, (this->currentHightlight-1) * spacer, this->height());
 
     //! Draw horizontal line
     painter->setPen(horizontalLinePen);
@@ -86,4 +92,10 @@ void Chart::addPoint(int y, int lineType)
     default:
         qDebug() << "Unsupported line type [chart]";
     }
+}
+
+void Chart::setCurrentHightlight(int column)
+{
+    this->currentHightlight = column;
+    this->update(0, 0, this->width(), this->height());
 }

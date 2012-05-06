@@ -14,6 +14,7 @@ public:
 
     Q_INVOKABLE void addPoint(int y, int lineType);
     Q_INVOKABLE void updateChart();
+    Q_INVOKABLE void setCurrentHightlight(int column);
 
 private:
     int convertValues(double value);
@@ -21,6 +22,8 @@ private:
     QList<double> pointsX;
     QList<double> pointsY;
     QList<double> pointsZ;
+    //! Number of a column to hightlight
+    int currentHightlight;
 };
 
 QML_DECLARE_TYPE(Chart)
