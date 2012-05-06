@@ -97,6 +97,11 @@ void Chart::addPoint(int y, int lineType)
 
 void Chart::setCurrentHightlight(int column)
 {
-    this->currentHightlight = column;
-    this->update(0, 0, this->width(), this->height());
+    //! Number of all points
+    int number = pointsX.size();
+
+    if (column <= number) {
+        currentHightlight = column;
+        update(0, 0, this->width(), this->height());
+    }
 }

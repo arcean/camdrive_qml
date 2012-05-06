@@ -49,6 +49,7 @@ Page {
     function startSpeedInfoTimer()
     {
         videoInfoIterator = 1;
+        videoPlayer.currentPos = 1;
         var latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator);
         var longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator);
         var specialCode = DatabaseHelper.getVideoInfoSpecialCodeQML(videoPlayer.source, videoInfoIterator);
@@ -88,8 +89,7 @@ Page {
         }
         gsensorChart.setCurrentHightlight(videoInfoIterator);
 
-        videoInfoIterator++;
-//        videoInfoTimer.start();
+        //videoInfoIterator++;
     }
 
     function startPlayback() {
@@ -118,7 +118,6 @@ Page {
         videoPlayer.source = "";
         currentVideo = [];
         console.log('stopPlayback stop 2')
-        videoInfoTimer.stop();
         appWindow.pageStack.pop();
     }
 
@@ -399,14 +398,6 @@ Page {
             }
         }
     }
-    /*
-    Timer {
-        id: controlsTimer
-
-        running: (toolBar.show) && (!seekMouseArea.pressed)
-        interval: 3000
-        onTriggered: toolBar.show = false
-    }*/
 
     Timer {
         id: archivePlaybackTimer
@@ -419,38 +410,6 @@ Page {
             console.log('archivePlaybackTimer setVideo DONE')
             startSpeedInfoTimer();
             mapPlacer.visible = true;
-        }
-    }
-
-    Timer {
-        id: videoInfoTimer
-        interval: DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000
-        repeat: true
-        running: false
-
-        onTriggered: {
-            /*
-             * Check if videoPlayer is in paused state.
-             * If so, do not update additional video infos.
-             */
-            if (!videoPlayer.setToPaused) {
-                var latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator);
-                var longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator);
-                var specialCode = DatabaseHelper.getVideoInfoSpecialCodeQML(videoPlayer.source, videoInfoIterator);
-                var accelX = DatabaseHelper.getVideoInfoAccelXQML(videoPlayer.source, videoInfoIterator);
-                var accelY = DatabaseHelper.getVideoInfoAccelYQML(videoPlayer.source, videoInfoIterator);
-                var accelZ = DatabaseHelper.getVideoInfoAccelZQML(videoPlayer.source, videoInfoIterator);
-                setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, videoInfoIterator));
-                setLatitude(latitude);
-                setLongitude(longitude);
-                setCollision(specialCode);
-                setAccelReadings(accelX, accelY, accelZ);
-                gsensorChart.setCurrentHightlight(videoInfoIterator);
-                reverseGeoCode.coordToAddress(latitude, longitude);
-                videoInfoIterator++;
-            }
-            else
-                videoInfoTimer.stop();
         }
     }
 
@@ -474,19 +433,41 @@ Page {
 
         property bool repeat: false // True if playback of the current video is to be repeated
         property bool setToPaused: false
+        property int currentPos: 1
 
         paused: ((platformWindow.viewMode == WindowState.Thumbnail) && ((videoPlayer.playing)) || ((appWindow.pageStack.currentPage != videoPlaybackPage) && (videoPlayer.playing)) || (videoPlayer.setToPaused))
         onError: {
         }
 
-        onPlayingChanged: {
-            if (videoPlayer.playing)
-                videoInfoTimer.start();
-        }
+        onPositionChanged: {
+            //! TODO: take in account: DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000
 
-        onSetToPausedChanged: {
-            if (!videoPlayer.setToPaused)
-                videoInfoTimer.start();
+            console.log('position: ', videoPlayer.position)
+            var pos = Math.floor(videoPlayer.position / 1000);
+
+            //! Fix for disappearing video informations.
+            if (pos === 0)
+                pos = 1;
+
+            //! Prevent unnecessary repainting
+            if (currentPos === pos)
+                return;
+
+            if (!videoPlayer.setToPaused) {
+                var latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, pos);
+                var longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, pos);
+                var specialCode = DatabaseHelper.getVideoInfoSpecialCodeQML(videoPlayer.source, pos);
+                var accelX = DatabaseHelper.getVideoInfoAccelXQML(videoPlayer.source, pos);
+                var accelY = DatabaseHelper.getVideoInfoAccelYQML(videoPlayer.source, pos);
+                var accelZ = DatabaseHelper.getVideoInfoAccelZQML(videoPlayer.source, pos);
+                setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, pos));
+                setLatitude(latitude);
+                setLongitude(longitude);
+                setCollision(specialCode);
+                setAccelReadings(accelX, accelY, accelZ);
+                gsensorChart.setCurrentHightlight(pos);
+                reverseGeoCode.coordToAddress(latitude, longitude);
+            }
         }
 
         onStatusChanged: {
@@ -496,13 +477,9 @@ Page {
                 videoPlayer.stop();
                 //videoPlayer.position = 0;
                 //videoPlayer.play();
-                videoInfoTimer.stop();
                 videoPlaying = false;
                 // /* Play the video again. */
                 //startPlayback();
-            }
-            if (videoPlayer.status == Video.Loaded && videoPlayer.playing) {
-                videoInfoTimer.start();
             }
         }
 
