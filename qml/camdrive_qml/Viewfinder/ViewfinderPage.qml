@@ -350,8 +350,8 @@ Page {
 
         onFireRecording: {
             viewfinderPage.startRecording();
-            textStatusInfo.text = "Recording..."
-            statusIconTimer.start()
+            textStatusInfo.text = "Recording...";
+            statusIconTimer.start();
         }
     }
 
@@ -632,14 +632,10 @@ Page {
         id: splashscreen
         anchors.fill: parent
 
-        MouseArea {
-            anchors.fill: parent
-
-            onClicked: {
-                viewfinderPage.firstTimeFunction();
-                splashscreen.visible = false;
-                splashscreen.enabled = false;
-            }
+        onClicked: {
+            viewfinderPage.firstTimeFunction();
+            splashscreen.visible = false;
+            splashscreen.enabled = false;
         }
     }
 }

@@ -5,6 +5,7 @@ import "../Common"
 
 Item {
     id: master
+    signal clicked()
 
     Rectangle {
         anchors.fill: parent
@@ -26,6 +27,14 @@ Item {
         font.pixelSize: 24
         color: "white"
         text: "Touch screen to start recording"
+    }
+
+    MouseArea {
+        anchors.fill: parent
+
+        onClicked: {
+            master.clicked();
+        }
     }
 
     ButtonHighlight {
