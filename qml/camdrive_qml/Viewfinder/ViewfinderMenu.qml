@@ -73,7 +73,7 @@ Item {
         source: "../images/map.png"
         highlightSource: "../images/highlight120.png"
         onClicked: {
-            viewfinderPage.pauseRecording();
+            //viewfinderPage.pauseRecording();
             showMapsPage();
         }
     }

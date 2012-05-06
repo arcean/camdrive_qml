@@ -8,7 +8,8 @@ Page {
 
     function showViewfinderPage()
     {
-        viewfinderPage.firstTimeFunction();
+        //viewfinderPage.firstTimeFunction();
+        viewfinderPage.showSplashscreen();
         pageStack.push(viewfinderPage);
     }
 

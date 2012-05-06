@@ -41,8 +41,14 @@ Page {
         streetNameLabel.text = "";
         viewfinderPage.clearRecordingStatus();
         screenSaver.screenSaverInhibited = true;
-        viewfinderPage.wakeCamera();
         Gps.start();
+        viewfinderPage.wakeCamera();
+    }
+
+    function showSplashscreen()
+    {
+        splashscreen.visible = true;
+        splashscreen.enabled = true;
     }
 
     Compass {
@@ -123,38 +129,8 @@ Page {
      /*   }
     }*/
 
-    Timer {
-        id: timerTouchToStartRecording
-        interval: 1200
-        repeat: true
-        running: true
-
-        onTriggered: {
-            if (textTouchToStartRecording.opacity == 1)
-                textTouchToStartRecording.opacity = 0
-            else
-                textTouchToStartRecording.opacity = 1
-        }
-    }
-
-    MouseArea {
-        id: clickMeMouseArea
-        anchors.fill: parent
-        onClicked: {
-            clickMeMouseArea.enabled = false
-            timerTouchToStartRecording.stop()
-            textTouchToStartRecording.visible = false
-            textStatusInfo.text = "Recording..."
-            statusIconTimer.start()
-            startRecording()
-        }
-    }
-
     function clearRecordingStatus()
     {
-        clickMeMouseArea.enabled = true;
-        timerTouchToStartRecording.start();
-        textTouchToStartRecording.visible = true;
         statusIconTimer.stop();
         textStatusInfo.text = "Waiting...";
         statusIcon.opacity = 0;
@@ -279,8 +255,12 @@ Page {
 
     function resumeRecording()
     {
-        if(viewfinderPage.isCameraActive)
-            frontCam.start();
+        //if(viewfinderPage.isCameraActive)
+        //    frontCam.start();
+        if (viewfinderPage.isCameraPaused) {
+            splashscreen.visible = true;
+            splashscreen.enabled = true;
+        }
         viewfinderPage.isCameraPaused = false;
     }
 
@@ -289,6 +269,12 @@ Page {
         emergencyMenu.visible = true;
         closeMenu.enabled = true;
         viewfinderPage.pauseRecording();
+    }
+
+    //! Black background
+    Rectangle {
+        anchors.fill: parent
+        color: "black"
     }
 
     Scale {
@@ -362,15 +348,11 @@ Page {
                 emergencyButton.startAlarm();
         }
 
-    //    onCreateVideoDetailsTable: {
-    //        Database.createVideoDetailsTable(name);
-    //   }
-    //    onAddNewVideoSignal: {
-           // Database.addNewVideo(videoName, numberOfVideoParts, dateTime);
-    //    }
-      //  onAddNewVideoInfoSignal: {
-//            Database.addNewVideoInfo(videoName, latitude, longitude, speed, accelX, accelY, accelZ, specialCode);
-       // }
+        onFireRecording: {
+            viewfinderPage.startRecording();
+            textStatusInfo.text = "Recording..."
+            statusIconTimer.start()
+        }
     }
 
     GeoCoder {
@@ -520,7 +502,7 @@ Page {
         font.pointSize: 18
     }
 
-    // Record/stop button
+    //! Record/stop button
     ButtonHighlight {
         id: toggleRecordingButton
         width: 80
@@ -541,7 +523,7 @@ Page {
         }
     }
 
-    // Record/stop button
+    //! Night mode button
     ButtonHighlight {
         id: toggleNightModeButton
         width: 80
@@ -616,17 +598,6 @@ Page {
         }
     }
 
-    Text {
-        id: textTouchToStartRecording
-        anchors.centerIn: parent
-        horizontalAlignment: TextInput.AlignHCenter
-        text: "Touch to start recording"
-        color: "red"
-        font.bold: true
-        font.pointSize: 18
-        opacity: 1
-    }
-
     SpeedWarning {
         id: speedWarning
         anchors.left: parent.left
@@ -655,5 +626,20 @@ Page {
         id: emergencyMenu
         anchors.centerIn: parent
         visible: false
+    }
+
+    Splashscreen {
+        id: splashscreen
+        anchors.fill: parent
+
+        MouseArea {
+            anchors.fill: parent
+
+            onClicked: {
+                viewfinderPage.firstTimeFunction();
+                splashscreen.visible = false;
+                splashscreen.enabled = false;
+            }
+        }
     }
 }

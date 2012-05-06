@@ -38,6 +38,7 @@ signals:
     void createVideoDetailsTable(const QString &name);
     void gpsUpdated();
     void alarm(int alarmLevel, int collisionSide);
+    void fireRecording();
 
 public slots:
     void viewfinderSizeChanged(const QSizeF& size);
@@ -61,6 +62,7 @@ public slots:
 protected slots:
     void geometryChanged(const QRectF &newGeometry, const QRectF &oldGeometry);
     void durationChangedFunc(qint64 duration);
+    void statusChanged(QCamera::Status status);
 
 private slots:
     void storeData();

@@ -215,6 +215,7 @@ void QDeclarativeCamera::toggleCamera()
     }
     connect(viewfinder_, SIGNAL(nativeSizeChanged(QSizeF)), this, SLOT(viewfinderSizeChanged(QSizeF)));
     connect(mediaRecorder_, SIGNAL(durationChanged(qint64)), this, SLOT(durationChangedFunc(qint64)));
+    connect(camera_, SIGNAL(statusChanged(QCamera::Status)), this, SLOT(statusChanged(QCamera::Status)));
     viewfinder_->setSize(geometry.size());
 
     QAudioEncoderSettings audioSettings;
@@ -313,6 +314,13 @@ bool QDeclarativeCamera::enableNightMode(bool enable)
     }
 
     return false;
+}
+
+void QDeclarativeCamera::statusChanged(QCamera::Status status)
+{
+    qDebug() << "Camera status" << status;
+    if (status == QCamera::ActiveStatus)
+        emit fireRecording();
 }
 
 void QDeclarativeCamera::start()
