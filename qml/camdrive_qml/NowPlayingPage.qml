@@ -86,6 +86,7 @@ Page {
             gsensorChart.updateChart();
             gsensorChart.ready = true;
         }
+        gsensorChart.setCurrentHightlight(videoInfoIterator);
 
         videoInfoIterator++;
 //        videoInfoTimer.start();
@@ -444,6 +445,7 @@ Page {
                 setLongitude(longitude);
                 setCollision(specialCode);
                 setAccelReadings(accelX, accelY, accelZ);
+                gsensorChart.setCurrentHightlight(videoInfoIterator);
                 reverseGeoCode.coordToAddress(latitude, longitude);
                 videoInfoIterator++;
             }
@@ -821,7 +823,7 @@ Page {
                     height: gsensorY.height
                     anchors.right: parent.right
                     anchors.left: gsensorY.right
-                    anchors.leftMargin: 42
+                    anchors.leftMargin: 41
                     anchors.verticalCenter: gsensorY.verticalCenter
 
                     type: 2

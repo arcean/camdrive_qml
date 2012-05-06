@@ -15,9 +15,9 @@ void Chart::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
     QPen penX(QColor("#5BB600"), 2);
     QPen penY(QColor("#5B00B6"), 2);
     QPen penZ(QColor("#B6005B"), 2);
-    QPen backgroundColumns(QColor("#0F2D00"), 2);
-    QPen horizontalLinePen(QColor("#0F2D00"), 2);
-    QPen hightlightColumn(QColor("blue"), 2);
+    QPen backgroundColumns(QColor("#303335"), 2);
+    QPen horizontalLinePen(QColor("#303335"), 2);
+    QPen hightlightColumn(QColor("#8D18BE"), 2);
 
     if(smooth() == true) {
         painter->setRenderHint(QPainter::Antialiasing, true);
@@ -31,14 +31,15 @@ void Chart::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWi
 
     painter->setPen(backgroundColumns);
 
-    painter->drawRect(0, 0, width, this->height());
+    painter->drawRect(0, 0, width + 1, this->height());
     //painter->fillRect(0, 0, width, this->height(), QColor("#000400"));
 
     for (int i = 0; i <= number; i++)
-        painter->drawLine(i * spacer, 0, i * spacer, this->height());
+        painter->drawLine((i * spacer) + 1, 0, (i * spacer) + 1, this->height());
 
+    //! Highlight column
     painter->setPen(hightlightColumn);
-    painter->drawLine((this->currentHightlight-1) * spacer, 0, (this->currentHightlight-1) * spacer, this->height());
+    painter->drawLine(((this->currentHightlight-1) * spacer) + 1, 0, ((this->currentHightlight-1) * spacer) + 1, this->height());
 
     //! Draw horizontal line
     painter->setPen(horizontalLinePen);
