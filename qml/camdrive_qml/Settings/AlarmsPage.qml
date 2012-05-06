@@ -167,13 +167,13 @@ Page {
             y: messageContact.y + messageContact.height + 10
             font.pixelSize: _SMALL_FONT_SIZE
             color: _DISABLED_COLOR_TEXT
-            text: "Emergency number"
+            text: "Emergency service number"
         }
 
         SelectionItem {
             id: emergencyButton
             y: separator3Label.y + separator3Label.height + 10
-            title: qsTr("Emergency number")
+            title: qsTr("Emergency service number")
             model: ListModel {
                 ListElement { name: QT_TR_NOOP("Disabled"); value: -1; }
                 ListElement { name: QT_TR_NOOP("112"); value: 112; }
