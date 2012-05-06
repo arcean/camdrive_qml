@@ -62,8 +62,16 @@ int Chart::convertValues(double value)
     return maxValue - currValue;
 }
 
+void Chart::updateChart()
+{
+    this->update(0, 0, this->width(), this->height());
+}
+
 void Chart::addPoint(int y, int lineType)
 {
+    if (y > 22)
+        y = 22;
+
     //! Line type: 1 - X, 2 - Y, 3 - Z
     switch (lineType) {
     case 1:
@@ -78,5 +86,4 @@ void Chart::addPoint(int y, int lineType)
     default:
         qDebug() << "Unsupported line type [chart]";
     }
-    this->update(0, 0, this->width(), this->height());
 }

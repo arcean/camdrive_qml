@@ -56,6 +56,10 @@ private:
     int min_treshold;
     int alarmFlag;
 
+    float maxX;
+    float maxY;
+    float maxZ;
+
 };
 
 #endif // ACCELEROMETER_H

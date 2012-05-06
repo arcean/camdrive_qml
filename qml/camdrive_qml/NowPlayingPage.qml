@@ -83,6 +83,7 @@ Page {
                 gsensorChart.addPoint(DatabaseHelper.getVideoInfoAccelYQML(videoPlayer.source, i), 2);
                 gsensorChart.addPoint(DatabaseHelper.getVideoInfoAccelZQML(videoPlayer.source, i), 3);
             }
+            gsensorChart.updateChart();
             gsensorChart.ready = true;
         }
 
@@ -803,6 +804,8 @@ Page {
 
                     type: 1
                     value: 5
+
+                    Behavior on value { PropertyAnimation { duration: 500; easing.type: Easing.Linear; } }
                 }
 
                 Label {
@@ -823,6 +826,8 @@ Page {
 
                     type: 2
                     value: 5
+
+                    Behavior on value { PropertyAnimation { duration: 500; easing.type: Easing.Linear; } }
                 }
 
                 Label {
@@ -843,6 +848,8 @@ Page {
 
                     type: 3
                     value: 5
+
+                    Behavior on value { PropertyAnimation { duration: 500; easing.type: Easing.Linear; } }
                 }
 
                 Separator {

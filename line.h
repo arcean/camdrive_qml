@@ -18,7 +18,7 @@ public:
     void setType(int type);
 
     int type() const { return lineType; }
-    int value() const { return lineValue; }
+    int value() const { return realLineValue; }
 
 signals:
     void typeChanged();
@@ -28,6 +28,7 @@ private:
     int convertValues(double value);
 
     double lineValue;
+    double realLineValue;
     int lineType;
 };
 

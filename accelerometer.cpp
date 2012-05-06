@@ -6,6 +6,11 @@ Accelerometer::Accelerometer(QObject *parent) :
 {
     accelerometer = new QAccelerometer();
     min_treshold = MID_TRESHOLD;
+
+    maxX = -100;
+    maxY = -100;
+    maxZ = -100;
+
     connect(accelerometer, SIGNAL(readingChanged()), this, SLOT(readingChanged()));
 }
 
@@ -28,8 +33,19 @@ void Accelerometer::changeTresholdTo(int treshold_level)
 
 void Accelerometer::readingChanged()
 {
-    /* Check if there's an alarm condition. */
+    //! Check if there's an alarm condition.
     parseReading();
+
+    //! Store maximum values for all axis.
+    if (abs(accelerometer->reading()->x()) > abs(maxX)) {
+        maxX = accelerometer->reading()->x();
+    }
+    if (abs(accelerometer->reading()->y()) > abs(maxY)) {
+        maxX = accelerometer->reading()->y();
+    }
+    if (abs(accelerometer->reading()->z()) > abs(maxZ)) {
+        maxX = accelerometer->reading()->z();
+    }
 
     emit newReading();
 }
@@ -228,17 +244,35 @@ bool Accelerometer::isGTreshold(qreal value)
 
 float Accelerometer::getX()
 {
-    return accelerometer->reading()->x();
+    if (maxX == -100)
+        return accelerometer->reading()->x();
+    else {
+        float temp = maxX;
+        maxX = -100;
+        return temp;
+    }
 }
 
 float Accelerometer::getY()
 {
-    return accelerometer->reading()->y();
+    if (maxY == -100)
+        return accelerometer->reading()->y();
+    else {
+        float temp = maxY;
+        maxY = -100;
+        return temp;
+    }
 }
 
 float Accelerometer::getZ()
 {
-    return accelerometer->reading()->z();
+    if (maxZ == -100)
+        return accelerometer->reading()->z();
+    else {
+        float temp = maxZ;
+        maxZ = -100;
+        return temp;
+    }
 }
 
 void Accelerometer::start()

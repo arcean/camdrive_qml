@@ -13,6 +13,7 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
     Q_INVOKABLE void addPoint(int y, int lineType);
+    Q_INVOKABLE void updateChart();
 
 private:
     int convertValues(double value);
