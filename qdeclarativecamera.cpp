@@ -218,6 +218,9 @@ void QDeclarativeCamera::toggleCamera()
     connect(camera_, SIGNAL(statusChanged(QCamera::Status)), this, SLOT(statusChanged(QCamera::Status)));
     viewfinder_->setSize(geometry.size());
 
+    //! Night mode
+    setNightMode(nightMode);
+
     QAudioEncoderSettings audioSettings;
     audioSettings.setCodec("audio/AAC");
     if(settingsObject->getAudioQuality() == 0)
@@ -298,7 +301,7 @@ bool QDeclarativeCamera::enableInfinityFocus(bool enable)
     return false;
 }
 
-bool QDeclarativeCamera::enableNightMode(bool enable)
+bool QDeclarativeCamera::setNightMode(bool enable)
 {
     if (camera_->exposure()) {
         if(enable) {
@@ -314,6 +317,11 @@ bool QDeclarativeCamera::enableNightMode(bool enable)
     }
 
     return false;
+}
+
+void QDeclarativeCamera::enableNightMode(bool enable)
+{
+    this->nightMode = enable;
 }
 
 void QDeclarativeCamera::statusChanged(QCamera::Status status)

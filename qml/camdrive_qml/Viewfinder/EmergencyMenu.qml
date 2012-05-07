@@ -9,7 +9,7 @@ import "../Common"
 
 Item {
     id: master
-    width: 660
+    width: emergencyCallButton.x + emergencyCallButton.width + 46
     height: 4 + title.height + 4 + backButton.height + 4 + backLabel.height + 24
     property bool collision: false
 
@@ -21,7 +21,7 @@ Item {
         id: rect1
         anchors.fill: parent
 
-        color: "black"
+        color: "red"
         opacity: 0.5
         radius: 50
         smooth: true
@@ -49,7 +49,7 @@ Item {
 
     ButtonHighlight {
         id: backButton
-        anchors { top: title.bottom; left: rect2.left; topMargin: 4; leftMargin: 42; }
+        anchors { top: title.bottom; left: rect2.left; topMargin: 4; leftMargin: 46; }
         width: 120
         height: width
 
@@ -70,36 +70,67 @@ Item {
     }
 
     ButtonHighlight {
+        id: familyCallButton
+        anchors { top: title.bottom; topMargin: 4; left: backButton.right; leftMargin: 74; }
+        width: 120
+        height: width
+
+        source: "../images/call-family.png"
+        highlightSource: "../images/highlight120.png"
+        onClicked: {
+            if (settingsObject.getEmergencyContactNameEnabled()) {
+                familyCallDialog.open();
+            }
+            else
+                messageHandler.showMessage(qsTr("Feature disabled. Please check Settings."));
+        }
+    }
+
+    Label {
+        id: familyCallLabel
+        anchors { top: familyCallButton.bottom; topMargin: 4; horizontalCenter: familyCallButton.horizontalCenter; }
+        text: "Call your friend"
+        font.pixelSize: _SMALL_FONT_SIZE
+        color: _TEXT_COLOR
+    }
+
+    ButtonHighlight {
         id: smsButton
-        anchors { top: title.bottom; topMargin: 4; horizontalCenter: rect2.horizontalCenter; }
+        anchors { top: title.bottom; topMargin: 4; left: familyCallButton.right; leftMargin: 74; }
         width: 120
         height: width
 
         source: "../images/sms.png"
         highlightSource: "../images/highlight120.png"
         onClicked: {
-            smsDialog.open();
+            if (settingsObject.getEmergencyContactNameEnabled())
+                smsDialog.open();
+            else
+                messageHandler.showMessage(qsTr("Feature disabled. Please check Settings."));
         }
     }
 
     Label {
         id: smsLabel
         anchors { top: smsButton.bottom; topMargin: 4; horizontalCenter: smsButton.horizontalCenter; }
-        text: "Send SMS to your friend"
+        text: "Send SMS to the friend"
         font.pixelSize: _SMALL_FONT_SIZE
         color: _TEXT_COLOR
     }
 
     ButtonHighlight {
         id: emergencyCallButton
-        anchors { top: title.bottom; topMargin: 4; right: rect2.right; rightMargin: 42; }
+        anchors { top: title.bottom; topMargin: 4; left: smsButton.right; leftMargin: 74; }
         width: 120
         height: width
 
         source: "../images/call-emergency.png"
         highlightSource: "../images/highlight120.png"
         onClicked: {
-            emergencyCallDialog.open();
+            if (settingsObject.getEmergencyNumber() != -1)
+                emergencyCallDialog.open();
+            else
+                messageHandler.showMessage(qsTr("Feature disabled. Please check Settings."));
         }
     }
 
@@ -131,6 +162,36 @@ Item {
     }
 
     QueryDialog {
+        id: familyCallDialog
+        icon: "../images/call-family.png"
+        titleText: "Call your friend"
+        message: "Are you sure that you want to call your friend?"
+
+        acceptButtonText: "Call"
+        rejectButtonText: "Reject"
+
+        onAccepted: {
+            var phoneNumber = settingsObject.getEmergencyContactNumber();
+            var contactName = settingsObject.getEmergencyContactName();
+
+            if (phoneNumber.length === 0 && contactName.length > 0) {
+                //! Phone number typed directly in SelectContact Item.
+                phoneNumber = contactName;
+            }
+
+            if (phoneNumber.length === 0) {
+                messageHandler.showMessage(qsTr("No phone number defined"));
+                return;
+            }
+
+            if (!phoneNumberValidator(phoneNumber))
+                messageHandler.showMessage(qsTr("Invalid phone number"));
+            else
+                telephony.call(phoneNumber);
+        }
+    }
+
+    QueryDialog {
         id: smsDialog
         icon: "../images/sms.png"
         titleText: "Send SMS"
@@ -140,10 +201,7 @@ Item {
         rejectButtonText: "Reject"
 
         onAccepted: {
-            if (settingsObject.getEmergencyContactNameEnabled())
-                reverseGeoCode.coordToAddress(Gps.getLatitude(), Gps.getLongitude());
-            else
-                messageHandler.showMessage(qsTr("Feature disabled. Please check Settings."));
+            reverseGeoCode.coordToAddress(Gps.getLatitude(), Gps.getLongitude());
         }
     }
 
@@ -157,10 +215,7 @@ Item {
         rejectButtonText: "Reject"
 
         onAccepted: {
-            if (settingsObject.getEmergencyNumber() != -1)
-                telephony.call(settingsObject.getEmergencyNumber());
-            else
-                messageHandler.showMessage(qsTr("Feature disabled. Please check Settings."));
+            telephony.call(settingsObject.getEmergencyNumber());
         }
     }
 

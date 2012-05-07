@@ -56,7 +56,7 @@ public slots:
     void stop();
     void unload();
 
-    bool enableNightMode(bool enable);
+    void enableNightMode(bool enable);
     bool enableInfinityFocus(bool enable);
 
 protected slots:
@@ -73,6 +73,7 @@ private:
     void getCurrentVideoName(QString& videoName);
     void getDateTime(QString &dateTime);
     void storeNewVideo(const QString& videoName, int videoParts);
+    bool setNightMode(bool enable);
 
     QCamera* camera_;
     QCameraImageCapture* imageprocessing_;
@@ -88,6 +89,7 @@ private:
     bool isRecording;
     bool isRecordingInParts;
     int videoPartNumber;
+    bool nightMode;
 
     Database *Db;
     Accelerometer *accelerometer;

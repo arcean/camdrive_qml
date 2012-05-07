@@ -103,14 +103,14 @@ Page {
             y: maxAllowedSpeed.y + maxAllowedSpeed.height + 10
             font.pixelSize: _SMALL_FONT_SIZE
             color: _DISABLED_COLOR_TEXT
-            text: "Emergency contact"
+            text: "Friend's contact"
         }
 
         Label {
             id: contactsLabel
             anchors.left: parent.left
             y: separator2Label.y + separator2Label.height + 10
-            text: "Family emergency contact"
+            text: "Friend's emergency contact"
         }
         Switch {
             id: contactsSwitch

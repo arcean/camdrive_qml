@@ -34,11 +34,13 @@ Page {
 
     function firstTimeFunction() {
         maxAllowedSpeed = settingsObject.getMaxAllowedSpeed();
-        //! Clear night mode button settings
-        toggleNightModeButton.visible = settingsObject.getShowNightModeButton();
-        toggleNightModeButton.source = "../images/night.png"
+
+        //! Hide Menus
+        closeMenuFunc();
+
         //! Clear street name label
         streetNameLabel.text = "";
+
         viewfinderPage.clearRecordingStatus();
         screenSaver.screenSaverInhibited = true;
         Gps.start();
@@ -264,8 +266,12 @@ Page {
         viewfinderPage.isCameraPaused = false;
     }
 
-    function openEmergencyMenu()
+    function openEmergencyMenu(emergency)
     {
+        if (emergency)
+            emergencyMenu.collision = false;
+        else
+            emergencyMenu.collision = true;
         emergencyMenu.visible = true;
         closeMenu.enabled = true;
         viewfinderPage.pauseRecording();
@@ -341,7 +347,7 @@ Page {
         onAlarm: {
             //! Check if it's not an emergency alarm
             if (alarmLevel > 1) {
-                openEmergencyMenu();
+                openEmergencyMenu(true);
                 emergencyButton.startAlarm();
             }
             else
@@ -540,47 +546,11 @@ Page {
 
         onClicked: {
             nightMode = !nightMode;
-            pauseRecording();
-            resumeRecording();
             frontCam.enableNightMode(nightMode);
+            stopRecording();
+            firstTimeFunction();
         }
     }
-
-/*
-    Item {
-        id: toggleRecordingButton
-        anchors.left: parent.left
-        anchors.leftMargin: 20
-        anchors.top: upperToolbar.bottom
-        anchors.topMargin: 20
-        width: 96
-        height: 96
-
-        Image {
-            id: stopRecordingImage
-            width:96
-            height:96
-            anchors.centerIn: parent
-            smooth: true
-            source: "qrc:/icons/stop_recording.png"
-
-        }
-        MouseArea {
-            anchors.fill: parent
-            onPressed: {
-                stopRecordingImage.source = "qrc:/icons/stop_recording_highlighted.png"
-            }
-            onReleased: {
-                stopRecordingImage.source = "qrc:/icons/stop_recording.png"
-            }
-            onClicked: {
-                console.log('toggled recording clicked')
-                //stopDialog.open()
-                viewfinderMenu.visible = true;
-                closeMenu.enabled = true;
-            }
-        }
-    }*/
 
     // Emergency button
     EmergencyButton {
@@ -593,7 +563,7 @@ Page {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                openEmergencyMenu();
+                openEmergencyMenu(false);
             }
         }
     }
