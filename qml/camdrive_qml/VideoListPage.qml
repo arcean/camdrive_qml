@@ -280,7 +280,7 @@ Page {
             height: videoList.cellHeight
             useMarqueeText: appWindow.pageStack.currentPage == videoPageList
             onClicked: {
-                if (videoListModel.status == DocumentGalleryModel.Finished) {
+                if (videoListModel.status == DocumentGalleryModel.Finished && !isNowPlayingPageActive) {
                     playVideos([UtilsScript.cloneVideoObject(videoListModel.get(index))])
                 }
             }

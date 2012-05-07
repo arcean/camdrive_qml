@@ -559,7 +559,7 @@ Page {
         anchors.rightMargin: 20
         anchors.top: upperToolbar.bottom
         anchors.topMargin: 20
-        visible: settingsObject.getEmergencyButton()
+        visible: settingsObject.getShowEmergencyButton()
 
         MouseArea {
             anchors.fill: parent

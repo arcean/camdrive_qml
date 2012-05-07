@@ -24,6 +24,9 @@ PageStackWindow {
 
     property alias _IN_PORTRAIT: appWindow.inPortrait
 
+    //! Prevent opening multiple NowPlaying pages
+    property bool isNowPlayingPageActive: false
+
     platformStyle: PageStackWindowStyle {
             background: appWindow.inPortrait ? "qrc:/icons/background-portrait.png" : "qrc:/icons/background.png"
             backgroundFillMode: Image.Tile
@@ -60,6 +63,7 @@ PageStackWindow {
 
     function playVideos(video) {
         var videoPlaybackPage = UtilsScript.createObject(Qt.resolvedUrl("VideoPlaybackPage.qml"), appWindow.pageStack);
+        isNowPlayingPageActive = true;
         videoPlaybackPage.setPlaylist(video)
         //videoPlaybackPage.startPlayback()
         pageStack.push(videoPlaybackPage)

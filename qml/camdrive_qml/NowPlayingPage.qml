@@ -118,6 +118,7 @@ Page {
         videoPlayer.source = "";
         currentVideo = [];
         console.log('stopPlayback stop 2')
+        isNowPlayingPageActive = false;
         appWindow.pageStack.pop();
     }
 
