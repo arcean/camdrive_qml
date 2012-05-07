@@ -18,8 +18,7 @@
                 <credential name="GRP::video" />
                 <credential name="GRP::audio" />
 
-        </request>
+                <for path="/opt/camdrive_qml/bin/camdrive_qml" />
 
-        <for path="/opt/camdrive_qml/bin/camdrive_qml" />
-        <for path="applauncherd-launcher::/usr/bin/applauncherd.bin" id="" />
+        </request>
 </aegis>
