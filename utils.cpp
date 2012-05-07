@@ -99,8 +99,18 @@ QString Utils::replaceIdsInTextMessage(QString message, QString city, QString st
     if (street.compare("") == 0)
         street = "unknown street";
 
-    QString latitudeStr = convertLatitudeToGui(latitude);
-    QString longitudeStr = convertLongitudeToGui(longitude);
+    QString latitudeStr;
+    QString longitudeStr;
+
+    if (latitude == 0 && longitude == 0) {
+        //! Coordinates are undefined, no GPS fix.
+        latitudeStr = "";
+        longitudeStr = "";
+    }
+    else {
+        latitudeStr = convertLatitudeToGui(latitude);
+        longitudeStr = convertLongitudeToGui(longitude);
+    }
 
     finalMessage.replace("#city", city, Qt::CaseInsensitive);
     finalMessage.replace("#street", street, Qt::CaseInsensitive);
