@@ -45,7 +45,7 @@ Item {
         anchors.bottomMargin: 10
         width: 80
         height: width
-        source: "../images/arrow.png"
+        source: "../images/arrow80.png"
         highlightSource: "../images/highlight80.png"
 
         onClicked: {
