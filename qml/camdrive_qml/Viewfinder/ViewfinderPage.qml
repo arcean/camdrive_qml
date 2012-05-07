@@ -34,8 +34,13 @@ Page {
 
     function firstTimeFunction() {
         maxAllowedSpeed = settingsObject.getMaxAllowedSpeed();
+        toggleNightModeButton.visible = settingsObject.getShowNightModeButton();
+        emergencyButton.visible = settingsObject.getShowEmergencyButton();
 
-        //! Hide Menus
+        //! Hide Emergency menu
+        emergencyButton.stopAlarm();
+
+        //! Hide menus
         closeMenuFunc();
 
         //! Clear street name label
@@ -117,19 +122,6 @@ Page {
     Settings {
         id: settingsObject
     }
-/*
-    Timer {
-        id: storeDataTimer
-        interval: settingsObject.getStoreDataEachXSeconds() * 1000
-        repeat: true
-        running: false
-
-        onTriggered: {*/
-            /* TODO: special code for events (such as collision) is stored as the last value */
-           // frontCam.addNewVideoInfoQML(positionSource.position.coordinate.latitude, positionSource.position.coordinate.longitude,
-           //                             speed, AccelDevice.getX(), AccelDevice.getY(), AccelDevice.getZ(), 0);
-     /*   }
-    }*/
 
     function clearRecordingStatus()
     {
@@ -272,6 +264,11 @@ Page {
             emergencyMenu.collision = false;
         else
             emergencyMenu.collision = true;
+
+        //! Stop emergencyButton animation
+        emergencyButton.stopAlarm();
+
+        emergencyMenu.prepare();
         emergencyMenu.visible = true;
         closeMenu.enabled = true;
         viewfinderPage.pauseRecording();
@@ -346,12 +343,15 @@ Page {
         //! Accelerometer alarm signal
         onAlarm: {
             //! Check if it's not an emergency alarm
-            if (alarmLevel > 1) {
-                openEmergencyMenu(true);
-                emergencyButton.startAlarm();
+            if (settingsObject.getEmergencyContactNameEnabled()
+                    || settingsObject.getEmergencyNumber() != -1) {
+                if (alarmLevel > 1) {
+                    openEmergencyMenu(true);
+                    emergencyButton.startAlarm();
+                }
+                else
+                    emergencyButton.startAlarm();
             }
-            else
-                emergencyButton.startAlarm();
         }
 
         onFireRecording: {
@@ -559,11 +559,12 @@ Page {
         anchors.rightMargin: 20
         anchors.top: upperToolbar.bottom
         anchors.topMargin: 20
+        visible: settingsObject.getEmergencyButton()
 
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                openEmergencyMenu(false);
+                openEmergencyMenu(true);
             }
         }
     }

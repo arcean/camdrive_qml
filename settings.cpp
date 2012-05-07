@@ -335,3 +335,21 @@ bool Settings::getShowNightModeButton()
 
     return value;
 }
+
+bool Settings::getShowEmergencyButton()
+{
+    QSettings settings;
+    bool value =  settings.value("viewfinder/emergencyButton", false).toBool();
+
+    return value;
+}
+
+/*!
+ * Always show emergency button on the viewfinder.
+ */
+void Settings::setShowEmergencyButton(bool enable)
+{
+    QSettings settings;
+
+    settings.setValue("viewfinder/emergencyButton", enable);
+}

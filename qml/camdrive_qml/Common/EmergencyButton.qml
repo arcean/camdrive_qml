@@ -59,7 +59,8 @@ Item {
                 if (master.counter >= master.maxCounter) {
                     master.counter = 0;
                     rect.state = "normal";
-                    master.visible = false;
+                    if (!settingsObject.getShowEmergencyButton())
+                        master.visible = false;
                     return;
                 }
 
@@ -79,6 +80,26 @@ Item {
                 NumberAnimation { target: rect; properties: "x,y,width,height"; duration: length }
             }
         ]
+    }
+
+    function stopAlarm() {
+        animationTimer.stop();
+        if (master.counter >= master.maxCounter) {
+            master.counter = 0;
+            rect.state = "normal";
+            if (!settingsObject.getShowEmergencyButton())
+                master.visible = false;
+            return;
+        }
+
+        if (rect.state == "activated") {
+            rect.state = "activatedOversized";
+            master.counter++;
+        }
+        else if (rect.state == "activatedOversized"){
+            rect.state = "activated";
+            master.counter++;
+        }
     }
 
     function startAlarm() {

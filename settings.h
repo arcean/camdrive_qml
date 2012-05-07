@@ -57,6 +57,8 @@ public slots:
     //! Viewfinder settings
     void setShowNightModeButton(bool show);
     bool getShowNightModeButton();
+    bool getShowEmergencyButton();
+    void setShowEmergencyButton(bool enable);
 
 };
 

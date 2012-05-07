@@ -9,13 +9,16 @@ import "../Common"
 
 Item {
     id: master
-    width: emergencyCallButton.x + emergencyCallButton.width + 46
+    width: emergencyCallButton.visible ? emergencyCallButton.x + emergencyCallButton.width + 46 :
+                                         (smsButton.visible ? smsButton.x + smsButton.width + 46 : title2.x + title2.width + 46)
     height: 4 + title.height + 4 + backButton.height + 4 + backLabel.height + 24
     property bool collision: false
 
-    property bool qMessageServieInstance: false
-    //! Variable to check for sim status.
-    property alias simPresent: deviceInfo.simStatus
+    function prepare()
+    {
+        familyCallButton.visible = settingsObject.getEmergencyContactNameEnabled();
+        emergencyCallButton.visible = (settingsObject.getEmergencyNumber() != -1) ? true : false;
+    }
 
     Rectangle {
         id: rect1
@@ -41,7 +44,7 @@ Item {
     Label {
         id: title
         anchors { top: rect2.top; horizontalCenter: rect2.horizontalCenter; topMargin: 4; }
-        text: collision ? "Collision detected!" : "Emergency menu"
+        text: master.collision ? "Collision detected!" : "Emergency menu"
         font.pixelSize: _LARGE_FONT_SIZE
         color: "red"
         font.bold: true
@@ -69,11 +72,32 @@ Item {
         color: _TEXT_COLOR
     }
 
+    Label {
+        id: title2
+        anchors { verticalCenter: parent.verticalCenter; left: backButton.right; leftMargin: 46; }
+        text: "No emergency option available."
+        font.pixelSize: _STANDARD_FONT_SIZE
+        color: "red"
+        font.bold: true
+        visible: !familyCallButton.visible && !emergencyCallButton.visible
+    }
+
+    Label {
+        id: title3
+        anchors { top: title2.bottom; topMargin: 10; horizontalCenter: title2.horizontalCenter; }
+        text: "Please check Settings."
+        font.pixelSize: _STANDARD_FONT_SIZE
+        color: "red"
+        font.bold: true
+        visible: !familyCallButton.visible && !emergencyCallButton.visible
+    }
+
     ButtonHighlight {
         id: familyCallButton
         anchors { top: title.bottom; topMargin: 4; left: backButton.right; leftMargin: 74; }
         width: 120
         height: width
+        visible: settingsObject.getEmergencyContactNameEnabled()
 
         source: "../images/call-family.png"
         highlightSource: "../images/highlight120.png"
@@ -92,6 +116,7 @@ Item {
         text: "Call your friend"
         font.pixelSize: _SMALL_FONT_SIZE
         color: _TEXT_COLOR
+        visible: familyCallButton.visible
     }
 
     ButtonHighlight {
@@ -99,6 +124,7 @@ Item {
         anchors { top: title.bottom; topMargin: 4; left: familyCallButton.right; leftMargin: 74; }
         width: 120
         height: width
+        visible: familyCallButton.visible
 
         source: "../images/sms.png"
         highlightSource: "../images/highlight120.png"
@@ -116,13 +142,20 @@ Item {
         text: "Send SMS to the friend"
         font.pixelSize: _SMALL_FONT_SIZE
         color: _TEXT_COLOR
+        visible: smsButton.visible
     }
 
     ButtonHighlight {
         id: emergencyCallButton
-        anchors { top: title.bottom; topMargin: 4; left: smsButton.right; leftMargin: 74; }
+        anchors {
+            top: title.bottom;
+            topMargin: 4;
+            left: smsButton.visible ? smsButton.right : backButton.right;
+            leftMargin: 74;
+        }
         width: 120
         height: width
+        visible: (settingsObject.getEmergencyNumber() != -1);
 
         source: "../images/call-emergency.png"
         highlightSource: "../images/highlight120.png"
@@ -140,6 +173,7 @@ Item {
         text: "Call emergency number"
         font.pixelSize: _SMALL_FONT_SIZE
         color: _TEXT_COLOR
+        visible: emergencyCallButton.visible
     }
 
     Settings {

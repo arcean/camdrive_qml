@@ -44,12 +44,31 @@ Page {
         }
         boundsBehavior: Flickable.DragOverBounds
         contentWidth: width
-        contentHeight: nightModeButtonLabel.y + nightModeButtonLabel.height - nightModeButtonLabel.y
+        contentHeight: emergencyButtonLabel.y + emergencyButtonLabel.height - generalLabel.y
+
+        Label {
+            id: generalLabel
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.rightMargin: 10
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
+            text: "Additional buttons"
+        }
+
+        Separator {
+            anchors.right: generalLabel.left
+            anchors.left: parent.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: generalLabel.verticalCenter
+        }
 
         Label {
             id: nightModeButtonLabel
             anchors.left: parent.left
-            text: "Show night mode button:"
+            anchors.top: generalLabel.bottom
+            anchors.topMargin: 10
+            text: "Show night mode button"
         }
 
         Switch {
@@ -61,6 +80,26 @@ Page {
             platformStyle: StyledSwitch {}
             onCheckedChanged: {
                 settingsObject.setShowNightModeButton(checked)
+            }
+        }
+
+        Label {
+            id: emergencyButtonLabel
+            anchors.left: parent.left
+            anchors.top: nightModeButtonLabel.bottom
+            anchors.topMargin: 10
+            text: "Show emergency button"
+        }
+
+        Switch {
+            id: emergencyButtonSwitch
+            anchors.right: parent.right
+            anchors.verticalCenter: emergencyButtonLabel.verticalCenter
+
+            checked: settingsObject.getShowEmergencyButton()
+            platformStyle: StyledSwitch {}
+            onCheckedChanged: {
+                settingsObject.setShowEmergencyButton(checked)
             }
         }
     }
