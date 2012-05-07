@@ -24,9 +24,6 @@ Page {
     orientationLock: PageOrientation.LockLandscape
 
     Component.onCompleted: {
-       // frontCam.setGps(Gps);
-       // frontCam.setAccelerometer(AccelDevice);
-       // frontCam.setDatabase(Database);
        // Database.openDatabase();
        // Database.createTables();
         camMirrorScale.xScale = -1 * camMirrorScale.xScale;
@@ -48,7 +45,6 @@ Page {
 
         viewfinderPage.clearRecordingStatus();
         screenSaver.screenSaverInhibited = true;
-        Gps.start();
         viewfinderPage.wakeCamera();
     }
 
@@ -206,7 +202,6 @@ Page {
     {
         viewfinderPage.isCameraRecording = false;
         frontCam.stopRecording();
-        Gps.stop();
         viewfinderPage.videoPartCounter = 0;
     }
 
@@ -274,6 +269,16 @@ Page {
         viewfinderPage.pauseRecording();
     }
 
+    function getLatitude()
+    {
+        return frontCam.getLatitude();
+    }
+
+    function getLongitude()
+    {
+        return frontCam.getLongitude();
+    }
+
     //! Black background
     Rectangle {
         anchors.fill: parent
@@ -321,7 +326,7 @@ Page {
             viewfinderPage.videoPartCounter++;
         }
         onGpsUpdated: {
-            var speed = Gps.getSpeed();
+            var speed = frontCam.getSpeed();
 
             if (settingsObject.getVelocityUnit()) {
                 speed = speed * 3.6;
@@ -337,8 +342,8 @@ Page {
             checkMaxAllowedSpeed(speed);
 
             //! Get reversed geocode, for street name
-            reverseGeoCode.coordToAddress(Gps.getLatitude(),
-                                          Gps.getLongitude());
+            reverseGeoCode.coordToAddress(frontCam.getLatitude(),
+                                          frontCam.getLongitude());
         }
         //! Accelerometer alarm signal
         onAlarm: {

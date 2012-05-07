@@ -190,7 +190,7 @@ Page {
     PositionSource {
         id: positionSource
 
-        updateInterval: 10000
+        updateInterval: 1000
         active: true
 
         onPositionChanged: {

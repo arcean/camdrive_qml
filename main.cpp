@@ -11,7 +11,6 @@
 #include "databasehelper.h"
 #include "videothumbnails.h"
 #include "accelerometer.h"
-#include "gps.h"
 #include "geocoder.h"
 #include "telephony.h"
 #include "line.h"
@@ -30,7 +29,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     Database database;
     VideoThumbnails thumbnails;
     Accelerometer accelerometer;
-    Gps gps;
 
     view->setViewport(new QGLWidget());
     qmlRegisterType<QDeclarativeCamera>("Camera", 1, 0, "Camera");
@@ -46,7 +44,6 @@ Q_DECL_EXPORT int main(int argc, char *argv[])
     context->setContextProperty("Database", &database);
     context->setContextProperty("Thumbnails", &thumbnails);
    // context->setContextProperty("AccelDevice", &accelerometer);
-    context->setContextProperty("Gps", &gps);
 
     view->setSource(QUrl::fromLocalFile("/opt/camdrive_qml/qml/camdrive_qml/main.qml"));
 

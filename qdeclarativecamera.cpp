@@ -180,6 +180,7 @@ void QDeclarativeCamera::stopRecording()
     mediaRecorder_->stop();
     file->fileReady();
     accelerometer->stop();
+    gps->stop();
    // Db->closeDatabase();
 }
 
@@ -334,6 +335,7 @@ void QDeclarativeCamera::statusChanged(QCamera::Status status)
 void QDeclarativeCamera::start()
 {
     toggleCamera();
+    gps->start();
     camera_->start();
     isRecording = true;
 }
@@ -342,6 +344,7 @@ void QDeclarativeCamera::stop()
 {
     isRecording = false;
     camera_->stop();
+    gps->stop();
 }
 
 void QDeclarativeCamera::unload()
@@ -349,6 +352,7 @@ void QDeclarativeCamera::unload()
     isRecording = false;
 
     camera_->unload();
+    gps->stop();
 }
 
 void QDeclarativeCamera::getDateTime(QString &dateTime)
@@ -382,4 +386,32 @@ void QDeclarativeCamera::storeNewVideo(const QString& videoName, int videoParts)
 void QDeclarativeCamera::getCurrentVideoName(QString& videoName)
 {
     videoName = file->getGeneratedFileName() + "_part_" + QString::number(videoPartNumber + 1);
+}
+
+/*!
+ * Part of the GPS module.
+ */
+qreal QDeclarativeCamera::getLatitude()
+{
+    return gps->getLatitude();
+}
+
+qreal QDeclarativeCamera::getLongitude()
+{
+    return gps->getLongitude();
+}
+
+qreal QDeclarativeCamera::getSpeed()
+{
+    return gps->getSpeed();
+}
+
+void QDeclarativeCamera::startGps()
+{
+    gps->start();
+}
+
+void QDeclarativeCamera::stopGps()
+{
+    gps->stop();
 }

@@ -14,6 +14,11 @@ Item {
     height: 4 + title.height + 4 + backButton.height + 4 + backLabel.height + 24
     property bool collision: false
 
+    property bool qMessageServieInstance: false
+
+    //! Variable to check for sim status.
+    property alias simPresent: deviceInfo.simStatus
+
     function prepare()
     {
         familyCallButton.visible = settingsObject.getEmergencyContactNameEnabled();
@@ -235,7 +240,7 @@ Item {
         rejectButtonText: "Reject"
 
         onAccepted: {
-            reverseGeoCode.coordToAddress(Gps.getLatitude(), Gps.getLongitude());
+            reverseGeoCode.coordToAddress(viewfinderPage.getLatitude(), viewfinderPage.getLongitude());
         }
     }
 
@@ -307,7 +312,7 @@ Item {
         var contactName = settingsObject.getEmergencyContactName();
 
         //! Parse message and prepare to send
-        message = Utils.replaceIdsInTextMessage(message, cityname, streetadd, Gps.getLatitude(), Gps.getLongitude());
+        message = Utils.replaceIdsInTextMessage(message, cityname, streetadd, viewfinderPage.getLatitude(), viewfinderPage.getLongitude());
 
         if (phoneNumber.length === 0 && contactName.length > 0) {
             //! Phone number typed directly in SelectContact Item.

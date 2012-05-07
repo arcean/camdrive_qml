@@ -18,7 +18,18 @@ void Gps::positionUpdated(const QGeoPositionInfo &info)
 {
     lastLatitude = info.coordinate().latitude();
     lastLongitude = info.coordinate().longitude();
-    lastSpeed = info.attribute(QGeoPositionInfo::GroundSpeed);
+
+    //! Let's set the last speed value.
+    if (source->supportedPositioningMethods() == QGeoPositionInfoSource::AllPositioningMethods
+            || source->supportedPositioningMethods() == QGeoPositionInfoSource::SatellitePositioningMethods) {
+        lastSpeed = info.attribute(QGeoPositionInfo::GroundSpeed);
+        qDebug() << "Speed with a gps fix.";
+    }
+    else {
+        lastSpeed = 0;
+        qDebug() << "Speed without a gps fix.";
+    }
+
     emit updated();
 }
 
