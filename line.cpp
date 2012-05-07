@@ -9,7 +9,7 @@ Line::Line(QDeclarativeItem *parent) :
 
 }
 
-void Line::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void Line::paint(QPainter *painter, const QStyleOptionGraphicsItem*, QWidget*)
 {
     if(smooth() == true) {
         painter->setRenderHint(QPainter::Antialiasing, true);

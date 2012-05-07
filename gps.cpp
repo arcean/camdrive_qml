@@ -4,7 +4,7 @@ Gps::Gps(QObject *parent) :
     QObject(parent)
 {
     source = QGeoPositionInfoSource::createDefaultSource(this);
-    source->setPreferredPositioningMethods(QGeoPositionInfoSource::SatellitePositioningMethods);
+    //source->setPreferredPositioningMethods(QGeoPositionInfoSource::SatellitePositioningMethods);
 
     if (source) {
         /* Update position each second. */

@@ -48,16 +48,23 @@ Page {
 
     function startSpeedInfoTimer()
     {
-        videoInfoIterator = 1;
+        var counter = 1;
         videoPlayer.currentPos = 1;
-        var latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, videoInfoIterator);
-        var longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, videoInfoIterator);
-        var specialCode = DatabaseHelper.getVideoInfoSpecialCodeQML(videoPlayer.source, videoInfoIterator);
-        var accelX = DatabaseHelper.getVideoInfoAccelXQML(videoPlayer.source, videoInfoIterator);
-        var accelY = DatabaseHelper.getVideoInfoAccelYQML(videoPlayer.source, videoInfoIterator);
-        var accelZ = DatabaseHelper.getVideoInfoAccelZQML(videoPlayer.source, videoInfoIterator);
+        var latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, counter);
+        var longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, counter);
 
-        setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, videoInfoIterator));
+        //! Hide map if coordinates are undefined
+        if (latitude == 0 && longitude == 0)
+            map.visible = false;
+        else
+            map.visible = true;
+
+        var specialCode = DatabaseHelper.getVideoInfoSpecialCodeQML(videoPlayer.source, counter);
+        var accelX = DatabaseHelper.getVideoInfoAccelXQML(videoPlayer.source, counter);
+        var accelY = DatabaseHelper.getVideoInfoAccelYQML(videoPlayer.source, counter);
+        var accelZ = DatabaseHelper.getVideoInfoAccelZQML(videoPlayer.source, counter);
+
+        setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, counter));
         setLatitude(latitude);
         setLongitude(longitude);
         setCollision(specialCode);
@@ -87,12 +94,17 @@ Page {
             gsensorChart.updateChart();
             gsensorChart.ready = true;
         }
-        gsensorChart.setCurrentHightlight(videoInfoIterator);
+        gsensorFlickable.contentX = -nowPlayingPage.width / 2
+        gsensorChart.setCurrentHightlight(counter);
+        gsensorChart.visible = true;
 
-        //videoInfoIterator++;
+        videoInfoIterator++;
     }
 
     function startPlayback() {
+        //! Hide gsensorChart, when adding new values, gsensorChart is wrongly placed (Flickable area)
+        gsensorChart.visible = false;
+
         console.log('startPlayback ')
         if (currentVideo.itemId) {
             video.item = currentVideo.itemId;
@@ -136,6 +148,15 @@ Page {
     /* Sets speedLabel's text. */
     function setSpeed(value)
     {
+        //! No GPS data available
+        if (value == 0) {
+            speedLabel.visible = false;
+            actualSpeedLabel.text = "Actual speed: n/a ";
+            return;
+        }
+        else
+            speedLabel.visible = true;
+
         var speed;
 
         if (settingsObject.getVelocityUnit()) {
@@ -237,12 +258,12 @@ Page {
             switch (event.key) {
             case Qt.Key_Right:
                 videoPlayer.position = videoPlayer.position + 10000;
-                videoInfoIterator = Math.ceil(videoPlayer.position / (DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000));
+                //videoInfoIterator = Math.ceil(videoPlayer.position / (DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000));
                 event.accepted = true;
                 break;
             case Qt.Key_Left:
                 videoPlayer.position = videoPlayer.position - 10000;
-                videoInfoIterator = Math.ceil(videoPlayer.position / (DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000));
+                //videoInfoIterator = Math.ceil(videoPlayer.position / (DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000));
                 event.accepted = true;
                 break;
             case Qt.Key_Q:
@@ -392,7 +413,7 @@ Page {
                     onReleased: {
                         if (posInsideMouseArea) {
                             videoPlayer.position = Math.floor((mouseX / width) * videoPlayer.duration);
-                            videoInfoIterator = Math.ceil(videoPlayer.position / (DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000));
+                            //videoInfoIterator = Math.ceil(videoPlayer.position / (DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000));
                         }
                     }
                 }
@@ -454,6 +475,8 @@ Page {
             if (currentPos === pos)
                 return;
 
+            currentPos = pos;
+
             if (!videoPlayer.setToPaused) {
                 var latitude = DatabaseHelper.getVideoInfoLatitudeQML(videoPlayer.source, pos);
                 var longitude = DatabaseHelper.getVideoInfoLongitudeQML(videoPlayer.source, pos);
@@ -462,11 +485,26 @@ Page {
                 var accelY = DatabaseHelper.getVideoInfoAccelYQML(videoPlayer.source, pos);
                 var accelZ = DatabaseHelper.getVideoInfoAccelZQML(videoPlayer.source, pos);
                 setSpeed(DatabaseHelper.getVideoInfoSpeedQML(videoPlayer.source, pos));
+
+                //! Hide map if coordinates are undefined
+                if (latitude == 0 && longitude == 0)
+                    map.visible = false;
+                else
+                    map.visible = true;
+
                 setLatitude(latitude);
                 setLongitude(longitude);
                 setCollision(specialCode);
                 setAccelReadings(accelX, accelY, accelZ);
+
+                //! gsensor chart
                 gsensorChart.setCurrentHightlight(pos);
+                console.log('POS', pos)
+                if (pos > 1 && !gsensorChart.isEmpty())
+                    gsensorFlickable.contentX = gsensorFlickable.contentX + gsensorChart.getSpacer();
+
+                console.log(gsensorChart.getSpacer())
+
                 reverseGeoCode.coordToAddress(latitude, longitude);
             }
         }
@@ -544,6 +582,21 @@ Page {
         Item {
             width: nowPlayingPage.width; height: pageHeight
 
+            Label {
+                id: noResultsText
+
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.top: parent.top
+                anchors.topMargin: 160
+                font.pixelSize: _LARGE_FONT_SIZE
+                font.bold: true
+                color: "#4d4d4d"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                text: qsTr("No data available")
+                visible: nowPlayingPage.height > nowPlayingPage.width ? !map.visible : false
+            }
+
             Map {
                 id: map
                 width: 460
@@ -551,7 +604,7 @@ Page {
                 plugin : Plugin { name: "nokia" }
                 zoomLevel: maximumZoomLevel - 4
                 center: ourCoord
-                visible: nowPlayingPage.height > nowPlayingPage.width
+                visible: videoInfoIterator == 1 ? false : nowPlayingPage.height > nowPlayingPage.width
 
                 MapImage {
                     id: beginPos
@@ -778,6 +831,7 @@ Page {
                     id: gsensorXline
                     height: gsensorX.height
                     anchors.right: parent.right
+                    anchors.rightMargin: 10
                     anchors.left: gsensorX.right
                     anchors.leftMargin: 40
                     anchors.verticalCenter: gsensorX.verticalCenter
@@ -800,6 +854,7 @@ Page {
                     id: gsensorYline
                     height: gsensorY.height
                     anchors.right: parent.right
+                    anchors.rightMargin: 10
                     anchors.left: gsensorY.right
                     anchors.leftMargin: 41
                     anchors.verticalCenter: gsensorY.verticalCenter
@@ -822,6 +877,7 @@ Page {
                     id: gsensorZline
                     height: gsensorZ.height
                     anchors.right: parent.right
+                    anchors.rightMargin: 10
                     anchors.left: gsensorZ.right
                     anchors.leftMargin: 41
                     anchors.verticalCenter: gsensorZ.verticalCenter
@@ -849,17 +905,32 @@ Page {
                     text: "Chart"
                 }
 
-                Chart {
-                    id: gsensorChart
+                Rectangle {
+                    id: hiddenRectGsensor
                     anchors.left: parent.left
                     anchors.right: parent.right
                     anchors.top: separator2Label.bottom
                     anchors.topMargin: 10
+                    opacity: 0
+                }
 
-                    property bool ready: false
-
+                Flickable {
+                    id: gsensorFlickable
+                    anchors.fill: hiddenRectGsensor
                     height: 200
-                    smooth: true
+
+                    contentHeight: gsensorChart.height
+                    contentWidth: gsensorChart.width
+                    interactive: false
+
+                    Chart {
+                        id: gsensorChart
+                        height: 200
+
+                        property bool ready: false
+
+                        smooth: true
+                    }
                 }
             }
 

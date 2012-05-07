@@ -15,6 +15,8 @@ public:
     Q_INVOKABLE void addPoint(int y, int lineType);
     Q_INVOKABLE void updateChart();
     Q_INVOKABLE void setCurrentHightlight(int column);
+    Q_INVOKABLE int getSpacer();
+    Q_INVOKABLE bool isEmpty();
 
 private:
     int convertValues(double value);
@@ -24,7 +26,10 @@ private:
     QList<double> pointsZ;
     //! Number of a column to hightlight
     int currentHightlight;
-    int divideCounter;
+
+    int number;
+    int spacer;
+    int calcWidth;
 
 };
 

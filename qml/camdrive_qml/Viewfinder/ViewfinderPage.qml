@@ -41,8 +41,10 @@ Page {
         closeMenuFunc();
 
         //! Clear street name label
-        streetNameLabel.text = "";
-        streetNameLabel.visible = false;
+        streetNameLabel.text = "No GPS lock";
+        streetNameLabel.visible = true;
+
+        textSpeedInfo.visible = false;
 
         viewfinderPage.clearRecordingStatus();
         screenSaver.screenSaverInhibited = true;
@@ -373,7 +375,7 @@ Page {
         //! When reverse geocoding info received, update street address in information panel
         onReverseGeocodeInfoRetrieved: {
             streetNameLabel.text = streetadd;
-            streetNameLabel.visible = true;
+            textSpeedInfo.visible = true;
         }
     }
 
@@ -480,7 +482,7 @@ Page {
         color: "white"
         font.bold: true
         font.pointSize: 18
-        visible: streetNameLabel.visible
+        visible: false
     }
 
     // Compass

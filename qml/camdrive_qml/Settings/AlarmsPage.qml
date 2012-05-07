@@ -173,7 +173,7 @@ Page {
         SelectionItem {
             id: emergencyButton
             y: separator3Label.y + separator3Label.height + 10
-            title: qsTr("Emergency service number")
+            title: qsTr("Emergency number")
             model: ListModel {
                 ListElement { name: QT_TR_NOOP("Disabled"); value: -1; }
                 ListElement { name: QT_TR_NOOP("112"); value: 112; }
