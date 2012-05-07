@@ -169,6 +169,13 @@ Page {
 
     function setSpeed(speed)
     {
+        if (speed == 0) {
+            textSpeedInfo.visible = false;
+            return;
+        }
+        else
+            textSpeedInfo.visible = true;
+
         var unit;
         if (settingsObject.getVelocityUnit())
             unit = " km/h";
