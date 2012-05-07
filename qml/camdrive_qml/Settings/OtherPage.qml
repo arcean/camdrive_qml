@@ -1,6 +1,5 @@
 import QtQuick 1.0
 import com.nokia.meego 1.0
-import com.nokia.extras 1.1
 import Settings 1.0
 import "../"
 import "../Common"
@@ -21,18 +20,7 @@ Page {
         id: settingsObject
     }
 
-    function selectVelocityUnit()
-    {
-        if(settingsObject.getVelocityUnit()) {
-            velocityUnitButton.text = "km/h";
-        }
-        else {
-            velocityUnitButton.text = "mph";
-        }
-    }
-
     Component.onCompleted: {
-        selectVelocityUnit();
     }
 
     Header {
@@ -59,57 +47,42 @@ Page {
         }
         boundsBehavior: Flickable.DragOverBounds
         contentWidth: width
-        contentHeight: velocityUnitButton.y + velocityUnitButton.height - velocityUnitLabel.y
+        contentHeight: velocityUnit.y + velocityUnit.height - generalLabel.y
 
         Label {
-            id: velocityUnitLabel
-            anchors.left: parent.left
-            text: "Velocity unit:"
+            id: generalLabel
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.rightMargin: 10
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
+            text: "Velocity unit"
         }
 
-        TumblerButton {
-            id: velocityUnitButton
-            anchors.right: parent.right
+        Separator {
+            anchors.right: generalLabel.left
             anchors.left: parent.left
-            y: velocityUnitLabel.y + velocityUnitLabel.height + 20
-            style: StyledTumblerButton {}
-            text: {
-                velocityUnitDialog.selectedIndex >= 0 ? velocityUnitDialog.model.get(velocityUnitDialog.selectedIndex).name : "km/h"
+            anchors.rightMargin: 20
+            anchors.verticalCenter: generalLabel.verticalCenter
+        }
+
+        SelectionItem {
+            id: velocityUnit
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: generalLabel.bottom
+            anchors.topMargin: 10
+            title: qsTr("Velocity unit")
+            model: ListModel {
+                ListElement { name: QT_TR_NOOP("km/h"); value: 1; }
+                ListElement { name: QT_TR_NOOP("mph"); value: 0; }
             }
-            onClicked: {
-                velocityUnitDialog.open()
-            }
+            initialValue: settingsObject.getVelocityUnit() ? 1 : 0;
+            onValueChosen: value == 1 ? settingsObject.setVelocityUnit(true) : settingsObject.setVelocityUnit(false)
         }
     }
 
     ScrollDecorator {
         flickableItem: flicker
-    }
-
-    SelectionDialog {
-        id: velocityUnitDialog
-        titleText: "Velocity unit"
-        selectedIndex: settingsObject.getVelocityUnit() ? 0 : 1
-        platformStyle: StyledSelectionDialog {}
-
-        model: ListModel {
-            ListElement { name: "km/h" }
-            ListElement { name: "mph" }
-        }
-
-        onAccepted: {
-            var result;
-
-            if (velocityUnitDialog.selectedIndex == 0) {
-                result = true;
-                velocityUnitButton.text = "km/h";
-            }
-            else {
-                result = false;
-                velocityUnitButton.text = "mph";
-            }
-
-            settingsObject.setVelocityUnit(result);
-        }
     }
 }
