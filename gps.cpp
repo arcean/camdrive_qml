@@ -46,5 +46,9 @@ qreal Gps::getLongitude()
 
 qreal Gps::getSpeed()
 {
-    return lastSpeed;
+    //! Those values are UNDEFINED.
+    if (lastLatitude == 0 && lastLongitude == 0)
+        return 0;
+    else
+        return lastSpeed;
 }

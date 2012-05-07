@@ -42,6 +42,7 @@ Page {
 
         //! Clear street name label
         streetNameLabel.text = "";
+        streetNameLabel.visible = false;
 
         viewfinderPage.clearRecordingStatus();
         screenSaver.screenSaverInhibited = true;
@@ -169,13 +170,6 @@ Page {
 
     function setSpeed(speed)
     {
-        if (speed == 0) {
-            textSpeedInfo.visible = false;
-            return;
-        }
-        else
-            textSpeedInfo.visible = true;
-
         var unit;
         if (settingsObject.getVelocityUnit())
             unit = " km/h";
@@ -379,6 +373,7 @@ Page {
         //! When reverse geocoding info received, update street address in information panel
         onReverseGeocodeInfoRetrieved: {
             streetNameLabel.text = streetadd;
+            streetNameLabel.visible = true;
         }
     }
 
@@ -407,6 +402,7 @@ Page {
         anchors.verticalCenter: bottomToolbar.verticalCenter
         anchors.horizontalCenter: bottomToolbar.horizontalCenter
         color: "white"
+        visible: false
     }
 
     Column {
@@ -484,6 +480,7 @@ Page {
         color: "white"
         font.bold: true
         font.pointSize: 18
+        visible: streetNameLabel.visible
     }
 
     // Compass

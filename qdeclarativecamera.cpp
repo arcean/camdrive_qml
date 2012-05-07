@@ -180,7 +180,7 @@ void QDeclarativeCamera::stopRecording()
     mediaRecorder_->stop();
     file->fileReady();
     accelerometer->stop();
-    gps->stop();
+    //gps->stop();
    // Db->closeDatabase();
 }
 
@@ -335,7 +335,7 @@ void QDeclarativeCamera::statusChanged(QCamera::Status status)
 void QDeclarativeCamera::start()
 {
     toggleCamera();
-    gps->start();
+    //gps->start();
     camera_->start();
     isRecording = true;
 }
@@ -344,7 +344,7 @@ void QDeclarativeCamera::stop()
 {
     isRecording = false;
     camera_->stop();
-    gps->stop();
+    //gps->stop();
 }
 
 void QDeclarativeCamera::unload()
@@ -352,7 +352,7 @@ void QDeclarativeCamera::unload()
     isRecording = false;
 
     camera_->unload();
-    gps->stop();
+    //gps->stop();
 }
 
 void QDeclarativeCamera::getDateTime(QString &dateTime)
