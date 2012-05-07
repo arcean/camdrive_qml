@@ -74,7 +74,7 @@ Page {
             y: separator1Label.y + separator1Label.height + 10
             title: qsTr("Max allowed speed")
             model: ListModel {
-                ListElement { name: QT_TR_NOOP("Disabled"); value: -1; }
+                ListElement { name: QT_TR_NOOP("Disabled"); value: 0; }
                 ListElement { name: QT_TR_NOOP("50"); value: 50; }
                 ListElement { name: QT_TR_NOOP("60"); value: 60; }
                 ListElement { name: QT_TR_NOOP("70"); value: 70; }
