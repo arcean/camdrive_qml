@@ -28,7 +28,12 @@ void Utils::deleteVideo(const QString &path)
 void Utils::deleteDatabase()
 {
     QString message;
-    bool ret = QFile::remove("/home/user/.camdrive/videos.db.sqlite");
+    QString path(QDir::home().path());
+    path.append(QDir::separator()).append(".camdrive");
+    path.append(QDir::separator()).append("videos.db.sqlite");
+    path = QDir::toNativeSeparators(path);
+
+    bool ret = QFile::remove(path);
 
     if (ret)
         message = "Database cleared successfully";
