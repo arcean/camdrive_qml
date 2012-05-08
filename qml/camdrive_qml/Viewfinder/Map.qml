@@ -6,6 +6,8 @@ import GeoCoder 1.0
 Page {
     id: locationPage
 
+    orientationLock: PageOrientation.LockLandscape
+
     tools: ToolBarLayout {
         id: toolBar
 

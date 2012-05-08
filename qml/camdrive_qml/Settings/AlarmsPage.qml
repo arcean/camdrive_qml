@@ -54,6 +54,36 @@ Page {
 
         Separator {
             anchors.left: parent.left
+            anchors.right: separator4Label.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: separator4Label.verticalCenter
+        }
+        Label {
+            id: separator4Label
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            anchors.top: parent.top
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
+            text: "Accelerometer"
+        }
+
+        SelectionItem {
+            id: accelerometerButton
+            anchors.top: separator4Label.bottom
+            anchors.topMargin: 10
+            title: qsTr("Sensitivity")
+            model: ListModel {
+                ListElement { name: QT_TR_NOOP("High"); value: 1; }
+                ListElement { name: QT_TR_NOOP("Normal"); value: 2; }
+                ListElement { name: QT_TR_NOOP("Low"); value: 3; }
+            }
+            initialValue: settingsObject.getAccelerometerTreshold()
+            onValueChosen: settingsObject.setAccelerometerTreshold(value)
+        }
+
+        Separator {
+            anchors.left: parent.left
             anchors.right: separator1Label.left
             anchors.rightMargin: 20
             anchors.verticalCenter: separator1Label.verticalCenter
@@ -61,7 +91,8 @@ Page {
 
         Label {
             id: separator1Label
-            anchors.top: parent.top
+            anchors.top: accelerometerButton.bottom
+            anchors.topMargin: 10
             anchors.right: parent.right
             anchors.rightMargin: 10
             font.pixelSize: _SMALL_FONT_SIZE
@@ -71,7 +102,8 @@ Page {
 
         SelectionItem {
             id: maxAllowedSpeed
-            y: separator1Label.y + separator1Label.height + 10
+            anchors.top: separator1Label.bottom
+            anchors.topMargin: 10
             title: qsTr("Max allowed speed")
             model: ListModel {
                 ListElement { name: QT_TR_NOOP("Disabled"); value: 0; }
@@ -92,6 +124,38 @@ Page {
 
         Separator {
             anchors.left: parent.left
+            anchors.right: separator3Label.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: separator3Label.verticalCenter
+        }
+        Label {
+            id: separator3Label
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            anchors.top: maxAllowedSpeed.bottom
+            anchors.topMargin: 10
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
+            text: "Emergency service number"
+        }
+
+        SelectionItem {
+            id: emergencyButton
+            anchors.top: separator3Label.bottom
+            anchors.topMargin: 10
+            title: qsTr("Emergency number")
+            model: ListModel {
+                ListElement { name: QT_TR_NOOP("Disabled"); value: -1; }
+                ListElement { name: QT_TR_NOOP("112"); value: 112; }
+                ListElement { name: QT_TR_NOOP("911"); value: 911; }
+                ListElement { name: QT_TR_NOOP("999"); value: 999; }
+            }
+            initialValue: settingsObject.getEmergencyNumber()
+            onValueChosen: settingsObject.setEmergencyNumber(value)
+        }
+
+        Separator {
+            anchors.left: parent.left
             anchors.right: separator2Label.left
             anchors.rightMargin: 20
             anchors.verticalCenter: separator2Label.verticalCenter
@@ -100,7 +164,8 @@ Page {
             id: separator2Label
             anchors.right: parent.right
             anchors.rightMargin: 10
-            y: maxAllowedSpeed.y + maxAllowedSpeed.height + 10
+            anchors.top: emergencyButton.bottom
+            anchors.topMargin: 10
             font.pixelSize: _SMALL_FONT_SIZE
             color: _DISABLED_COLOR_TEXT
             text: "Friend's contact"
@@ -109,7 +174,8 @@ Page {
         Label {
             id: contactsLabel
             anchors.left: parent.left
-            y: separator2Label.y + separator2Label.height + 10
+            anchors.top: separator2Label.bottom
+            anchors.topMargin: 10
             text: "Friend's emergency contact"
         }
         Switch {
@@ -128,13 +194,13 @@ Page {
             id: contacts
             anchors.right: parent.right
             anchors.left: parent.left
-            y: contactsLabel.y + contactsLabel.height
+            anchors.top: contactsLabel.bottom
         }
 
         Column {
             id: messageContact
             anchors { left: parent.left; right: parent.right }
-            y: contacts.y + contacts.height
+            anchors.top: contacts.bottom
             height: 80
 
             Repeater {
@@ -152,65 +218,6 @@ Page {
                     onClicked: appWindow.pageStack.push(Qt.resolvedUrl(fileName))
                 }
             }
-        }
-
-        Separator {
-            anchors.left: parent.left
-            anchors.right: separator3Label.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: separator3Label.verticalCenter
-        }
-        Label {
-            id: separator3Label
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            y: messageContact.y + messageContact.height + 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
-            text: "Emergency service number"
-        }
-
-        SelectionItem {
-            id: emergencyButton
-            y: separator3Label.y + separator3Label.height + 10
-            title: qsTr("Emergency number")
-            model: ListModel {
-                ListElement { name: QT_TR_NOOP("Disabled"); value: -1; }
-                ListElement { name: QT_TR_NOOP("112"); value: 112; }
-                ListElement { name: QT_TR_NOOP("911"); value: 911; }
-                ListElement { name: QT_TR_NOOP("999"); value: 999; }
-            }
-            initialValue: settingsObject.getEmergencyNumber()
-            onValueChosen: settingsObject.setEmergencyNumber(value)
-        }
-
-        Separator {
-            anchors.left: parent.left
-            anchors.right: separator4Label.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: separator4Label.verticalCenter
-        }
-        Label {
-            id: separator4Label
-            anchors.right: parent.right
-            anchors.rightMargin: 10
-            y: emergencyButton.y + emergencyButton.height + 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
-            text: "Accelerometer"
-        }
-
-        SelectionItem {
-            id: accelerometerButton
-            y: separator4Label.y + separator4Label.height + 10
-            title: qsTr("Sensitivity")
-            model: ListModel {
-                ListElement { name: QT_TR_NOOP("High"); value: 1; }
-                ListElement { name: QT_TR_NOOP("Normal"); value: 2; }
-                ListElement { name: QT_TR_NOOP("Low"); value: 3; }
-            }
-            initialValue: settingsObject.getAccelerometerTreshold()
-            onValueChosen: settingsObject.setAccelerometerTreshold(value)
         }
     }
 
