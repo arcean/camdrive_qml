@@ -16,6 +16,7 @@ QDeclarativeCamera::QDeclarativeCamera(QDeclarativeItem *parent) :
     gps = new Gps();
 
     accelerometer->changeTresholdTo(settingsObject->getAccelerometerTreshold());
+    accelerometer->setSettings(settingsObject);
 
     connect (gps, SIGNAL(updated()), this, SLOT(gpsUpdatedSlot()));
     connect (accelerometer, SIGNAL(alarm(int,int)), this, SLOT(connectAccelerometerSlot(int,int)));
@@ -47,6 +48,7 @@ void QDeclarativeCamera::connectAccelerometerSlot(int alarmLevel, int collisionS
 
 void QDeclarativeCamera::gpsUpdatedSlot()
 {
+    accelerometer->setSpeed(gps->getSpeed());
     emit gpsUpdated();
 }
 
@@ -371,7 +373,13 @@ void QDeclarativeCamera::getDateTime(QString &dateTime)
 void QDeclarativeCamera::storeData()
 {
     QString videoName = "";
+    qreal speed = gps->getSpeed();
     getCurrentVideoName(videoName);
+
+    if (settingsObject->getVelocityUnit() && speed * 3.6 < 24)
+        speed = 0;
+    else if (!settingsObject->getVelocityUnit() && speed * 2.2369 < 15)
+        speed = 0;
 
     /* Take care of specialCode, currently alarmFlag. */
     Db->addNewVideoInfo(videoName, gps->getLatitude(), gps->getLongitude(), gps->getSpeed(),

@@ -4,10 +4,11 @@
 #include <QObject>
 #include <QtSensors/QAccelerometer>
 #include <QtSensors/QAccelerometerReading>
+#include "settings.h"
 
 #define MIN_TRESHOLD 6
 #define MID_TRESHOLD 8
-#define MAX_TRESHOLD 9
+#define MAX_TRESHOLD 10
 
 #define MIN_G_TRESHOLD 9.6
 #define MAX_G_TRESHOLD 10.5
@@ -25,6 +26,9 @@ class Accelerometer : public QObject
     Q_OBJECT
 public:
     explicit Accelerometer(QObject *parent = 0);
+
+    void setSettings(Settings *settings);
+    void setSpeed(int speed);
 
 signals:
     void newReading();
@@ -51,6 +55,7 @@ private:
     bool check22G(qreal value);
     int phase1_check22G();
     void setCollisionSide();
+    bool isSpeedProper();
 
     QAccelerometer *accelerometer;
     int min_treshold;
@@ -59,6 +64,11 @@ private:
     float maxX;
     float maxY;
     float maxZ;
+
+    int lastSpeed;
+
+    //! Settings object
+    Settings *settings;
 
 };
 

@@ -14,6 +14,16 @@ Accelerometer::Accelerometer(QObject *parent) :
     connect(accelerometer, SIGNAL(readingChanged()), this, SLOT(readingChanged()));
 }
 
+void Accelerometer::setSettings(Settings *settings)
+{
+    this->settings = settings;
+}
+
+void Accelerometer::setSpeed(int speed)
+{
+    this->lastSpeed = speed;
+}
+
 void Accelerometer::changeTresholdTo(int treshold_level)
 {
     switch (treshold_level) {
@@ -68,7 +78,10 @@ void Accelerometer::parseReading()
             alarmFlag += 10;
         qDebug() << "ALARMflag:" << alarmFlag;
 
-        emit alarm(0, alarmFlag);
+        if (isSpeedProper())
+            emit alarm(0, alarmFlag);
+        else
+            qDebug() << "Too low speed to trigger alarm";
     }
     // Check if there's one G, and the other > min_treshold -> ALARM
     else if (result_phase2G > 0 && result_phase2MinTreshold > 1 && result_phase22G == 0) {
@@ -80,7 +93,10 @@ void Accelerometer::parseReading()
             alarmFlag += 10;
         qDebug() << "ALARMflag:" << alarmFlag;
 
-        emit alarm(0, alarmFlag);
+        if (isSpeedProper())
+            emit alarm(0, alarmFlag);
+        else
+            qDebug() << "Too low speed to trigger alarm";
     }
     // If there's one > 22G (max hw value) -> EMERGENCY_ALARM
     else if (result_phase22G > 0){
@@ -89,13 +105,30 @@ void Accelerometer::parseReading()
         setCollisionSide();
         qDebug() << "ALARMflag:" << alarmFlag;
 
-        emit alarm(1, alarmFlag);
+        if (isSpeedProper())
+            emit alarm(1, alarmFlag);
+        else
+            qDebug() << "Too low speed to trigger alarm";
     }
     else {
         //Do nothing
        // qDebug() << "nothing";
     }
 
+}
+
+bool Accelerometer::isSpeedProper()
+{
+    bool ret = true;
+
+    if (settings->getVelocityUnit() && lastSpeed * 3.6 < 24)
+        ret = false;
+    else if (!settings->getVelocityUnit() && lastSpeed * 2.2369 < 15)
+        ret = false;
+
+    qDebug() << "is speed proper" << ret;
+
+    return ret;
 }
 
 void Accelerometer::setCollisionSide()
