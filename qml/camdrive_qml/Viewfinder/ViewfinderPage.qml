@@ -352,16 +352,6 @@ Page {
         }
         //! Accelerometer alarm signal
         onAlarm: {
-            //! Check actual speed, if it's to low then discard alarm
-            if (settingsObject.getVelocityUnit() && speed < 24 && textSpeedInfo.visible) {
-                console.log('speed < 24 km/h, discarding alarm')
-                return
-            }
-            else if (!settingsObject.getVelocityUnit() && speed < 15 && textSpeedInfo.visible) {
-                console.log('speed < 15 mph, discarding alarm')
-                return
-            }
-
             //! Check if it's not an emergency alarm
             if (settingsObject.getEmergencyContactNameEnabled()
                     || settingsObject.getEmergencyNumber() != -1) {
