@@ -15,6 +15,8 @@ QDeclarativeCamera::QDeclarativeCamera(QDeclarativeItem *parent) :
     accelerometer = new Accelerometer();
     gps = new Gps();
 
+    accelerometer->changeTresholdTo(settingsObject->getAccelerometerTreshold());
+
     connect (gps, SIGNAL(updated()), this, SLOT(gpsUpdatedSlot()));
     connect (accelerometer, SIGNAL(alarm(int,int)), this, SLOT(connectAccelerometerSlot(int,int)));
 
@@ -335,6 +337,8 @@ void QDeclarativeCamera::statusChanged(QCamera::Status status)
 void QDeclarativeCamera::start()
 {
     toggleCamera();
+    //! Load accelerometer settings
+    accelerometer->changeTresholdTo(settingsObject->getAccelerometerTreshold());
     //gps->start();
     camera_->start();
     isRecording = true;

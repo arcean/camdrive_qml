@@ -50,7 +50,7 @@ Page {
         }
         boundsBehavior: Flickable.DragOverBounds
         contentWidth: width
-        contentHeight: emergencyButton.y + emergencyButton.height - separator1Label.y
+        contentHeight: accelerometerButton.y + accelerometerButton.height - separator1Label.y
 
         Separator {
             anchors.left: parent.left
@@ -182,6 +182,35 @@ Page {
             }
             initialValue: settingsObject.getEmergencyNumber()
             onValueChosen: settingsObject.setEmergencyNumber(value)
+        }
+
+        Separator {
+            anchors.left: parent.left
+            anchors.right: separator4Label.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: separator4Label.verticalCenter
+        }
+        Label {
+            id: separator4Label
+            anchors.right: parent.right
+            anchors.rightMargin: 10
+            y: emergencyButton.y + emergencyButton.height + 10
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
+            text: "Accelerometer"
+        }
+
+        SelectionItem {
+            id: accelerometerButton
+            y: separator4Label.y + separator4Label.height + 10
+            title: qsTr("Sensitivity")
+            model: ListModel {
+                ListElement { name: QT_TR_NOOP("High"); value: 1; }
+                ListElement { name: QT_TR_NOOP("Normal"); value: 2; }
+                ListElement { name: QT_TR_NOOP("Low"); value: 3; }
+            }
+            initialValue: settingsObject.getAccelerometerTreshold()
+            onValueChosen: settingsObject.setAccelerometerTreshold(value)
         }
     }
 

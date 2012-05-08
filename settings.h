@@ -59,6 +59,9 @@ public slots:
     bool getShowNightModeButton();
     bool getShowEmergencyButton();
     void setShowEmergencyButton(bool enable);
+    //! Accelerometer
+    void setAccelerometerTreshold(int tresholdLevel);
+    int getAccelerometerTreshold();
 
 };
 

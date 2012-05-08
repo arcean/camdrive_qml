@@ -17,18 +17,19 @@ Accelerometer::Accelerometer(QObject *parent) :
 void Accelerometer::changeTresholdTo(int treshold_level)
 {
     switch (treshold_level) {
-    case 0:
+    case 1:
         min_treshold = MIN_TRESHOLD;
         break;
-    case 1:
+    case 2:
         min_treshold = MID_TRESHOLD;
         break;
-    case 2:
+    case 3:
         min_treshold = MAX_TRESHOLD;
         break;
     default:
         min_treshold = MID_TRESHOLD;
     }
+    qDebug() << "Treshold level changed to" << min_treshold;
 }
 
 void Accelerometer::readingChanged()

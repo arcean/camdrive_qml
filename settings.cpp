@@ -353,3 +353,24 @@ void Settings::setShowEmergencyButton(bool enable)
 
     settings.setValue("viewfinder/emergencyButton", enable);
 }
+
+/*!
+ * Set accelerometer treshold level.
+ */
+void Settings::setAccelerometerTreshold(int tresholdLevel)
+{
+    QSettings settings;
+
+    settings.setValue("accelerometer/tresholdLevel", tresholdLevel);
+}
+
+/*!
+ * Get accelerometer treshold level.
+ */
+int Settings::getAccelerometerTreshold()
+{
+    QSettings settings;
+    int value =  settings.value("accelerometer/tresholdLevel", 2).toInt();
+
+    return value;
+}
