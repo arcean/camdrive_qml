@@ -26,7 +26,7 @@ Item {
         anchors.topMargin: 40
         font.pixelSize: 24
         color: "white"
-        text: "Touch screen to start recording"
+        text: "Touch the screen to start recording"
     }
 
     MouseArea {
