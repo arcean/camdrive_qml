@@ -47,7 +47,6 @@ Page {
         textSpeedInfo.visible = false;
 
         viewfinderPage.clearRecordingStatus();
-        screenSaver.screenSaverInhibited = true;
         viewfinderPage.wakeCamera();
     }
 
@@ -197,12 +196,14 @@ Page {
 
     function startRecording()
     {
+        screenSaver.screenSaverInhibited = true;
         viewfinderPage.isCameraRecording = true;
         frontCam.startRecording(false);
     }
 
     function stopRecording()
     {
+        screenSaver.screenSaverInhibited = false;
         viewfinderPage.isCameraRecording = false;
         frontCam.stopRecording();
         viewfinderPage.videoPartCounter = 0;
@@ -224,6 +225,15 @@ Page {
         unloadCamera();
         appWindow.pageStack.pop();
         screenSaver.screenSaverInhibited = false;
+    }
+
+    function windowMinimized()
+    {
+        stopRecording();
+        splashscreen.visible = true;
+        splashscreen.enabled = true;
+        screenSaver.screenSaverInhibited = false;
+        unloadCamera();
     }
 
     function closeMenuFunc()
@@ -306,12 +316,16 @@ Page {
         target:platformWindow
 
         onActiveChanged: {
-            if(platformWindow.active) {
-                resumeRecording();
+            if (!settingsObject.getRecordingInBackground()) {
+                if(platformWindow.active) {
+                    resumeRecording();
+                }
+                else {
+                    windowMinimized();
+                }
             }
-            else {
-                pauseRecording();
-            }
+            else
+                console.log('Recording in background enabled')
         }
     }
 

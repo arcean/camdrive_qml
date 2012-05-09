@@ -184,7 +184,6 @@ bool Telephony::isContactsAvailable(bool nfcAddressBook)
         return false;
 
     } else {
-
         //! Iterating each contain to know either contact has number or not
         for (it = contactLocalId.begin(); it != contactLocalId.end(); ++it)
         {

@@ -115,6 +115,44 @@ Page {
             onValueChosen: settingsObject.setMaxVideoFiles(value)
         }
 
+        Label {
+            id: backgroundLabel
+            anchors.right: parent.right
+            anchors.top: videoStoreButton.bottom
+            anchors.topMargin: 10
+            anchors.rightMargin: 10
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
+            text: "Record in background"
+        }
+
+        Separator {
+            anchors.right: backgroundLabel.left
+            anchors.left: parent.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: backgroundLabel.verticalCenter
+        }
+
+        Label {
+            id: backgroundSwitchLabel
+            anchors.left: parent.left
+            anchors.top: backgroundLabel.bottom
+            anchors.topMargin: 10
+            text: "Record in background"
+        }
+
+        Switch {
+            id: backgroundSwitch
+            anchors.right: parent.right
+            anchors.verticalCenter: backgroundSwitchLabel.verticalCenter
+
+            checked: settingsObject.getRecordingInBackground()
+            platformStyle: StyledSwitch {}
+            onCheckedChanged: {
+                settingsObject.setRecordingInBackground(checked)
+            }
+        }
+
         Separator {
             anchors.left: parent.left
             anchors.right: separator3Label.left
@@ -125,7 +163,7 @@ Page {
             id: separator3Label
             anchors.right: parent.right
             anchors.rightMargin: 10
-            anchors.top: videoStoreButton.bottom
+            anchors.top: backgroundSwitch.bottom
             anchors.topMargin: 10
             font.pixelSize: _SMALL_FONT_SIZE
             color: _DISABLED_COLOR_TEXT

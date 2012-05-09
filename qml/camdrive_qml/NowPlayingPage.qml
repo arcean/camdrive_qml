@@ -175,8 +175,8 @@ Page {
         else
             unit = " mph";
 
-        speedLabel.text = "Speed: " + speed + unit;
-        actualSpeedLabel.text = "Actual speed: " + speed + unit;
+        speedLabel.text = "Speed: " + Math.ceil(speed) + unit;
+        actualSpeedLabel.text = "Actual speed: " + Math.ceil(speed) + unit;
     }
 
     Coordinate {

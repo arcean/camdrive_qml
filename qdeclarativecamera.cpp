@@ -146,19 +146,24 @@ void QDeclarativeCamera::startRecording(bool ignoreCurrentVideoCounter)
         file->deleteTheOldestFiles();
     }
 
-    if(!isRecordingInParts) {
-        /* Create entry in main table for our new video. */
+   //if(!isRecordingInParts) {
         /* Since 0.0.2 there're only 2 parts of the video. */
         //int videoParts = settingsObject->getStoreLastInMinutes();
         int videoParts = 2;
-        this->storeNewVideo(file->getGeneratedFileName(), videoParts);
-        /* And now we want entries for the first part of the video. */
         QString baseName = file->getGeneratedFileName();
         QString name = baseName + "_part_" + QString::number(videoPartNumber+1);
+
+        //! Delete old video informations from database
+        Db->removeVideo(name);              // E.g. "camdrive_file_part_1"
+        Db->removeVideoFromMain(baseName);  // E.g. "camdrive_file"
+
+        /* Create entry in main table for our new video. */
+        this->storeNewVideo(baseName, videoParts);
+        /* And now we want entries for the first part of the video. */
         Db->createVideoDetailsTable(name);
 
         isRecordingInParts = true;
-    }
+  //  }
     /* ============================================ */
 
     storeDataTimer->start();

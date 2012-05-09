@@ -374,3 +374,24 @@ int Settings::getAccelerometerTreshold()
 
     return value;
 }
+
+/*!
+ * Get recording in background.
+ */
+bool Settings::getRecordingInBackground()
+{
+    QSettings settings;
+    bool value =  settings.value("recording/inBackground", false).toBool();
+
+    return value;
+}
+
+/*!
+ * Set recording in background.
+ */
+void Settings::setRecordingInBackground(bool enable)
+{
+    QSettings settings;
+
+    settings.setValue("recording/inBackground", enable);
+}
