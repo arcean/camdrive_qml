@@ -247,10 +247,9 @@ Page {
 
         if (flagText.length > 0) {
             collisionLabel.text = text + flagText;
-            collisionLabel.visible = true;
         }
         else
-            collisionLabel.visible = false;
+            collisionLabel.text = "Probable collision side: none";
     }
 
     Keys.onPressed: {
@@ -739,9 +738,9 @@ Page {
                     Separator {
                         anchors {
                             left: parent.left
-                            right: parent.right
+                            right: parent.right;
                             leftMargin: 10
-                            rightMargin: 20
+                            rightMargin: 30
                         }
                     }
 
@@ -781,9 +780,9 @@ Page {
 
                         Label {
                             id: collisionLabel
-                            visible: false
+                            visible: true
                             color: _ACTIVE_COLOR_TEXT
-                            text: ""
+                            text: "Probable collision side: none"
                         }
                     }
                 }

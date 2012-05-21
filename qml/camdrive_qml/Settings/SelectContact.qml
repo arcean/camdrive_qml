@@ -13,6 +13,7 @@ Item {
     property bool addressBookContactSelected: false
     property bool contactsAvailable: false
     height: contactsRect.height
+    signal vkbdOpen();
 
     Settings {
         id: settingsObject
@@ -44,28 +45,6 @@ Item {
             //! Push the newly created component
             pageStack.push(component);
         }
-    }
-
-    //! Function to validate if the phone number contains any strings
-    function phoneNumberValidator(phoneNumber)
-    {
-        // check for invalid charaters in  phone number
-        if ((/[a-zA-Z#*]/.test(phoneNumber) === true))
-            return false;
-
-        //! Check for valid usage of + in phone number
-        if (/[+]/.test(phoneNumber) === true) {
-            //! Check if + is only preceeding the number
-            if (phoneNumber[0] === "+")
-                phoneNumber = phoneNumber.replace("+","0")
-
-            // Check for any unwated + in phone number
-            if (/[+]/.test(phoneNumber) === true)
-                return false;
-        }
-
-        //! Phone number is valid
-        return true;
     }
 
     //! Rectangle component hosting Label "To", TextInput element ContactSelection/PhoneNumber
@@ -108,6 +87,9 @@ Item {
             if (!contactsInput.focus) {
                 contactsInput.closeSoftwareInputPanel();
             }
+            else
+                flickableContact.vkbdOpen();
+
         }
 
         //! Basic Placeholder implementation.
@@ -123,12 +105,17 @@ Item {
 
         //! Used for one Shot clearing of Selected Contact on tabbing BackSpace.
         Keys.onPressed: {
-            if (event.key === Qt.Key_Backspace)
+            if (event.key === Qt.Key_Backspace) {
                 if (addressBookContactSelected === true) {
                     contactsInput.text = "";
                     addressBookPhoneNumber = "";
                     addressBookContactSelected = false;
                 }
+            }
+            else if (event.key === Qt.Key_Enter || event.key === Qt.Key_Return) {
+                contactsInput.focus = false;
+                contactsInput.closeSoftwareInputPanel();
+            }
         }
     }
 

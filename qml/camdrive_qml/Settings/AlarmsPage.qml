@@ -51,7 +51,7 @@ Page {
         }
         boundsBehavior: Flickable.DragOverBounds
         contentWidth: width
-        contentHeight: accelerometerButton.y + accelerometerButton.height - separator1Label.y
+        contentHeight: messageContact.y + messageContact.height - separator4Label.y
 
         Separator {
             anchors.left: parent.left
@@ -199,6 +199,12 @@ Page {
             anchors.right: parent.right
             anchors.left: parent.left
             anchors.top: contactsLabel.bottom
+            onVkbdOpen: {
+                if(_IN_PORTRAIT)
+                    flicker.contentY = flicker.height / 3;
+                else
+                    flicker.contentY = flicker.height;
+            }
         }
 
         Column {
