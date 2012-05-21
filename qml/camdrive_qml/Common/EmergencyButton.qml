@@ -9,7 +9,7 @@ Item {
     visible: false
 
     property int length: 700;
-    property int maxCounter: 15;
+    property int maxCounter: 19;
     property int counter: 0;
 
     signal updateIgnoreLevel();
