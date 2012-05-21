@@ -432,3 +432,8 @@ void QDeclarativeCamera::stopGps()
 {
     gps->stop();
 }
+
+void QDeclarativeCamera::updateIgnoreTreshold()
+{
+    accelerometer->updateIgnoreTreshold();
+}

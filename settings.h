@@ -62,6 +62,10 @@ public slots:
     //! Accelerometer
     void setAccelerometerTreshold(int tresholdLevel);
     int getAccelerometerTreshold();
+    //! Accelerometer - ignore treshold level values
+    void incAccelerometerIgnoreLevel();
+    void resetAccelerometerIgnoreLevel();
+    float getAccelerometerIgnoreLevel();
     //! Record in background
     bool getRecordingInBackground();
     void setRecordingInBackground(bool enable);

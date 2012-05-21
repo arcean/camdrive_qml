@@ -59,6 +59,9 @@ public slots:
     void enableNightMode(bool enable);
     bool enableInfinityFocus(bool enable);
 
+    //! Accelerometer
+    void updateIgnoreTreshold();
+
     //! Gps part
     qreal getLatitude();
     qreal getLongitude();

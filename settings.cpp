@@ -376,6 +376,42 @@ int Settings::getAccelerometerTreshold()
 }
 
 /*!
+ * Increment accelerometer ignore level.
+ */
+void Settings::incAccelerometerIgnoreLevel()
+{
+    QSettings settings;
+    float value = getAccelerometerIgnoreLevel();
+    if (value < 2)
+        value = value + 0.1;
+
+    qDebug() << "new Ignore Level" << value;
+
+    settings.setValue("accelerometer/ignoreLevel", value);
+}
+
+/*!
+ * Reset accelerometer ignore level.
+ */
+void Settings::resetAccelerometerIgnoreLevel()
+{
+    QSettings settings;
+
+    settings.setValue("accelerometer/ignoreLevel", 0);
+}
+
+/*!
+ * Get accelerometer ignore level.
+ */
+float Settings::getAccelerometerIgnoreLevel()
+{
+    QSettings settings;
+    float value =  settings.value("accelerometer/ignoreLevel", 0).toFloat();
+
+    return value;
+}
+
+/*!
  * Get recording in background.
  */
 bool Settings::getRecordingInBackground()

@@ -80,7 +80,10 @@ Page {
                 ListElement { name: QT_TR_NOOP("Low"); value: 3; }
             }
             initialValue: settingsObject.getAccelerometerTreshold()
-            onValueChosen: settingsObject.setAccelerometerTreshold(value)
+            onValueChosen: {
+                settingsObject.resetAccelerometerIgnoreLevel();
+                settingsObject.setAccelerometerTreshold(value);
+            }
         }
 
         Separator {

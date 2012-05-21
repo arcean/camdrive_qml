@@ -6,6 +6,7 @@ Accelerometer::Accelerometer(QObject *parent) :
 {
     accelerometer = new QAccelerometer();
     min_treshold = MID_TRESHOLD;
+    backup_treshold = min_treshold;
 
     maxX = 0;
     maxY = 0;
@@ -17,6 +18,7 @@ Accelerometer::Accelerometer(QObject *parent) :
 void Accelerometer::setSettings(Settings *settings)
 {
     this->settings = settings;
+    min_treshold = backup_treshold + settings->getAccelerometerIgnoreLevel();
 }
 
 void Accelerometer::setSpeed(int speed)
@@ -39,7 +41,15 @@ void Accelerometer::changeTresholdTo(int treshold_level)
     default:
         min_treshold = MID_TRESHOLD;
     }
+    backup_treshold = min_treshold;
+    min_treshold = min_treshold + settings->getAccelerometerIgnoreLevel();
     qDebug() << "Treshold level changed to" << min_treshold;
+}
+
+void Accelerometer::updateIgnoreTreshold()
+{
+    min_treshold = backup_treshold + settings->getAccelerometerIgnoreLevel();
+        qDebug() << "Treshold updated to" << min_treshold;
 }
 
 void Accelerometer::readingChanged()

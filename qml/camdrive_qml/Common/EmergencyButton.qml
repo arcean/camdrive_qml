@@ -1,5 +1,6 @@
 // import QtQuick 1.0 // to target S60 5th Edition or Maemo 5
-import QtQuick 1.1
+import QtQuick 1.0
+import Settings 1.0
 
 Item {
     id: master
@@ -10,6 +11,12 @@ Item {
     property int length: 700;
     property int maxCounter: 15;
     property int counter: 0;
+
+    signal updateIgnoreLevel();
+
+    Settings {
+        id: settingsObject
+    }
 
     Image {
         id: rect
@@ -59,6 +66,10 @@ Item {
                 if (master.counter >= master.maxCounter) {
                     master.counter = 0;
                     rect.state = "normal";
+                    //! Increase accelerometer ignore level
+                    settingsObject.incAccelerometerIgnoreLevel();
+                    master.updateIgnoreLevel();
+
                     if (!settingsObject.getShowEmergencyButton())
                         master.visible = false;
                     return;

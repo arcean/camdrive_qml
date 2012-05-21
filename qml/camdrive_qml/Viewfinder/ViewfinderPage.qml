@@ -588,6 +588,10 @@ Page {
         anchors.topMargin: 20
         visible: settingsObject.getShowEmergencyButton()
 
+        onUpdateIgnoreLevel: {
+            frontCam.updateIgnoreTreshold();
+        }
+
         MouseArea {
             anchors.fill: parent
             onClicked: {

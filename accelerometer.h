@@ -37,7 +37,9 @@ signals:
 public slots:
     void start();
     void stop();
+
     void changeTresholdTo(int treshold_level);
+    void updateIgnoreTreshold();
 
     float getX();
     float getY();
@@ -58,7 +60,8 @@ private:
     bool isSpeedProper();
 
     QAccelerometer *accelerometer;
-    int min_treshold;
+    float min_treshold;
+    float backup_treshold;
     int alarmFlag;
 
     float maxX;
