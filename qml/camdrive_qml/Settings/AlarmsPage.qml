@@ -5,6 +5,7 @@ import Settings 1.0
 import "../"
 import "../Common"
 import "../StyledComponents"
+import "../scripts/utils.js" as Utils
 
 Page {
     tools: ToolBarLayout {
@@ -215,7 +216,10 @@ Page {
                     id: delegate
                     width: messageContact.width
                     title: name
-                    onClicked: appWindow.pageStack.push(Qt.resolvedUrl(fileName))
+                    onClicked: {
+                        var setMessageSheet = Utils.createObject(Qt.resolvedUrl(fileName), appWindow.pageStack);
+                        setMessageSheet.open();
+                    }
                 }
             }
         }

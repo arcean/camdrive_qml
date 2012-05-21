@@ -28,6 +28,7 @@ PageStackWindow {
     property bool isNowPlayingPageActive: false
 
     platformStyle: PageStackWindowStyle {
+            id: appStyle
             background: appWindow.inPortrait ? "qrc:/icons/background-portrait.png" : "qrc:/icons/background.png"
             backgroundFillMode: Image.Tile
         }
