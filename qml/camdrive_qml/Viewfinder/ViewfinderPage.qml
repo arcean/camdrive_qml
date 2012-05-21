@@ -505,7 +505,7 @@ Page {
     Text {
         id: textCompass
         anchors.left: upperToolbar.left
-        anchors.leftMargin: 10
+        anchors.leftMargin: 20
         anchors.verticalCenter: upperToolbar.verticalCenter
         text: "NW"
         color: "white"
