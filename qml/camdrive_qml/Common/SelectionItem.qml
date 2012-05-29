@@ -50,7 +50,7 @@ Item {
         Label {
             id: subTitle
 
-            color: "#4d4d4d"
+            color: _ACTIVE_COLOR_TEXT
             verticalAlignment: Text.AlignVCenter
             text: model.get(selectionDialog.selectedIndex).name
         }

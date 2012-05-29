@@ -33,7 +33,6 @@ Page {
         playlistPosition = 0;
         currentVideo = videoList[0];
         startPlayback();
-        console.log('setPlaylist DONE')
     }
 
     function appendPlaylist(videoList) {
@@ -86,7 +85,6 @@ Page {
         //! Add accel reading to chart
         if (!gsensorChart.ready) {
             for (var i = 1; i <= num; i++) {
-                console.log("DHETA", DatabaseHelper.getVideoInfoAccelXQML(videoPlayer.source, i))
                 gsensorChart.addPoint(DatabaseHelper.getVideoInfoAccelXQML(videoPlayer.source, i), 1);
                 gsensorChart.addPoint(DatabaseHelper.getVideoInfoAccelYQML(videoPlayer.source, i), 2);
                 gsensorChart.addPoint(DatabaseHelper.getVideoInfoAccelZQML(videoPlayer.source, i), 3);
@@ -105,31 +103,24 @@ Page {
         //! Hide gsensorChart, when adding new values, gsensorChart is wrongly placed (Flickable area)
         gsensorChart.visible = false;
 
-        console.log('startPlayback ')
         if (currentVideo.itemId) {
             video.item = currentVideo.itemId;
-            console.log('startPlayback IF')
         }
         else {
             videoModel.getVideo(currentVideo.filePath);
-            console.log('startPlayback ELSE')
         }
         videoPlayer.stop();
-        console.log('startPlayback stop')
         videoPlayer.source = "";
         archivePlaybackTimer.restart();
-        console.log('startPlayback DONE')
         //state = "showMap";
     }
 
     function stopPlayback() {
         video.metaData.resumePosition = Math.floor(videoPlayer.position / 1000);
         videoPlayer.stop();
-        console.log('stopPlayback stop')
         videoPlaying = false;
         videoPlayer.source = "";
         currentVideo = [];
-        console.log('stopPlayback stop 2')
         isNowPlayingPageActive = false;
         appWindow.pageStack.pop();
     }
@@ -242,14 +233,13 @@ Page {
             flagText = "rear";
         else {
             flagText = "";
-            console.log('Warning: unsupported alarmFlag.');
         }
 
         if (flagText.length > 0) {
             collisionLabel.text = text + flagText;
         }
         else
-            collisionLabel.text = "Probable collision side: none";
+            collisionLabel.text = "Probable collision side: ";
     }
 
     Keys.onPressed: {
@@ -257,12 +247,10 @@ Page {
             switch (event.key) {
             case Qt.Key_Right:
                 videoPlayer.position = videoPlayer.position + 10000;
-                //videoInfoIterator = Math.ceil(videoPlayer.position / (DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000));
                 event.accepted = true;
                 break;
             case Qt.Key_Left:
                 videoPlayer.position = videoPlayer.position - 10000;
-                //videoInfoIterator = Math.ceil(videoPlayer.position / (DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000));
                 event.accepted = true;
                 break;
             case Qt.Key_Q:
@@ -308,19 +296,7 @@ Page {
     ToolBar {
         id: toolBar
         z: 10
-        anchors { left: parent.left; right: parent.right; top: parent.bottom }
-
-        property bool show: true
-
-        states: State {
-            name: "show"
-            when: toolBar.show
-            AnchorChanges { target: toolBar; anchors { top: undefined; bottom: parent.bottom } }
-        }
-
-        transitions: Transition {
-            AnchorAnimation { easing.type: Easing.OutQuart; duration: 300 }
-        }
+        anchors { left: parent.left; right: parent.right; bottom: parent.bottom }
 
         tools: ToolBarLayout {
             id: layout
@@ -337,8 +313,8 @@ Page {
             ToolIcon {
                 id: playButton
                 anchors {
-                    left: (nowPlayingPage.width > nowPlayingPage.height) ? stopButton.right : undefined;
-                    centerIn: (nowPlayingPage.width > nowPlayingPage.height) ? undefined : layout;
+                    left: !appWindow.inPortrait ? stopButton.right : undefined;
+                    centerIn: !appWindow.inPortrait ? undefined : layout;
                 }
                 iconSource: (videoPlayer.paused || nowPlayingPage.videoStopped) ?
                                 "images/play-accent-" + _ACTIVE_COLOR + ".png" : "images/pause-accent-" + _ACTIVE_COLOR + ".png"
@@ -356,7 +332,7 @@ Page {
                 id: progressBar
 
                 anchors {
-                    left: (nowPlayingPage.width > nowPlayingPage.height) ? playButton.right : parent.right;
+                    left: !appWindow.inPortrait ? playButton.right : parent.right;
                     topMargin: 20;
                     leftMargin: 40;
                     right: parent.right;
@@ -366,7 +342,7 @@ Page {
                 minimumValue: 0
                 maximumValue: 100
                 value: (nowPlayingPage.videoPlaying) ? Math.floor((videoPlayer.position / videoPlayer.duration) * 100) : 0
-                visible: nowPlayingPage.width > nowPlayingPage.height
+                visible: !appWindow.inPortrait
 
                 Label {
                     anchors { top: parent.bottom; horizontalCenter: parent.left }
@@ -420,15 +396,19 @@ Page {
         }
     }
 
+    Rectangle {
+        anchors.fill: parent
+        color: "black"
+        visible: !appWindow.inPortrait
+    }
+
     Timer {
         id: archivePlaybackTimer
         /* Prevents segfault when switching between videos */
 
         interval: 1000
         onTriggered: {
-            console.log('archivePlaybackTimer setVideo')
             videoPlayer.setVideo(currentVideo.url);
-            console.log('archivePlaybackTimer setVideo DONE')
             startSpeedInfoTimer();
             mapPlacer.visible = true;
         }
@@ -447,9 +427,9 @@ Page {
     Video {
         id: videoPlayer
         x: 10
-        y: (nowPlayingPage.height > nowPlayingPage.width) ? 20 : 10
-        width: (nowPlayingPage.height > nowPlayingPage.width) ? 460 : 844
-        height: (nowPlayingPage.height > nowPlayingPage.width) ? 300 : (nowPlayingPage.height - 20 - toolBar.height)
+        y: appWindow.inPortrait ? 20 : 10
+        width: appWindow.inPortrait ? 460 : 844
+        height: appWindow.inPortrait ? 300 : (nowPlayingPage.height - 20 - toolBar.height)
         fillMode: Video.PreserveAspectFit
 
         property bool repeat: false // True if playback of the current video is to be repeated
@@ -463,7 +443,6 @@ Page {
         onPositionChanged: {
             //! TODO: take in account: DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000
 
-            console.log('position: ', videoPlayer.position)
             var pos = Math.floor(videoPlayer.position / 1000);
 
             //! Fix for disappearing video informations.
@@ -498,7 +477,7 @@ Page {
 
                 //! gsensor chart
                 gsensorChart.setCurrentHightlight(pos);
-                console.log('POS', pos)
+
                 if (pos > 1 && !gsensorChart.isEmpty())
                     gsensorFlickable.contentX = gsensorFlickable.contentX + gsensorChart.getSpacer();
 
@@ -510,11 +489,7 @@ Page {
 
         onStatusChanged: {
             if (videoPlayer.status == Video.EndOfMedia) {
-                //video.metaData.playCount++;
-                //video.metaData.resumePosition = 0;
                 videoPlayer.stop();
-                //videoPlayer.position = 0;
-                //videoPlayer.play();
                 videoPlaying = false;
                 // /* Play the video again. */
                 //startPlayback();
@@ -593,7 +568,7 @@ Page {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 text: qsTr("No data available")
-                visible: nowPlayingPage.height > nowPlayingPage.width ? !map.visible : false
+                visible: appWindow.inPortrait ? !map.visible : false
             }
 
             Map {
@@ -603,7 +578,7 @@ Page {
                 plugin : Plugin { name: "nokia" }
                 zoomLevel: maximumZoomLevel - 4
                 center: ourCoord
-                visible: videoInfoIterator == 1 ? false : nowPlayingPage.height > nowPlayingPage.width
+                visible: videoInfoIterator == 1 ? false : appWindow.inPortrait
 
                 MapImage {
                     id: beginPos
@@ -696,7 +671,7 @@ Page {
                 anchors.fill: parent
                 contentWidth: width
                 contentHeight: column.height + 20
-                visible: nowPlayingPage.height > nowPlayingPage.width
+                visible: appWindow.inPortrait
 
                 Column {
                     id: column
@@ -751,38 +726,38 @@ Page {
                         Label {
                             id: cityLabel
                             color: _TEXT_COLOR
-                            text: "City: n/a"
+                            text: "City: "
                         }
 
                         Label {
                             id: streetLabel
                             color: _TEXT_COLOR
-                            text: "Street: n/a"
+                            text: "Street: "
                         }
 
                         Label {
                             id: actualSpeedLabel
                             color: _TEXT_COLOR
-                            text: "Actual speed: n/a"
+                            text: "Actual speed: "
                         }
 
                         Label {
                             id: longitudeLabel
                             color: _TEXT_COLOR
-                            text: "Longitude: n/a"
+                            text: "Longitude: "
                         }
 
                         Label {
                             id: latitudeLabel
                             color: _TEXT_COLOR
-                            text: "Latitude: n/a"
+                            text: "Latitude: "
                         }
 
                         Label {
                             id: collisionLabel
                             visible: true
                             color: _ACTIVE_COLOR_TEXT
-                            text: "Probable collision side: none"
+                            text: "Probable collision side: "
                         }
                     }
                 }
@@ -800,7 +775,7 @@ Page {
                 anchors.rightMargin: 10
                 contentWidth: width
                 contentHeight: gsensorChart.y + gsensorChart.height - separator1Label.y
-                visible: nowPlayingPage.height > nowPlayingPage.width
+                visible: appWindow.inPortrait
 
                 Separator {
                     anchors.left: parent.left
@@ -964,7 +939,7 @@ Page {
         preferredHighlightEnd: 0.5
         highlightRangeMode: PathView.StrictlyEnforceRange
         clip: true
-        visible: nowPlayingPage.height > nowPlayingPage.width
+        visible: appWindow.inPortrait
 
         //! Jump to the page that was clicked
         currentIndex: 0
@@ -990,7 +965,7 @@ Page {
         height: 40
         anchors.top: videoPlayer.bottom
 
-        visible: nowPlayingPage.height > nowPlayingPage.width
+        visible: appWindow.inPortrait
 
         //! Page indicator icons placed horizontally in a row
         Row {

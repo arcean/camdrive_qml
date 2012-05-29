@@ -20,7 +20,7 @@ PageStackWindow {
     property string _ACTIVE_COLOR: "color11"
     property string _ACTIVE_COLOR_TEXT: "#8D18BE"
     property string _DISABLED_COLOR_TEXT: "#cccccc"
-    property string _APP_VERSION: "0.9.5"
+    property string _APP_VERSION: "0.9.7"
 
     property alias _IN_PORTRAIT: appWindow.inPortrait
 

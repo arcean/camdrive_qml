@@ -8,15 +8,24 @@ Page {
 
     orientationLock: PageOrientation.LockLandscape
 
-    tools: ToolBarLayout {
-        id: toolBar
+    ToolBar {
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        z: 10
 
-        ToolIcon { platformIconId: "toolbar-back";
-            anchors.left: parent.left
-            onClicked: {
-                viewfinderPage.resumeRecording();
-                hideToolbar();
-                pageStack.pop();
+        platformStyle: ToolBarStyle {
+            inverted: true
+            background: Qt.resolvedUrl("../images/toolbar-background-transparent.png")
+        }
+        tools: ToolBarLayout {
+            ToolIcon { platformIconId: "toolbar-back";
+                anchors.left: parent.left
+                onClicked: {
+                    viewfinderPage.resumeRecording();
+                    hideToolbar();
+                    pageStack.pop();
+                }
             }
         }
     }
