@@ -127,7 +127,7 @@ Item {
         anchors { verticalCenter: contactsRect.verticalCenter; right: contactsRect.right; rightMargin: 20 }
         text: "+"
         font { pixelSize: 30; bold: false }
-        platformStyle: StyledButton {}
+        platformStyle: StyledAccentButton {}
 
         onClicked: {
             openFile("AddressBook.qml");
