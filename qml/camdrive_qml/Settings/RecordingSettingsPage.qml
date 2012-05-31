@@ -153,6 +153,44 @@ Page {
             }
         }
 
+        Label {
+            id: offlineLabel
+            anchors.right: parent.right
+            anchors.top: backgroundSwitch.bottom
+            anchors.topMargin: 10
+            anchors.rightMargin: 10
+            font.pixelSize: _SMALL_FONT_SIZE
+            color: _DISABLED_COLOR_TEXT
+            text: "Offline mode"
+        }
+
+        Separator {
+            anchors.right: offlineLabel.left
+            anchors.left: parent.left
+            anchors.rightMargin: 20
+            anchors.verticalCenter: offlineLabel.verticalCenter
+        }
+
+        Label {
+            id: offlineSwitchLabel
+            anchors.left: parent.left
+            anchors.top: offlineLabel.bottom
+            anchors.topMargin: 10
+            text: "Offline mode while recording"
+        }
+
+        Switch {
+            id: offlineSwitch
+            anchors.right: parent.right
+            anchors.verticalCenter: offlineSwitchLabel.verticalCenter
+
+            checked: settingsObject.isOfflineMode()
+            platformStyle: StyledSwitch {}
+            onCheckedChanged: {
+                settingsObject.setOfflineMode(checked)
+            }
+        }
+
         Separator {
             anchors.left: parent.left
             anchors.right: separator3Label.left
@@ -163,7 +201,7 @@ Page {
             id: separator3Label
             anchors.right: parent.right
             anchors.rightMargin: 10
-            anchors.top: backgroundSwitch.bottom
+            anchors.top: offlineSwitch.bottom
             anchors.topMargin: 10
             font.pixelSize: _SMALL_FONT_SIZE
             color: _DISABLED_COLOR_TEXT

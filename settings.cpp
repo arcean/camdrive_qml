@@ -290,7 +290,7 @@ QString Settings::getEmergencyNumber()
 {
     QSettings settings;
     QString value =  settings.value("contacts/emergencyNumber", "112").toString();
-    qDebug() << "RET VALUE" << value;
+    //qDebug() << "RET VALUE" << value;
     return value;
 }
 
@@ -385,7 +385,7 @@ void Settings::incAccelerometerIgnoreLevel()
     if (value < 2)
         value = value + 0.1;
 
-    qDebug() << "new Ignore Level" << value;
+    //qDebug() << "new Ignore Level" << value;
 
     settings.setValue("accelerometer/ignoreLevel", value);
 }
@@ -430,4 +430,46 @@ void Settings::setRecordingInBackground(bool enable)
     QSettings settings;
 
     settings.setValue("recording/inBackground", enable);
+}
+
+/*!
+ * Get first run.
+ */
+bool Settings::isFirstRun()
+{
+    QSettings settings;
+    bool value =  settings.value("other/firstRun", true).toBool();
+
+    return value;
+}
+
+/*!
+ * Set first run.
+ */
+void Settings::setFirstRun(bool firstRun)
+{
+    QSettings settings;
+
+    settings.setValue("other/firstRun", firstRun);
+}
+
+/*!
+ * Get offline mode.
+ */
+bool Settings::isOfflineMode()
+{
+    QSettings settings;
+    bool value =  settings.value("other/offlineMode", false).toBool();
+
+    return value;
+}
+
+/*!
+ * Set offline mode.
+ */
+void Settings::setOfflineMode(bool offlineMode)
+{
+    QSettings settings;
+
+    settings.setValue("other/offlineMode", offlineMode);
 }

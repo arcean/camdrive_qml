@@ -29,6 +29,25 @@ Page {
         camMirrorScale.xScale = -1 * camMirrorScale.xScale;
     }
 
+    QueryDialog {
+        id: firstRunDialog
+        icon: "../images/sms.png"
+        titleText: "Agreement"
+        message: "Do you agree that Camdrive can store your coordinates and car speed?"
+
+        acceptButtonText: "Agree"
+        rejectButtonText: "Exit"
+
+        onRejected: {
+            //! Pop viewfinder from stack
+            viewfinderPage.close();
+        }
+
+        onAccepted: {
+            settingsObject.setFirstRun(false);
+        }
+    }
+
     function firstTimeFunction() {
         maxAllowedSpeed = settingsObject.getMaxAllowedSpeed();
         toggleNightModeButton.visible = settingsObject.getShowNightModeButton();
@@ -54,6 +73,9 @@ Page {
     {
         splashscreen.visible = true;
         splashscreen.enabled = true;
+
+        if (settingsObject.isFirstRun())
+            firstRunDialog.open();
     }
 
     Compass {
@@ -360,9 +382,17 @@ Page {
             setSpeed(speed);
             checkMaxAllowedSpeed(speed);
 
-            //! Get reversed geocode, for street name
-            reverseGeoCode.coordToAddress(frontCam.getLatitude(),
-                                          frontCam.getLongitude());
+            if (!settingsObject.isOfflineMode()) {
+                //! Get reversed geocode, for street name
+                reverseGeoCode.coordToAddress(frontCam.getLatitude(),
+                                              frontCam.getLongitude());
+            }
+            else {
+                if (frontCam.getLatitude !== 0 && frontCam.getLongitude !== 0) {
+                    streetNameLabel.text = "";
+                    textSpeedInfo.visible = true;
+                }
+            }
         }
         //! Accelerometer alarm signal
         onAlarm: {

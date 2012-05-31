@@ -4,7 +4,6 @@ import QtMobility.contacts 1.1
 
 Page {
     id: addressbookpage
-    orientationLock: PageOrientation.LockPortrait
 
     property int indexValue;
     property string selectedContactName;

@@ -81,7 +81,7 @@ void QDeclarativeCamera::initFile()
     time = (time * 60 * 1000);
     //int time = 1 * 60 * 1000;
     timer->setInterval(time);
-    qDebug() << "TIMER: set to" << time;
+    //qDebug() << "TIMER: set to" << time;
 
     storeDataTimer = new QTimer(this);
     /* TODO: Make it configurable, currently 1 sec. */
@@ -104,7 +104,7 @@ void QDeclarativeCamera::changeUsedFile()
         videoPartNumber = 0;
 
     emit videoPartNumberChanged(videoPartNumber);
-    qDebug() << "Changing used temp file for recording...";
+    //qDebug() << "Changing used temp file for recording...";
     this->stopRecording();
     file->changeFile(videoPartNumber);
     setOutputLocation();
@@ -115,7 +115,7 @@ void QDeclarativeCamera::changeUsedFile()
     Db->createVideoDetailsTable(name);
 
     this->startRecording(true);
-    qDebug() << "Changing temp file: DONE";
+    //qDebug() << "Changing temp file: DONE";
 }
 
 /**
@@ -336,7 +336,7 @@ void QDeclarativeCamera::enableNightMode(bool enable)
 
 void QDeclarativeCamera::statusChanged(QCamera::Status status)
 {
-    qDebug() << "Camera status" << status;
+    //qDebug() << "Camera status" << status;
     if (status == QCamera::ActiveStatus)
         emit fireRecording();
 }

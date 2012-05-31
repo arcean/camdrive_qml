@@ -144,7 +144,7 @@ Item {
     Label {
         id: smsLabel
         anchors { top: smsButton.bottom; topMargin: 4; horizontalCenter: smsButton.horizontalCenter; }
-        text: "Send SMS to the friend"
+        text: "Send SMS to friend"
         font.pixelSize: _SMALL_FONT_SIZE
         color: _TEXT_COLOR
         visible: smsButton.visible

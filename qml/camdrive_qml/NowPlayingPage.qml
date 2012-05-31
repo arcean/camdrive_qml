@@ -92,7 +92,7 @@ Page {
             gsensorChart.updateChart();
             gsensorChart.ready = true;
         }
-        gsensorFlickable.contentX = -nowPlayingPage.width / 2
+        gsensorFlickable.contentX = -480 / 2
         gsensorChart.setCurrentHightlight(counter);
         gsensorChart.visible = true;
 
@@ -239,7 +239,7 @@ Page {
             collisionLabel.text = text + flagText;
         }
         else
-            collisionLabel.text = "Probable collision side: ";
+            collisionLabel.text = "";
     }
 
     Keys.onPressed: {
@@ -247,10 +247,42 @@ Page {
             switch (event.key) {
             case Qt.Key_Right:
                 videoPlayer.position = videoPlayer.position + 10000;
+
+                var pos = Math.floor(videoPlayer.position / 1000);
+
+                //! Fix for disappearing video informations.
+                if (pos === 0)
+                    pos = 1;
+
+                //! gsensor chart
+                gsensorChart.setCurrentHightlight(pos);
+
+                if (pos > 1 && !gsensorChart.isEmpty()) {
+                    gsensorFlickable.contentX = (-480 / 2) + (gsensorChart.getSpacer() * (pos - 1));
+                }
+                else if (pos == 1 && !gsensorChart.isEmpty())
+                    gsensorFlickable.contentX = -480 / 2;
+
                 event.accepted = true;
                 break;
             case Qt.Key_Left:
                 videoPlayer.position = videoPlayer.position - 10000;
+
+                var pos = Math.floor(videoPlayer.position / 1000);
+
+                //! Fix for disappearing video informations.
+                if (pos === 0)
+                    pos = 1;
+
+                //! gsensor chart
+                gsensorChart.setCurrentHightlight(pos);
+
+                if (pos > 1 && !gsensorChart.isEmpty()) {
+                    gsensorFlickable.contentX = (-480 / 2) + (gsensorChart.getSpacer() * (pos - 1));
+                }
+                else if (pos == 1 && !gsensorChart.isEmpty())
+                    gsensorFlickable.contentX = -480 / 2;
+
                 event.accepted = true;
                 break;
             case Qt.Key_Q:
@@ -388,6 +420,21 @@ Page {
                     onReleased: {
                         if (posInsideMouseArea) {
                             videoPlayer.position = Math.floor((mouseX / width) * videoPlayer.duration);
+
+                            var pos = Math.floor(videoPlayer.position / 1000);
+
+                            //! Fix for disappearing video informations.
+                            if (pos === 0)
+                                pos = 1;
+
+                            //! gsensor chart
+                            gsensorChart.setCurrentHightlight(pos);
+
+                            if (pos > 1 && !gsensorChart.isEmpty()) {
+                                gsensorFlickable.contentX = (-480 / 2) + (gsensorChart.getSpacer() * (pos - 1));
+                            }
+                            else if (pos == 1 && !gsensorChart.isEmpty())
+                                gsensorFlickable.contentX = -480 / 2;
                             //videoInfoIterator = Math.ceil(videoPlayer.position / (DatabaseHelper.getVideoStoredEachQML(videoPlayer.source) * 1000));
                         }
                     }
@@ -478,10 +525,15 @@ Page {
                 //! gsensor chart
                 gsensorChart.setCurrentHightlight(pos);
 
-                if (pos > 1 && !gsensorChart.isEmpty())
-                    gsensorFlickable.contentX = gsensorFlickable.contentX + gsensorChart.getSpacer();
+                if (pos > 1 && !gsensorChart.isEmpty()) {
+                    gsensorFlickable.contentX = (-480 / 2) + (gsensorChart.getSpacer() * (pos - 1));
+                }
+                else if (pos == 1 && !gsensorChart.isEmpty())
+                    gsensorFlickable.contentX = -480 / 2;
 
                 console.log(gsensorChart.getSpacer())
+                console.log('DT', gsensorFlickable.x)
+                console.log('Dx', gsensorFlickable.contentX)
 
                 reverseGeoCode.coordToAddress(latitude, longitude);
             }
@@ -757,7 +809,8 @@ Page {
                             id: collisionLabel
                             visible: true
                             color: _ACTIVE_COLOR_TEXT
-                            text: "Probable collision side: "
+                            //text: "Probable collision side: "
+                            text: ""
                         }
                     }
                 }
@@ -890,8 +943,10 @@ Page {
 
                 Flickable {
                     id: gsensorFlickable
-                    anchors.fill: hiddenRectGsensor
+                    anchors.left: hiddenRectGsensor.left
+                    anchors.top: hiddenRectGsensor.top
                     height: 200
+                    width: 460
 
                     contentHeight: gsensorChart.height
                     contentWidth: gsensorChart.width
@@ -900,6 +955,7 @@ Page {
                     Chart {
                         id: gsensorChart
                         height: 200
+                        width: 460
 
                         property bool ready: false
 

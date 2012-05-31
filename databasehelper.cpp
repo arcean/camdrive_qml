@@ -15,7 +15,7 @@ int DatabaseHelper::getVideoStoredEachQML(const QString &videoName)
 {
     QString data = removePostfixAndMore(videoName);
     data = removePrefix(data);
-    qDebug() << "PRINT: " << data;
+    //qDebug() << "PRINT: " << data;
     return Db->getVideoStoredEach(data);
 }
 
@@ -23,7 +23,7 @@ int DatabaseHelper::getVideoInfoSpeedQML(const QString &videoName, int videoId)
 {
     QString data = removePostfix(videoName);
     data = removePrefix(data);
-    qDebug() << "PRINT: " << data << "videoID" << videoId;
+    //qDebug() << "PRINT: " << data << "videoID" << videoId;
     return Db->getVideoInfoSpeed(data, videoId);
 }
 
@@ -31,7 +31,7 @@ int DatabaseHelper::getVideoInfoSpecialCodeQML(const QString &videoName, int vid
 {
     QString data = removePostfix(videoName);
     data = removePrefix(data);
-    qDebug() << "PRINT: " << data << "videoID" << videoId;
+    //qDebug() << "PRINT: " << data << "videoID" << videoId;
     return Db->getVideoInfoSpecialCode(data, videoId);
 }
 
@@ -39,7 +39,7 @@ float DatabaseHelper::getVideoInfoLatitudeQML(const QString &videoName, int vide
 {
     QString data = removePostfix(videoName);
     data = removePrefix(data);
-    qDebug() << "PRINT: " << data << "videoID" << videoId;
+    //qDebug() << "PRINT: " << data << "videoID" << videoId;
     return Db->getVideoInfoLatitude(data, videoId);
 }
 
@@ -47,7 +47,7 @@ float DatabaseHelper::getVideoInfoLongitudeQML(const QString &videoName, int vid
 {
     QString data = removePostfix(videoName);
     data = removePrefix(data);
-    qDebug() << "PRINT: " << data << "videoID" << videoId;
+    //qDebug() << "PRINT: " << data << "videoID" << videoId;
     return Db->getVideoInfoLongitude(data, videoId);
 }
 
@@ -55,7 +55,7 @@ float DatabaseHelper::getVideoInfoAccelXQML(const QString &videoName, int videoI
 {
     QString data = removePostfix(videoName);
     data = removePrefix(data);
-    qDebug() << "PRINT: " << data << "videoID" << videoId;
+    //qDebug() << "PRINT: " << data << "videoID" << videoId;
     return Db->getVideoInfoAccelX(data, videoId);
 }
 
@@ -63,7 +63,7 @@ float DatabaseHelper::getVideoInfoAccelYQML(const QString &videoName, int videoI
 {
     QString data = removePostfix(videoName);
     data = removePrefix(data);
-    qDebug() << "PRINT: " << data << "videoID" << videoId;
+    //qDebug() << "PRINT: " << data << "videoID" << videoId;
     return Db->getVideoInfoAccelY(data, videoId);
 }
 
@@ -71,7 +71,7 @@ float DatabaseHelper::getVideoInfoAccelZQML(const QString &videoName, int videoI
 {
     QString data = removePostfix(videoName);
     data = removePrefix(data);
-    qDebug() << "PRINT: " << data << "videoID" << videoId;
+    //qDebug() << "PRINT: " << data << "videoID" << videoId;
     return Db->getVideoInfoAccelZ(data, videoId);
 }
 
@@ -79,7 +79,7 @@ int DatabaseHelper::getSpecialCodeSumQML(const QString &videoName)
 {
     QString data = removePostfix(videoName);
     data = removePrefixPath(data);
-    qDebug() << "PRINT: " << data;
+    //qDebug() << "PRINT: " << data;
     return Db->getSpecialCodeSum(data);
 }
 
@@ -87,7 +87,7 @@ int DatabaseHelper::countVideoInfo(const QString &videoName)
 {
     QString data = removePostfix(videoName);
     data = removePrefix(data);
-    qDebug() << "PRINT: " << data << "countVideoInfo";
+    //qDebug() << "PRINT: " << data << "countVideoInfo";
     return Db->countsVideoIds(data);
 }
 
@@ -95,7 +95,7 @@ void DatabaseHelper::removeVideoQML(const QString &videoName)
 {
     QString data = removePostfix(videoName);
     data = removePrefixPath(data);
-    qDebug() << "PRINT rm VIDEO: " << data << "videoName" << videoName;
+    //qDebug() << "PRINT rm VIDEO: " << data << "videoName" << videoName;
     Db->removeVideo(data);
 }
 
@@ -103,7 +103,7 @@ void DatabaseHelper::removeVideoFromMainQML(const QString &videoName)
 {
     QString data = removePostfixAndMore(videoName);
     data = removePrefixPath(data);
-    qDebug() << "PRINT rm MAIN: " << data << "videoName" << videoName;
+    //qDebug() << "PRINT rm MAIN: " << data << "videoName" << videoName;
     Db->removeVideoFromMain(data);
 }
 
@@ -164,7 +164,7 @@ bool DatabaseHelper::isFileNameFreeQML(const QString &fileName)
 
     data = removePostfixAndMore(data);
 
-    qDebug() << "DATA isFileNameFree" << data << "FN:" << fileName;
+    //qDebug() << "DATA isFileNameFree" << data << "FN:" << fileName;
 
     file1.setFileName(data + "_part_1.mp4");
     file2.setFileName(data + "_part_2.mp4");
@@ -221,9 +221,9 @@ void DatabaseHelper::createSubtitles(const QString &videoName, bool velocityUnit
     else
         unit = "mph";
 
-    qDebug() << "Number of subtitles to be created" << numOfSub;
-    qDebug() << "srt filename:" << APP_DIR APP_NAME + data + ".srt";
-    qDebug() << "videoo stored each" << storeVideoEach << "second(s)";
+    //qDebug() << "Number of subtitles to be created" << numOfSub;
+    //qDebug() << "srt filename:" << APP_DIR APP_NAME + data + ".srt";
+    //qDebug() << "videoo stored each" << storeVideoEach << "second(s)";
 
     if (numOfSub < 1)
         return;

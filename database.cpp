@@ -143,7 +143,7 @@ bool Database::removeVideo(const QString &videoName)
     result = query.exec(QString("DROP TABLE IF EXISTS '%1'")
                         .arg(videoName));
 
-    qDebug() << "DROPPING TABLE:" << videoName;
+    //qDebug() << "DROPPING TABLE:" << videoName;
 
     return result;
 }
@@ -188,7 +188,7 @@ float Database::getVideoInfoAccelX(const QString &videoName, int videoId)
     query.exec(QString("SELECT accelX FROM '%1' WHERE videoId=%2").arg(videoName).arg(videoId));
     query.next();
     float result = query.value(0).toFloat();
-    qDebug() << "RET RESULT AccelX" << result;
+    //qDebug() << "RET RESULT AccelX" << result;
     return result;
 }
 

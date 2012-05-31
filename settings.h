@@ -69,6 +69,12 @@ public slots:
     //! Record in background
     bool getRecordingInBackground();
     void setRecordingInBackground(bool enable);
+    //! First run
+    bool isFirstRun();
+    void setFirstRun(bool firstRun);
+    //! Offline mode for viewfinder
+    bool isOfflineMode();
+    void setOfflineMode(bool offlineMode);
 
 };
 

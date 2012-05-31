@@ -43,13 +43,13 @@ void Accelerometer::changeTresholdTo(int treshold_level)
     }
     backup_treshold = min_treshold;
     min_treshold = min_treshold + settings->getAccelerometerIgnoreLevel();
-    qDebug() << "Treshold level changed to" << min_treshold;
+    //qDebug() << "Treshold level changed to" << min_treshold;
 }
 
 void Accelerometer::updateIgnoreTreshold()
 {
     min_treshold = backup_treshold + settings->getAccelerometerIgnoreLevel();
-        qDebug() << "Treshold updated to" << min_treshold;
+        //qDebug() << "Treshold updated to" << min_treshold;
 }
 
 void Accelerometer::readingChanged()
@@ -81,44 +81,44 @@ void Accelerometer::parseReading()
 
     if (result_phase1G > 0) {
         //TODO: Alarm
-        qDebug() << "result_phase1G triggered:" << "ALARM";
+        //qDebug() << "result_phase1G triggered:" << "ALARM";
         setCollisionSide();
         //! It's PROBABLY ALARM, let's add 10 to alarmFlag
         if (alarmFlag < 10)
             alarmFlag += 10;
-        qDebug() << "ALARMflag:" << alarmFlag;
+        //qDebug() << "ALARMflag:" << alarmFlag;
 
         if (isSpeedProper())
             emit alarm(0, alarmFlag);
-        else
-            qDebug() << "Too low speed to trigger alarm";
+        //else
+            //qDebug() << "Too low speed to trigger alarm";
     }
     // Check if there's one G, and the other > min_treshold -> ALARM
     else if (result_phase2G > 0 && result_phase2MinTreshold > 1 && result_phase22G == 0) {
         //TODO: Alarm
-        qDebug() << "result_phase2G and result_phase2MinTreshold triggered:" << "ALARM";
+        //qDebug() << "result_phase2G and result_phase2MinTreshold triggered:" << "ALARM";
         setCollisionSide();
         //! It's PROBABLY ALARM, let's add 10 to alarmFlag
         if (alarmFlag < 10)
             alarmFlag += 10;
-        qDebug() << "ALARMflag:" << alarmFlag;
+        //qDebug() << "ALARMflag:" << alarmFlag;
 
         if (isSpeedProper())
             emit alarm(0, alarmFlag);
-        else
-            qDebug() << "Too low speed to trigger alarm";
+        //else
+            //qDebug() << "Too low speed to trigger alarm";
     }
     // If there's one > 22G (max hw value) -> EMERGENCY_ALARM
     else if (result_phase22G > 0){
         //TODO: Alarm, Emergency alarm
-        qDebug() << "Emergency 22G ALARM";
+        //qDebug() << "Emergency 22G ALARM";
         setCollisionSide();
-        qDebug() << "ALARMflag:" << alarmFlag;
+        //qDebug() << "ALARMflag:" << alarmFlag;
 
         if (isSpeedProper())
             emit alarm(1, alarmFlag);
-        else
-            qDebug() << "Too low speed to trigger alarm";
+        //else
+            //qDebug() << "Too low speed to trigger alarm";
     }
     else {
         //Do nothing
@@ -136,7 +136,7 @@ bool Accelerometer::isSpeedProper()
     else if (!settings->getVelocityUnit() && lastSpeed * 2.2369 < 15)
         ret = false;
 
-    qDebug() << "is speed proper" << ret;
+    //qDebug() << "is speed proper" << ret;
 
     return ret;
 }

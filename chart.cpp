@@ -121,7 +121,8 @@ void Chart::addPoint(int y, int lineType)
         pointsZ.append(y);
         break;
     default:
-        qDebug() << "Unsupported line type [chart]";
+        break;
+        //qDebug() << "Unsupported line type [chart]";
     }
 }
 

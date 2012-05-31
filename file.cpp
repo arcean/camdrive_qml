@@ -12,18 +12,18 @@ File::File(const QString &fileName, Settings *settingsObject, Database *Db)
     int currentNumVideo = Db->countsIds();
     int maxVideo = settingsObject->getMaxVideoFiles();
 
-    qDebug() << "max" << maxVideo;
-    qDebug() << "curr" << currentNumVideo;
+    //qDebug() << "max" << maxVideo;
+    //qDebug() << "curr" << currentNumVideo;
 
     init();
 
     if (currentNumVideo >= maxVideo && maxVideo != 0) {
-        qDebug() << "currentNumVideo >= maxVideo";
+        //qDebug() << "currentNumVideo >= maxVideo";
         generatedFileName = getTheOldestFileName();
-        qDebug() << "generatedFileName: " << generatedFileName;
+        //qDebug() << "generatedFileName: " << generatedFileName;
     }
     else {
-        qDebug() << "everything's ok";
+        //qDebug() << "everything's ok";
         generatedFileName = generateNewFileName(fileName);
     }
 
@@ -44,13 +44,13 @@ void File::deleteTheOldestFiles()
 
     QFileInfoList fileList = files.entryInfoList(QDir::Files, QDir::Time);
     for (int i = 0; i < fileList.length(); i++) {
-        qDebug() << "A1:" << fileList.at(i).absoluteFilePath() << fileList.at(i).lastModified().toString();
+        //qDebug() << "A1:" << fileList.at(i).absoluteFilePath() << fileList.at(i).lastModified().toString();
     }
 
     if (fileList.length() < 1)
         return;
 
-    qDebug() << "The oldest file: " << fileList.at(fileList.length()-1).absoluteFilePath() << fileList.at(fileList.length()-1).lastModified().toString();
+    //qDebug() << "The oldest file: " << fileList.at(fileList.length()-1).absoluteFilePath() << fileList.at(fileList.length()-1).lastModified().toString();
 
     /* Remove the oldest video files. */
     index = fileList.length() - 1;
@@ -66,7 +66,7 @@ void File::deleteTheOldestFiles()
         }
         //settingsObject->addCurrentVideoFiles(-1);
     }
-    qDebug() << " RM OK2";
+    //qDebug() << " RM OK2";
     index = fileList.length() - 2;
     if (index > 0) {
         if (fileList.at(fileList.length()-2).absoluteFilePath().contains("part_2.mp4")) {
@@ -80,20 +80,20 @@ void File::deleteTheOldestFiles()
                 DbH->removeVideoFromMainQML(fileList.at(fileList.length()-2).absoluteFilePath());
             }
         }
-        qDebug() << "RM OK3";
+        //qDebug() << "RM OK3";
     }
 
     currentNumVideo = Db->countsIds();
     maxVideo = settingsObject->getMaxVideoFiles();
 
-    qDebug() << "currNumVideo" << currentNumVideo;
-    qDebug() << "maxVideo" << maxVideo;
+    //qDebug() << "currNumVideo" << currentNumVideo;
+    //qDebug() << "maxVideo" << maxVideo;
 
     if ((currentNumVideo >= maxVideo && maxVideo != 0)) {
-        qDebug() << "Continuing";
+        //qDebug() << "Continuing";
         deleteTheOldestFiles();
     }
-    qDebug() << "Done";
+    //qDebug() << "Done";
 }
 
 QString File::getTheOldestFileName()
@@ -103,22 +103,22 @@ QString File::getTheOldestFileName()
     int index;
 
     QFileInfoList fileList = files.entryInfoList(QDir::Files, QDir::Time);
-    qDebug() << "WORKING";
-    for (int i = 0; i < fileList.length(); i++) {
-        qDebug() << "A1:" << fileList.at(i).absoluteFilePath() << fileList.at(i).lastModified().toString();
-    }
+    //qDebug() << "WORKING";
+    //for (int i = 0; i < fileList.length(); i++) {
+        //qDebug() << "A1:" << fileList.at(i).absoluteFilePath() << fileList.at(i).lastModified().toString();
+    //}
 
     if (fileList.length() < 1)
         return "err";
 
-    qDebug() << "The oldest file: " << fileList.at(fileList.length()-1).absoluteFilePath() << fileList.at(fileList.length()-1).lastModified().toString();
+    //qDebug() << "The oldest file: " << fileList.at(fileList.length()-1).absoluteFilePath() << fileList.at(fileList.length()-1).lastModified().toString();
     QStringList list = fileList.at(fileList.length()-1).absoluteFilePath().split("/");
 
     index = list.length() - 1;
     if (index < 0)
         return "err";
 
-    qDebug() << "OK";
+    //qDebug() << "OK";
     if (list.length() > 1)
         fileName = list.at(list.length()-1);
     else
