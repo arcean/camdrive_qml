@@ -140,13 +140,13 @@ Page {
     function setSpeed(value)
     {
         //! No GPS data available
-        if (value == 0) {
-            speedLabel.visible = false;
-            actualSpeedLabel.text = "Actual speed: n/a ";
-            return;
-        }
-        else
-            speedLabel.visible = true;
+      //  if (value == 0) {
+       //     speedLabel.visible = false;
+      ////      actualSpeedLabel.text = "Actual speed: n/a ";
+      //      return;
+       // }
+       // else
+       //     speedLabel.visible = true;
 
         var speed;
 

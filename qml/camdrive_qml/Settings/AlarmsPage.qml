@@ -149,10 +149,10 @@ Page {
             anchors.topMargin: 10
             title: qsTr("Emergency number")
             model: ListModel {
-                ListElement { name: QT_TR_NOOP("Disabled"); value: -1; }
-                ListElement { name: QT_TR_NOOP("112"); value: 112; }
-                ListElement { name: QT_TR_NOOP("911"); value: 911; }
-                ListElement { name: QT_TR_NOOP("999"); value: 999; }
+                ListElement { name: QT_TR_NOOP("Disabled"); value: "0"; }
+                ListElement { name: QT_TR_NOOP("112"); value: "112"; }
+                ListElement { name: QT_TR_NOOP("911"); value: "911"; }
+                ListElement { name: QT_TR_NOOP("999"); value: "999"; }
             }
             initialValue: settingsObject.getEmergencyNumber()
             onValueChosen: settingsObject.setEmergencyNumber(value)

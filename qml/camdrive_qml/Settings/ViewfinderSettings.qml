@@ -87,7 +87,7 @@ Page {
             id: emergencyButtonLabel
             anchors.left: parent.left
             anchors.top: nightModeButtonLabel.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: 16
             text: "Show emergency button"
         }
 

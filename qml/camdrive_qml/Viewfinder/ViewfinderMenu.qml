@@ -75,6 +75,7 @@ Item {
         onClicked: {
             //viewfinderPage.pauseRecording();
             showMapsPage();
+            viewfinderPage.closeMenuFunc();
         }
     }
 

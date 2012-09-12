@@ -290,7 +290,7 @@ QString Settings::getEmergencyNumber()
 {
     QSettings settings;
     QString value =  settings.value("contacts/emergencyNumber", "112").toString();
-    //qDebug() << "RET VALUE" << value;
+
     return value;
 }
 
