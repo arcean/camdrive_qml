@@ -1,3 +1,8 @@
+camdrive (1.0.1) unstable; urgency=low
+  * Small improvements.
+
+ -- Tomasz Pieniążek <t.pieniazek@gazeta.pl>  Wed, 12 Sep 2012 18:55:13 +0200
+
 camdrive (1.0.0) unstable; urgency=low
   * 1st Nokia Store release.
 
