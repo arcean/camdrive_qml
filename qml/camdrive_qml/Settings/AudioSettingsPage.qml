@@ -67,21 +67,13 @@ Page {
         contentHeight: _IN_PORTRAIT ? audioQualityButtonColumn.y + audioQualityButtonColumn.height - generalLabel.y :
                                       audioQualityButtonRow.y + audioQualityButtonRow.height - generalLabel.y
 
-        Label {
+        LabelSeparator {
             id: generalLabel
-            anchors.right: parent.right
             anchors.top: parent.top
-            anchors.rightMargin: 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
-            text: "General"
-        }
-
-        Separator {
-            anchors.right: generalLabel.left
+            anchors.right: parent.right
             anchors.left: parent.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: generalLabel.verticalCenter
+
+            text: "General"
         }
 
         Label {
@@ -105,21 +97,14 @@ Page {
             }
         }
 
-        Label {
+        LabelSeparator {
             id: qualityLabel
+            anchors.top: audioSwitchLabel.bottom
+            anchors.topMargin: 10
             anchors.right: parent.right
-            anchors.rightMargin: 10
-            y: audioSwitchLabel.y + audioSwitchLabel.height + 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
-            text: "Quality"
-        }
-
-        Separator {
-            anchors.right: qualityLabel.left
             anchors.left: parent.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: qualityLabel.verticalCenter
+
+            text: "Quality"
         }
 
      /*   Label {

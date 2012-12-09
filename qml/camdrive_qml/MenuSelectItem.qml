@@ -53,10 +53,9 @@ MenuItem {
             sourceSize.height: height
         }
 
-        SelectionDialog {
+        StyledSelectionDialog {
             id: selectionDialog
             titleText: title.text
-            platformStyle: StyledSelectionDialog {}
             onAccepted: valueChosen(model.get(selectedIndex).value)
         }
     }

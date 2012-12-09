@@ -830,24 +830,18 @@ Page {
                 contentHeight: gsensorChart.y + gsensorChart.height - separator1Label.y
                 visible: appWindow.inPortrait
 
-                Separator {
-                    anchors.left: parent.left
-                    anchors.right: separator1Label.left
-                    anchors.rightMargin: 20
-                    anchors.verticalCenter: separator1Label.verticalCenter
-                }
-                Label {
+                LabelSeparator {
                     id: separator1Label
+
                     anchors.top: parent.top
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
-                    font.pixelSize: _SMALL_FONT_SIZE
-                    color: _DISABLED_COLOR_TEXT
+                    anchors.left: parent.left
                     text: "G-sensor"
                 }
 
                 Label {
                     id: gsensorX
+
                     anchors.left: parent.left
                     anchors.top: separator1Label.bottom
                     anchors.topMargin: 10
@@ -856,6 +850,7 @@ Page {
                 }
                 Line {
                     id: gsensorXline
+
                     height: gsensorX.height
                     anchors.right: parent.right
                     anchors.rightMargin: 10
@@ -915,20 +910,13 @@ Page {
                     Behavior on value { PropertyAnimation { duration: 500; easing.type: Easing.Linear; } }
                 }
 
-                Separator {
-                    anchors.left: parent.left
-                    anchors.right: separator2Label.left
-                    anchors.rightMargin: 20
-                    anchors.verticalCenter: separator2Label.verticalCenter
-                }
-                Label {
+                LabelSeparator {
                     id: separator2Label
                     anchors.top: gsensorZ.bottom
                     anchors.topMargin: 10
+                    anchors.left: parent.left
                     anchors.right: parent.right
-                    anchors.rightMargin: 10
-                    font.pixelSize: _SMALL_FONT_SIZE
-                    color: _DISABLED_COLOR_TEXT
+
                     text: "Chart"
                 }
 

@@ -70,9 +70,8 @@ Item {
         onClicked: selectionDialog.open()
     }
 
-    SelectionDialog {
+    StyledSelectionDialog {
         id: selectionDialog
-        platformStyle: StyledSelectionDialog {}
 
         titleText: title.text
         onAccepted: {

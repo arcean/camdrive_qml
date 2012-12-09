@@ -124,11 +124,10 @@ Page {
         }
     }
 
-    SelectionDialog {
+    StyledSelectionDialog {
         id: sortSelectionDialog
         titleText: "Sort by"
         //selectedIndex: videoListModel.sortProperties[0]
-        platformStyle: StyledSelectionDialog {}
 
         model: ListModel {
             ListElement { name: "Date (asc)"; value: "+lastModified" }

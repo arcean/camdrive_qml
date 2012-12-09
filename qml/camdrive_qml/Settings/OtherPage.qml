@@ -49,21 +49,13 @@ Page {
         contentWidth: width
         contentHeight: velocityUnit.y + velocityUnit.height - generalLabel.y
 
-        Label {
+        LabelSeparator {
             id: generalLabel
-            anchors.right: parent.right
             anchors.top: parent.top
-            anchors.rightMargin: 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
-            text: "Velocity unit"
-        }
-
-        Separator {
-            anchors.right: generalLabel.left
+            anchors.right: parent.right
             anchors.left: parent.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: generalLabel.verticalCenter
+
+            text: "Velocity unit"
         }
 
         SelectionItem {

@@ -120,14 +120,13 @@ Item {
     }
 
     //! Add "+" Button to launch AddressBook page with list of contacts with phone numbers
-    Button {
+    FullStyledButton {
         id: addButton
         width: 43
         height: 42
         anchors { verticalCenter: contactsRect.verticalCenter; right: contactsRect.right; rightMargin: 20 }
         text: "+"
         font { pixelSize: 30; bold: false }
-        platformStyle: StyledAccentButton {}
 
         onClicked: {
             openFile("AddressBook.qml");

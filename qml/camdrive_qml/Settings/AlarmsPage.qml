@@ -53,26 +53,19 @@ Page {
         contentWidth: width
         contentHeight: messageContact.y + messageContact.height - separator4Label.y
 
-        Separator {
-            anchors.left: parent.left
-            anchors.right: separator4Label.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: separator4Label.verticalCenter
-        }
-        Label {
+        LabelSeparator {
             id: separator4Label
-            anchors.right: parent.right
-            anchors.rightMargin: 10
             anchors.top: parent.top
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
+            anchors.right: parent.right
+            anchors.left: parent.left
+
             text: "Accelerometer"
         }
 
         SelectionItem {
             id: accelerometerButton
             anchors.top: separator4Label.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: _MARGIN
             title: qsTr("Sensitivity")
             model: ListModel {
                 ListElement { name: QT_TR_NOOP("High"); value: 1; }
@@ -86,28 +79,20 @@ Page {
             }
         }
 
-        Separator {
-            anchors.left: parent.left
-            anchors.right: separator1Label.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: separator1Label.verticalCenter
-        }
-
-        Label {
+        LabelSeparator {
             id: separator1Label
             anchors.top: accelerometerButton.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: _MARGIN
             anchors.right: parent.right
-            anchors.rightMargin: 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
+            anchors.left: parent.left
+
             text: "Speed alarm"
         }
 
         SelectionItem {
             id: maxAllowedSpeed
             anchors.top: separator1Label.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: _MARGIN
             title: qsTr("Max allowed speed")
             model: ListModel {
                 ListElement { name: QT_TR_NOOP("Disabled"); value: 0; }
@@ -126,27 +111,20 @@ Page {
             onValueChosen: settingsObject.setMaxAllowedSpeed(value)
         }
 
-        Separator {
-            anchors.left: parent.left
-            anchors.right: separator3Label.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: separator3Label.verticalCenter
-        }
-        Label {
+        LabelSeparator {
             id: separator3Label
-            anchors.right: parent.right
-            anchors.rightMargin: 10
             anchors.top: maxAllowedSpeed.bottom
-            anchors.topMargin: 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
+            anchors.topMargin: _MARGIN
+            anchors.right: parent.right
+            anchors.left: parent.left
+
             text: "Emergency service number"
         }
 
         SelectionItem {
             id: emergencyButton
             anchors.top: separator3Label.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: _MARGIN
             title: qsTr("Emergency number")
             model: ListModel {
                 ListElement { name: QT_TR_NOOP("Disabled"); value: "0"; }
@@ -158,20 +136,13 @@ Page {
             onValueChosen: settingsObject.setEmergencyNumber(value)
         }
 
-        Separator {
-            anchors.left: parent.left
-            anchors.right: separator2Label.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: separator2Label.verticalCenter
-        }
-        Label {
+        LabelSeparator {
             id: separator2Label
-            anchors.right: parent.right
-            anchors.rightMargin: 10
             anchors.top: emergencyButton.bottom
-            anchors.topMargin: 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
+            anchors.topMargin: _MARGIN
+            anchors.right: parent.right
+            anchors.left: parent.left
+
             text: "Friend's contact"
         }
 
@@ -179,7 +150,7 @@ Page {
             id: contactsLabel
             anchors.left: parent.left
             anchors.top: separator2Label.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: _MARGIN
             text: "Friend's emergency contact"
         }
         Switch {
@@ -196,9 +167,11 @@ Page {
 
         SelectContact {
             id: contacts
+            anchors.top: contactsLabel.bottom
+            anchors.topMargin: _MARGIN
             anchors.right: parent.right
             anchors.left: parent.left
-            anchors.top: contactsLabel.bottom
+
             onVkbdOpen: {
                 if(_IN_PORTRAIT)
                     flicker.contentY = flicker.height / 3;
@@ -209,8 +182,7 @@ Page {
 
         Column {
             id: messageContact
-            anchors { left: parent.left; right: parent.right }
-            anchors.top: contacts.bottom
+            anchors { top: contacts.bottom; left: parent.left; right: parent.right }
             height: 80
 
             Repeater {
