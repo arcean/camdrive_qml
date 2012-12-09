@@ -47,7 +47,7 @@ Page {
             right: parent.right
             top: parent.top
         }
-        text: "Audio settings"
+        title: "Audio settings"
     }
 
     Flickable {

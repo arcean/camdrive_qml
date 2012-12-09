@@ -32,7 +32,7 @@ Page {
             right: parent.right
             top: parent.top
         }
-        text: "Recording settings"
+        title: "Recording settings"
     }
 
     Flickable {

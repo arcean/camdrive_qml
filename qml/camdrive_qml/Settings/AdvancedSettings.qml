@@ -36,7 +36,7 @@ Page {
             right: parent.right
             top: parent.top
         }
-        text: "Advanced settings"
+        title: "Advanced settings"
     }
 
     Flickable {

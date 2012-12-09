@@ -34,7 +34,7 @@ Page {
             right: parent.right
             top: parent.top
         }
-        text: "Alarms settings"
+        title: "Alarms settings"
     }
 
     Flickable {

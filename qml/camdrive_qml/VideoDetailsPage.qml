@@ -51,7 +51,7 @@ Page {
             right: parent.right
             top: parent.top
         }
-        text: "Video details"
+        title: "Video details"
     }
 
     Flickable {

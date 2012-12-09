@@ -11,16 +11,22 @@ PageStackWindow {
     showToolBar: false
     showStatusBar: false
 
-    property int _SMALL_FONT_SIZE: 18
-    property int _STANDARD_FONT_SIZE: 24
-    property int _LARGE_FONT_SIZE: 40
-    property int _MARGIN: 20
+    // Base:
+    property string _APP_NAME: "CamDrive"
+    property string _APP_VERSION: "1.0.2"
+    // Theme:
     property string _TEXT_COLOR: theme.inverted ? "white" : "black"
-    property string _ICON_LOCATION: "/usr/share/themes/blanco/meegotouch/icons/"
     property string _ACTIVE_COLOR: "color11"
     property string _ACTIVE_COLOR_TEXT: "#8D18BE"
     property string _DISABLED_COLOR_TEXT: "#cccccc"
-    property string _APP_VERSION: "1.0.1"
+    property string _ICON_LOCATION: "/usr/share/themes/blanco/meegotouch/icons/"
+    // Font size:
+    property int _SMALL_FONT_SIZE: 18
+    property int _STANDARD_FONT_SIZE: 24
+    property int _HEADER_FONT_SIZE: 32
+    property int _LARGE_FONT_SIZE: 40
+    // Margins:
+    property int _MARGIN: 16
 
     property alias _IN_PORTRAIT: appWindow.inPortrait
 

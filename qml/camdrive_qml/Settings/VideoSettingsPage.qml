@@ -65,7 +65,7 @@ Page {
             right: parent.right
             top: parent.top
         }
-        text: "Video settings"
+        title: "Video settings"
     }
 
     Flickable {

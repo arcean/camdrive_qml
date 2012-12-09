@@ -1,20 +1,21 @@
 import QtQuick 1.0
 import com.nokia.meego 1.0
-import "../"
 
 Image {
     id: header
-    property string text: ""
     z: 1
     height: 72
     source: "image://theme/" + _ACTIVE_COLOR + "-meegotouch-view-header-fixed"
+
+    property alias title: titleLabel.text
+
     Label {
         id: titleLabel
         anchors.verticalCenter: parent.verticalCenter
-        x: (parent.width / 2) - titleLabel.width/2
-        text: header.text
-        color: _TEXT_COLOR
-        font.pixelSize: _STANDARD_FONT_SIZE
-        font.bold: true
+        anchors.left: parent.left
+        anchors.leftMargin: _MARGIN
+        color: "white"
+        font.pixelSize: _HEADER_FONT_SIZE
+        //font.bold: true
     }
 }

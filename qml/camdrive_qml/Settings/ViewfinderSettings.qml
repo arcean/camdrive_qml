@@ -27,7 +27,7 @@ Page {
             right: parent.right
             top: parent.top
         }
-        text: "Viewfinder settings"
+        title: "Viewfinder settings"
     }
 
     Flickable {
