@@ -13,7 +13,7 @@ PageStackWindow {
 
     // Base:
     property string _APP_NAME: "CamDrive"
-    property string _APP_VERSION: "1.0.2"
+    property string _APP_VERSION: "1.0.3"
     // Theme:
     property string _TEXT_COLOR: theme.inverted ? "white" : "black"
     property string _ACTIVE_COLOR: "color11"
@@ -27,6 +27,7 @@ PageStackWindow {
     property int _LARGE_FONT_SIZE: 40
     // Margins:
     property int _MARGIN: 16
+    property int _MARGIN_SWITCH: 24
 
     property alias _IN_PORTRAIT: appWindow.inPortrait
 

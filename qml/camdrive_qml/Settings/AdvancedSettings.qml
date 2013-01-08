@@ -69,7 +69,7 @@ Page {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: separator1Label.bottom
-            anchors.margins: 10
+            anchors.margins: _MARGIN_SWITCH
             platformStyle: StyledButton {}
 
             text: "Clear database"
@@ -79,6 +79,7 @@ Page {
         LabelSeparator {
             id: separator2Label
             anchors.top: clearDatabaseButton.bottom
+            anchors.topMargin: _MARGIN_SWITCH
             anchors.right: parent.right
             anchors.left: parent.left
 
@@ -90,7 +91,7 @@ Page {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: separator2Label.bottom
-            anchors.margins: 10
+            anchors.margins: _MARGIN_SWITCH
             platformStyle: StyledButton {}
 
             text: "Delete all video files"

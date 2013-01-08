@@ -79,8 +79,10 @@ Page {
         Label {
             id: audioSwitchLabel
             anchors.left: parent.left
+            anchors.top: generalLabel.bottom
+            anchors.topMargin: _MARGIN_SWITCH
+
             text: "Record audio"
-            y: generalLabel.y + generalLabel.height + 10
         }
 
         Switch {
@@ -100,25 +102,19 @@ Page {
         LabelSeparator {
             id: qualityLabel
             anchors.top: audioSwitchLabel.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: _MARGIN_SWITCH
             anchors.right: parent.right
             anchors.left: parent.left
 
             text: "Quality"
         }
 
-     /*   Label {
-            id: audioQualityLabel
-            anchors.left: parent.left
-            y: qualityLabel.y + qualityLabel.height + 20
-            text: "Audio quality:"
-        }*/
-
         ButtonColumn {
             id: audioQualityButtonColumn
             anchors.left: parent.left
             anchors.right: parent.right
-            y: qualityLabel.y + qualityLabel.height + 10
+            anchors.top: qualityLabel.bottom
+            anchors.topMargin: _MARGIN_SWITCH
 
             enabled: audioSwitch.checked
             platformStyle: StyledButton {}
@@ -142,7 +138,8 @@ Page {
             id: audioQualityButtonRow
             anchors.left: parent.left
             anchors.right: parent.right
-            y: qualityLabel.y + qualityLabel.height + 10
+            anchors.top: qualityLabel.bottom
+            anchors.topMargin: _MARGIN_SWITCH
 
             enabled: audioSwitch.checked
             platformStyle: StyledButton {}

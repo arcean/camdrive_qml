@@ -18,7 +18,8 @@ Image {
         anchors {
             top: parent.top
             topMargin: 10
-            horizontalCenter: parent.horizontalCenter
+            left: parent.left
+            leftMargin: _MARGIN
         }
 
         text: header.text
@@ -31,7 +32,8 @@ Image {
         id: detailsLabel
         anchors {
             top: titleLabel.bottom
-            horizontalCenter: parent.horizontalCenter
+            left: parent.left
+            leftMargin: _MARGIN
         }
 
         text: header.detailsText

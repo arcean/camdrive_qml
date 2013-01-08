@@ -60,7 +60,6 @@ Page {
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.margins: 10
 
         contentHeight: appWindow.inPortrait ? (column.height + videoItem.height + 10) : column.height
 
@@ -68,6 +67,7 @@ Page {
             id: videoItem
             anchors.top: parent.top
             anchors.left: parent.left
+            anchors.leftMargin: 10 // (480 - 460) / 2
             width:  460
             height: Math.floor((width / 16) * 9)
             z: 1
@@ -91,13 +91,15 @@ Page {
 
         Column {
             id: column
-            width: parent.width
-
             anchors.top: appWindow.inPortrait ? videoItem.bottom : parent.top
             anchors.left: appWindow.inPortrait ? parent.left : videoItem.right
+            anchors.leftMargin: _MARGIN
+            anchors.rightMargin: _MARGIN
             anchors.right: parent.right
             anchors.bottom: parent.bottom
-            anchors.leftMargin: 10
+
+            width: parent.width
+            spacing: _MARGIN
 
             Label {
                 id: titleText

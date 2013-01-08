@@ -150,7 +150,7 @@ Page {
             id: contactsLabel
             anchors.left: parent.left
             anchors.top: separator2Label.bottom
-            anchors.topMargin: _MARGIN
+            anchors.topMargin: _MARGIN_SWITCH
             text: "Friend's emergency contact"
         }
         Switch {

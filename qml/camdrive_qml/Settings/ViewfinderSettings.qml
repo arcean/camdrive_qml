@@ -46,28 +46,20 @@ Page {
         contentWidth: width
         contentHeight: emergencyButtonLabel.y + emergencyButtonLabel.height - generalLabel.y
 
-        Label {
+        LabelSeparator {
             id: generalLabel
             anchors.right: parent.right
             anchors.top: parent.top
-            anchors.rightMargin: 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
-            text: "Additional buttons"
-        }
-
-        Separator {
-            anchors.right: generalLabel.left
             anchors.left: parent.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: generalLabel.verticalCenter
+
+            text: "Additional buttons"
         }
 
         Label {
             id: nightModeButtonLabel
             anchors.left: parent.left
             anchors.top: generalLabel.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: _MARGIN_SWITCH
             text: "Show night mode button"
         }
 
@@ -87,7 +79,7 @@ Page {
             id: emergencyButtonLabel
             anchors.left: parent.left
             anchors.top: nightModeButtonLabel.bottom
-            anchors.topMargin: 16
+            anchors.topMargin: _MARGIN_SWITCH
             text: "Show emergency button"
         }
 

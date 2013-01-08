@@ -51,25 +51,19 @@ Page {
         contentWidth: width
         contentHeight: otherColumn.y + otherColumn.height - separator1Label.y
 
-        Separator {
-            anchors.left: parent.left
-            anchors.right: separator1Label.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: separator1Label.verticalCenter
-        }
-        Label {
+        LabelSeparator {
             id: separator1Label
             anchors.right: parent.right
-            anchors.rightMargin: 10
+            anchors.left: parent.left
             anchors.top: parent.top
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
+
             text: "Video length"
         }
 
         SelectionItem {
             id: storeLastButton
-            y: separator1Label.y + separator1Label.height + 10
+            anchors.top: separator1Label.bottom
+            anchors.topMargin: _MARGIN
             title: qsTr("Save the last")
             model: ListModel {
                 ListElement { name: QT_TR_NOOP("Unlimited length"); value: 0; }
@@ -83,26 +77,20 @@ Page {
             onValueChosen: settingsObject.setStoreLast(value)
         }
 
-        Separator {
-            anchors.left: parent.left
-            anchors.right: separator2Label.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: separator2Label.verticalCenter
-        }
-        Label {
+        LabelSeparator {
             id: separator2Label
             anchors.right: parent.right
-            anchors.rightMargin: 10
+            anchors.left: parent.left
             anchors.top: storeLastButton.bottom
-            anchors.topMargin: 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
+            anchors.topMargin: _MARGIN
+
             text: "Video storing"
         }
 
         SelectionItem {
             id: videoStoreButton
-            y: separator2Label.y + separator2Label.height + 10
+            anchors.top: separator2Label.bottom
+            anchors.topMargin: _MARGIN
             title: qsTr("Keep only the last")
             model: ListModel {
                 ListElement { name: QT_TR_NOOP("Unlimited number of videos"); value: 0; }
@@ -115,29 +103,21 @@ Page {
             onValueChosen: settingsObject.setMaxVideoFiles(value)
         }
 
-        Label {
+        LabelSeparator {
             id: backgroundLabel
             anchors.right: parent.right
             anchors.top: videoStoreButton.bottom
-            anchors.topMargin: 10
-            anchors.rightMargin: 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
-            text: "Record in background"
-        }
-
-        Separator {
-            anchors.right: backgroundLabel.left
+            anchors.topMargin: _MARGIN
             anchors.left: parent.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: backgroundLabel.verticalCenter
+
+            text: "Record in background"
         }
 
         Label {
             id: backgroundSwitchLabel
             anchors.left: parent.left
             anchors.top: backgroundLabel.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: _MARGIN_SWITCH
             text: "Record in background"
         }
 
@@ -153,29 +133,21 @@ Page {
             }
         }
 
-        Label {
+        LabelSeparator {
             id: offlineLabel
             anchors.right: parent.right
-            anchors.top: backgroundSwitch.bottom
-            anchors.topMargin: 10
-            anchors.rightMargin: 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
-            text: "Offline mode"
-        }
-
-        Separator {
-            anchors.right: offlineLabel.left
+            anchors.top: backgroundSwitchLabel.bottom
+            anchors.topMargin: _MARGIN_SWITCH
             anchors.left: parent.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: offlineLabel.verticalCenter
+
+            text: "Offline mode"
         }
 
         Label {
             id: offlineSwitchLabel
             anchors.left: parent.left
             anchors.top: offlineLabel.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: _MARGIN_SWITCH
             text: "Offline mode while recording"
         }
 
@@ -191,26 +163,19 @@ Page {
             }
         }
 
-        Separator {
-            anchors.left: parent.left
-            anchors.right: separator3Label.left
-            anchors.rightMargin: 20
-            anchors.verticalCenter: separator3Label.verticalCenter
-        }
-        Label {
+        LabelSeparator {
             id: separator3Label
             anchors.right: parent.right
-            anchors.rightMargin: 10
-            anchors.top: offlineSwitch.bottom
-            anchors.topMargin: 10
-            font.pixelSize: _SMALL_FONT_SIZE
-            color: _DISABLED_COLOR_TEXT
+            anchors.left: parent.left
+            anchors.top: offlineSwitchLabel.bottom
+            anchors.topMargin: _MARGIN_SWITCH
+
             text: "Other"
         }
 
         Column {
             id: otherColumn
-            anchors { left: parent.left; right: parent.right; top: separator3Label.bottom; topMargin: 10; }
+            anchors { left: parent.left; right: parent.right; top: separator3Label.bottom; topMargin: _MARGIN; }
             height: 160
 
             Repeater {

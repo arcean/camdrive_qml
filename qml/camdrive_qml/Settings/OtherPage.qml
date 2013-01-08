@@ -63,7 +63,7 @@ Page {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: generalLabel.bottom
-            anchors.topMargin: 10
+            anchors.topMargin: _MARGIN
             title: qsTr("Velocity unit")
             model: ListModel {
                 ListElement { name: QT_TR_NOOP("km/h"); value: 1; }
